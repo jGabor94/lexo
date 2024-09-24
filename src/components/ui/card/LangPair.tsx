@@ -1,0 +1,29 @@
+import { LanguageCode } from '@/lib/assets/language_tools/types'
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz"
+import { Stack, Typography } from '@mui/material'
+import { FC, ReactNode } from 'react'
+
+const LangLabel: FC<{ children: ReactNode }> = ({ children }) => (
+    <Stack sx={{
+        alignItems: "center",
+        justifyContent: "center",
+        p: 1,
+        width: 30,
+        height: 30,
+        borderSize: "1px",
+        borderColor: "text.secondary",
+        borderStyle: "solid",
+        borderRadius: "100%",
+    }}>
+        <Typography fontSize={12} sx={{ fontWeight: 600 }}>{children}</Typography>
+    </Stack>
+)
+
+const LangPair: FC<{ termLangCode: LanguageCode, definitionLangCode: LanguageCode }> = ({ termLangCode, definitionLangCode }) => (
+    <Stack direction="row" gap={0.5} alignItems="center">
+        <LangLabel>{termLangCode}</LangLabel>
+        <SwapHorizIcon sx={{ color: 'text.secondary' }} />
+        <LangLabel>{definitionLangCode}</LangLabel>
+    </Stack>
+)
+export default LangPair
