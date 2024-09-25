@@ -30,7 +30,7 @@ const Path: FC<{ breadCrumbs: Array<{ href: string, label: string }> }> = ({ bre
                 {breadCrumb.label}
             </Typography>
         ) : (
-            <Typography key={index} sx={{ fontWeight: 700, }}>
+            <Typography key={index} sx={{ fontWeight: 700 }}>
                 {breadCrumb.label}
             </Typography>
         ))}

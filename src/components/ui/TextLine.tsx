@@ -3,7 +3,7 @@ import { FC, ReactNode } from "react"
 
 
 const TextLine: FC<{ children: ReactNode }> = ({ children }) => (
-    <Stack direction="row" sx={{ flexGrow: 1, flexShrink: 1, minWidth: 0 }} alignItems="center" gap={2}>
+    <Stack direction="row" sx={{ flexGrow: 1, flexShrink: 1, minWidth: 0, }} alignItems="center" gap={2}>
 
         {children}
         <Box sx={{
