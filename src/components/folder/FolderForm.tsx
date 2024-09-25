@@ -47,7 +47,7 @@ const FolderForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel
                             ({ field }) => (
                                 <TextField {...field} label="Folder name" />
                             )} />
-                        <Button variant="contained" type="submit" disabled={!formState.isValid ? true : false}>{submitLabel}</Button>
+                        <Button variant="contained" type="submit" disabled={!formState.isValid || formState.isSubmitted}>{submitLabel}</Button>
                     </Stack>
                 </form>
             </Box>

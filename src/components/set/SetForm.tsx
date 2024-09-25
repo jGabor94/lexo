@@ -87,7 +87,7 @@ const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, l
                                 )} />
                         </Stack>
 
-                        <Button variant="contained" type="submit" disabled={!formState.isValid ? true : false}>{submitLabel}</Button>
+                        <Button variant="contained" type="submit" disabled={!formState.isValid || formState.isSubmitted}>{submitLabel}</Button>
                     </Stack>
                 </form>
             </Box>

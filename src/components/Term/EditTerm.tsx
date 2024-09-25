@@ -64,7 +64,7 @@ const EditTerm: FC<{
                 </IconButton >
             </Tooltip>
             <Tooltip title="Save">
-                <IconButton onClick={form.handleSubmit(submit)} >
+                <IconButton onClick={form.handleSubmit(submit)} disabled={!form.formState.isValid || form.formState.isSubmitting} >
                     <SaveIcon />
                 </IconButton >
             </Tooltip>

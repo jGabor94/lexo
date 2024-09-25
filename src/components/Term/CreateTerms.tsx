@@ -114,7 +114,7 @@ const CreateTerms: FC<{}> = () => {
                             <Button variant="outlined" onClick={() => append(initRow)} startIcon={<AddIcon />}>
                                 New term
                             </Button>
-                            <Button variant="contained" onClick={form.handleSubmit(submit)} startIcon={<SaveIcon />}>
+                            <Button variant="contained" onClick={form.handleSubmit(submit)} startIcon={<SaveIcon />} disabled={!form.formState.isValid || form.formState.isSubmitting}>
                                 Save
                             </Button>
                         </Stack>
