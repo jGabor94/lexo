@@ -24,7 +24,7 @@ const CreateTerms: FC<{}> = () => {
 
     const { set, mutate } = useSet()
 
-    const scrollableDivRef = useRef(null);
+    const scrollableDivRef = useRef<HTMLDivElement>(null);
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 

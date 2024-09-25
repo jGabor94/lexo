@@ -31,7 +31,7 @@ const Page: FC<{}> = async () => {
                 )) : (
                     <Paper component={Stack} gap={1} sx={{ p: 3, width: "100%", alignItems: "center" }}>
                         <FolderOffOutlinedIcon sx={{ width: 50, height: 50 }} />
-                        <Typography >You don&#39t have any folders</Typography>
+                        <Typography >{"You don't have any folders"}</Typography>
                     </Paper>
                 )}
             </Stack>
