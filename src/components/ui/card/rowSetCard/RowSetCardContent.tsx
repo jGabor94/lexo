@@ -33,22 +33,21 @@ const RowSetCardContent: FC<props> = ({ set, ...linkProps }) => (
                 />
             </Stack>
         </Stack>
-        <Stack direction="row" gap={2}>
-            <Stack gap={1} alignItems="flex-end">
-                <Typography fontSize={12}>Created at: {getDate(set.createdAt as string)}</Typography>
-                <Stack direction="row" gap={1} alignItems="center" sx={{ height: "fit-content", alignSelf: "flex-end" }}>
-                    <Stack direction="row" gap={0.5} alignItems="center">
-                        <Avatar src={set.user.image} sx={{ width: 25, height: 25 }} />
-                        <Typography fontSize={12}>{set.user.name}</Typography>
-                    </Stack>
-                    <Divider flexItem orientation="vertical" />
-                    <Chip
-                        label={`${set.termsCount} items`}
-                        sx={{ width: "fit-content" }}
-                        size="small"
-                        color="primary"
-                    />
+
+        <Stack gap={1} alignItems="flex-end" justifyContent="space-between">
+            <Typography fontSize={12}>Created at: {getDate(set.createdAt as string)}</Typography>
+            <Stack direction="row" gap={1} alignItems="center" sx={{ height: "fit-content", alignSelf: "flex-end" }}>
+                <Stack direction="row" gap={0.5} alignItems="center">
+                    <Avatar src={set.user.image} sx={{ width: 25, height: 25 }} />
+                    <Typography fontSize={12}>{set.user.name}</Typography>
                 </Stack>
+                <Divider flexItem orientation="vertical" />
+                <Chip
+                    label={`${set.termsCount} items`}
+                    sx={{ width: "fit-content" }}
+                    size="small"
+                    color="primary"
+                />
             </Stack>
         </Stack>
     </Stack>
