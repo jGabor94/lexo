@@ -27,11 +27,11 @@ const Page: FC<{}> = async () => {
             </Stack>
             <Stack gap={3} mt={4}>
                 {folders.length > 0 ? folders.map(folder => (
-                    <FolderCard {...{ folder }} />
+                    <FolderCard key={folder._id} {...{ folder }} />
                 )) : (
                     <Paper component={Stack} gap={1} sx={{ p: 3, width: "100%", alignItems: "center" }}>
                         <FolderOffOutlinedIcon sx={{ width: 50, height: 50 }} />
-                        <Typography >You don't have any folders</Typography>
+                        <Typography >You don&#39t have any folders</Typography>
                     </Paper>
                 )}
             </Stack>

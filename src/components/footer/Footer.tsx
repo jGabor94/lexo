@@ -15,7 +15,7 @@ const Footer: FC<{}> = () => {
                 <Divider flexItem orientation="vertical" />
                 <Stack direction="row" gap={0.5} alignItems="center">
                     <GitHubIcon sx={{ width: 20 }} />
-                    <Link href="https://github.com/jGabor94" sx={{ textDecoration: "none" }}>Source code</Link>
+                    <Link href="https://github.com/jGabor94/lexo" sx={{ textDecoration: "none" }}>Source code</Link>
                 </Stack>
             </Stack>
         </Fragment>

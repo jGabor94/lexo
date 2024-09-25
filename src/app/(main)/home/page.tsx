@@ -69,7 +69,7 @@ const Page: FC<{}> = async () => {
                         <Stack direction="row" gap={1}>
                             <PeopleAltIcon />
                             <Typography>
-                                Other people's collections
+                                Other people&#39s collections
                             </Typography>
                         </Stack>
                     </TextLine>
