@@ -15,11 +15,14 @@ interface Request {
     params: [name: string],
 }
 
+const timeout = () => new Promise(res => setTimeout(res, 4000))
+
 const SA_CreateFolder = createServerAction(isLogged, aclMiddleware(createAcl, "create"), async ({ params, session }: Request) => {
 
     const [name] = params
 
     await dbConnect()
+    await timeout()
     const res = await Folder.create({ name, user: session.user._id, acl: { ...defaultAcl, [session.user.username]: true } })
     revalidatePath("/folders", "page")
     return createServerActionResponse({ payload: res })

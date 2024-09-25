@@ -9,6 +9,7 @@ import useSet from "@/lib/hooks/useSet";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
+import { LoadingButton } from "@mui/lab";
 import { Box, Button, Divider, IconButton, Modal, Paper, Stack, Tooltip, useMediaQuery, useTheme } from "@mui/material";
 import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -114,9 +115,15 @@ const CreateTerms: FC<{}> = () => {
                             <Button variant="outlined" onClick={() => append(initRow)} startIcon={<AddIcon />}>
                                 New term
                             </Button>
-                            <Button variant="contained" onClick={form.handleSubmit(submit)} startIcon={<SaveIcon />} disabled={!form.formState.isValid || form.formState.isSubmitting}>
+                            <LoadingButton
+                                loading={form.formState.isSubmitting}
+                                loadingPosition="center"
+                                variant="contained"
+                                onClick={form.handleSubmit(submit)}
+                                startIcon={<SaveIcon />}
+                                disabled={!form.formState.isValid || form.formState.isSubmitting}>
                                 Save
-                            </Button>
+                            </LoadingButton>
                         </Stack>
                         <Divider flexItem />
                         <Stack gap={2} sx={{ height: 500, overflowY: "scroll", boxSizing: "content-box", p: 2 }} ref={scrollableDivRef}>

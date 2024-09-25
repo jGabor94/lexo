@@ -1,7 +1,8 @@
 "use client"
 
 import { ModalControl } from "@/lib/hooks/useModalControl";
-import { Box, Button, Modal, Paper, Stack, TextField, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Box, Modal, Paper, Stack, TextField, Typography } from "@mui/material";
 import { FC } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
@@ -47,7 +48,13 @@ const FolderForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel
                             ({ field }) => (
                                 <TextField {...field} label="Folder name" />
                             )} />
-                        <Button variant="contained" type="submit" disabled={!formState.isValid || formState.isSubmitted}>{submitLabel}</Button>
+                        <LoadingButton
+                            loading={formState.isSubmitting}
+                            loadingPosition="center"
+                            variant="contained"
+                            type="submit"
+                            disabled={!formState.isValid || formState.isSubmitted}>
+                            {submitLabel}</LoadingButton>
                     </Stack>
                 </form>
             </Box>

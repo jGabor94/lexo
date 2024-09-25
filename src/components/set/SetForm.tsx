@@ -2,7 +2,8 @@
 
 import { languages } from "@/lib/data/languages"
 import { ModalControl } from "@/lib/hooks/useModalControl"
-import { Autocomplete, Box, Button, Modal, Paper, Stack, TextField, Typography } from "@mui/material"
+import { LoadingButton } from "@mui/lab"
+import { Autocomplete, Box, Modal, Paper, Stack, TextField, Typography } from "@mui/material"
 import { FC } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 
@@ -87,7 +88,13 @@ const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, l
                                 )} />
                         </Stack>
 
-                        <Button variant="contained" type="submit" disabled={!formState.isValid || formState.isSubmitted}>{submitLabel}</Button>
+                        <LoadingButton
+                            loading={formState.isSubmitting}
+                            loadingPosition="center"
+                            variant="contained"
+                            type="submit"
+                            disabled={!formState.isValid || formState.isSubmitted}>{submitLabel}
+                        </LoadingButton>
                     </Stack>
                 </form>
             </Box>
