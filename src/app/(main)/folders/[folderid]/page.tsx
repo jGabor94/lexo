@@ -1,6 +1,5 @@
 import FolderMenu from "@/components/folder/FolderMenu";
 import RemoveFromFolder from "@/components/folder/RemoveFromFolder";
-import Path from "@/components/Path";
 import CreateSet from "@/components/set/CreateSet";
 import { RowSetCardContent, RowSetCardLayout, RowSetCardMenu } from "@/components/ui/card/rowSetCard";
 import TextLine from "@/components/ui/TextLine";
@@ -20,11 +19,14 @@ const Page: FC<{ params: { folderid: string } }> = async ({ params }) => {
 
     return (
         <Stack gap={1}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" gap={2}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" gap={2} >
                 <TextLine>
-                    <FolderIcon />
-                    <Path breadCrumbs={[{ href: "/folders", label: "..." }, { href: "", label: folder.name }]} />
+                    <Stack direction="row" gap={1} sx={{ flexShrink: 1, minWidth: 0, }}>
+                        <FolderIcon />
+                        <Typography sx={{ overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", maxWidth: "100%" }}>/{folder.name}</Typography>
+                    </Stack>
                 </TextLine>
+
                 <FolderMenu {...{ folder }} />
                 <CreateSet />
             </Stack>
