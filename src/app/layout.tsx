@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: "Create your own collections and practice them through different tasks.",
   creator: 'Jakucs Gábor',
   referrer: 'no-referrer',
-  keywords: ['lexo', 'pratice', "language", "learn"],
+  keywords: ['lexo', 'practice', "language", "learn"],
 
 };
 

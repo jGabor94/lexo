@@ -10,6 +10,7 @@ import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
 import SetForm, { SetInput } from "./SetForm";
 
+const wait = () => new Promise(res => setTimeout(res, 3000))
 
 const CreateSet: FC<ButtonProps> = (props) => {
 
@@ -33,6 +34,7 @@ const CreateSet: FC<ButtonProps> = (props) => {
 
     return (
         <Fragment>
+
             <Button variant="contained" onClick={modalControl.handleOpen} startIcon={<AddIcon />} {...{ ...props }}>
                 New Set
             </Button>

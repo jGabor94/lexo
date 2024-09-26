@@ -23,7 +23,7 @@ const Page: FC<{ params: { setid: string } }> = async ({ params }) => {
     return (
         <SWRProvider value={{ fallback: { [unstable_serialize(['set', set._id])]: set } }}>
             <Stack gap={3} component={Paper} p={2} variant="elevation">
-                <Stack gap={3} sx={{ width: 1100, maxWidth: "100%", margin: "0 auto" }}>
+                <Stack gap={3} >
                     <Stack sx={{
                         gap: 2,
                         flexDirection: { xs: "column", sm: "row" },

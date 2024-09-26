@@ -3,7 +3,7 @@
 import SA_DeleteFolder from '@/lib/actions/folder/deleteFolder'
 import useAction from '@/lib/assets/serverAction/useAction'
 import { Folder } from '@/lib/database/queries/getFolder'
-import useConfirmControll from '@/lib/hooks/useConformControll'
+import useConfirmControll from '@/lib/hooks/useConfirmControll'
 import { MenuControl } from '@/lib/hooks/useMenuControl'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import { ListItemIcon, ListItemText, MenuItem } from '@mui/material'
@@ -19,23 +19,15 @@ const DeleteFolder: FC<{ folder: Folder, menuControl: MenuControl }> = ({ folder
         200: { severity: "success", content: "Folder successfully deleted 🙂" },
     })
 
-    const { promise, open, setOpen, dialogProcess } = useConfirmControll()
-
-    const handleDelete = async () => {
-        try {
-            await dialogProcess()
-            const res = await deleteFolder(folder._id)
-            if (res.statusCode === 200) router.push("/folders")
-        } catch (err) {
-            setOpen(false)
-            menuControl.handleClose()
-        }
-    }
+    const { controll, trigger: triggerDelete } = useConfirmControll(async () => {
+        const res = await deleteFolder(folder._id)
+        if (res.statusCode === 200) router.push("/folders")
+    })
 
     return (
         <Fragment>
-            <ConfirmDialog {...{ open, promise, dialogText: `Are you sure you want to delete the following folder: ${folder.name}?` }} />
-            <MenuItem onClick={handleDelete}>
+            <ConfirmDialog {...{ controll, dialogText: `Are you sure you want to delete the following folder: ${folder.name}?` }} />
+            <MenuItem onClick={triggerDelete}>
                 <ListItemIcon>
                     <DeleteOutlineOutlinedIcon fontSize="small" />
                 </ListItemIcon>

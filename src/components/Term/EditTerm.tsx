@@ -9,8 +9,9 @@ import useSet from "@/lib/hooks/useSet";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
 import { Divider, IconButton, Stack, Tooltip, useTheme } from "@mui/material";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, Fragment, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import LinearLoading from "../LinearLoading";
 import TermForm from "./TermForm";
 
 
@@ -20,6 +21,8 @@ const EditTerm: FC<{
     setMode: Dispatch<SetStateAction<"read" | "edit">>,
 }
 > = ({ term: { _id: termid, ...term }, setMode }) => {
+
+    const [loading, setLoading] = useState(false)
 
     const { mutate } = useSet()
     const { setAlert } = useAlert()
@@ -31,9 +34,7 @@ const EditTerm: FC<{
     })
 
     const submit: SubmitHandler<ITerm> = async (data) => {
-
         const res = await updateTerm(termid, data)
-
         if (res.statusCode === 200) {
             mutate()
             setMode("read")
@@ -41,6 +42,7 @@ const EditTerm: FC<{
     }
 
     const handleDelete = async () => {
+        setLoading(true)
         const res = await SA_DeleteTerm(termid)
 
         if (res.statusCode === 200) {
@@ -50,26 +52,33 @@ const EditTerm: FC<{
         } else {
             setAlert({ severity: "error", content: res.error })
         }
+
+        setLoading(false)
+
     }
 
     const theme = useTheme()
 
-    return <Stack direction="row" gap={2} alignItems="center">
-        <TermForm {...{ form, prefix: "" }} />
-        <Divider flexItem orientation="vertical" />
-        <Stack direction="row" sx={{ height: "fit-content" }}>
-            <Tooltip title="Delete">
-                <IconButton onClick={handleDelete} >
-                    <DeleteForeverIcon />
-                </IconButton >
-            </Tooltip>
-            <Tooltip title="Save">
-                <IconButton onClick={form.handleSubmit(submit)} disabled={!form.formState.isValid || form.formState.isSubmitting} >
-                    <SaveIcon />
-                </IconButton >
-            </Tooltip>
+    return <Fragment>
+        <LinearLoading {...{ loading: loading || form.formState.isSubmitSuccessful }} />
+        <Stack direction="row" gap={2} alignItems="center">
+            <TermForm {...{ form, prefix: "" }} />
+            <Divider flexItem orientation="vertical" />
+            <Stack direction="row" sx={{ height: "fit-content" }}>
+                <Tooltip title="Delete">
+                    <IconButton onClick={handleDelete} disabled={loading} >
+                        <DeleteForeverIcon />
+                    </IconButton >
+                </Tooltip>
+                <Tooltip title="Save">
+                    <IconButton type="submit" onClick={form.handleSubmit(submit)} disabled={!form.formState.isValid || form.formState.isSubmitting || form.formState.isSubmitSuccessful || loading} >
+                        <SaveIcon />
+                    </IconButton >
+                </Tooltip>
+            </Stack>
         </Stack>
-    </Stack>
+    </Fragment>
+
 
 
 

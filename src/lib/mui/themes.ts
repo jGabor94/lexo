@@ -22,6 +22,7 @@ export const RootTheme = createTheme({
                 },
                 background: {
                     default: "#fafafa",
+                    paper: "#fafafa",
                 },
                 action: {
                     hover: "white",
@@ -37,6 +38,7 @@ export const RootTheme = createTheme({
                 },
                 background: {
                     default: "#151515",
+                    paper: "#151515",
                 },
                 action: {
                     hover: "black",
@@ -50,9 +52,8 @@ export const RootTheme = createTheme({
                 variant: "outlined",
             },
             styleOverrides: {
-                root: ({ theme }) => ({
+                root: () => ({
                     borderRadius: 10,
-                    backgroundColor: theme.palette.background.default,
 
                 }),
             },
@@ -98,7 +99,7 @@ export const RootTheme = createTheme({
         MuiTypography: {
             styleOverrides: {
                 root: ({ theme }) => ({
-                    color: theme.palette.text.secondary,
+                    color: "theme.palette.text.secondary",
                 })
             }
         },

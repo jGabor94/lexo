@@ -9,10 +9,11 @@ import useSet from "@/lib/hooks/useSet";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
-import { LoadingButton } from "@mui/lab";
 import { Box, Button, Divider, IconButton, Modal, Paper, Stack, Tooltip, useMediaQuery, useTheme } from "@mui/material";
 import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import LinearLoading from "../LinearLoading";
+import SubmitButton from "../SubmitButton";
 import TermForm from "./TermForm";
 
 
@@ -32,11 +33,11 @@ const CreateTerms: FC<{}> = () => {
     const initRow: ITerm = {
         term: {
             content: "",
-            lang: set?.preferredTermLang.langCode as LanguageCode
+            lang: set.preferredTermLang.langCode as LanguageCode
         },
         definition: {
             content: [],
-            lang: set?.preferredDefinitionLang.langCode as LanguageCode
+            lang: set.preferredDefinitionLang.langCode as LanguageCode
         }
     }
 
@@ -91,6 +92,7 @@ const CreateTerms: FC<{}> = () => {
 
     return (
         <Fragment>
+            <LinearLoading loading={form.formState.isSubmitting} />
             <Button variant="contained" onClick={handleOpen} startIcon={<AddIcon />}>
                 Add Terms
             </Button>
@@ -110,39 +112,40 @@ const CreateTerms: FC<{}> = () => {
                     height: 700,
 
                 }}>
-                    <Stack >
-                        <Stack direction="row" gap={2} p={2}>
-                            <Button variant="outlined" onClick={() => append(initRow)} startIcon={<AddIcon />}>
-                                New term
-                            </Button>
-                            <LoadingButton
-                                loading={form.formState.isSubmitting}
-                                loadingPosition="center"
-                                variant="contained"
-                                onClick={form.handleSubmit(submit)}
-                                startIcon={<SaveIcon />}
-                                disabled={!form.formState.isValid || form.formState.isSubmitting}>
-                                Save
-                            </LoadingButton>
-                        </Stack>
-                        <Divider flexItem />
-                        <Stack gap={2} sx={{ height: 500, overflowY: "scroll", boxSizing: "content-box", p: 2 }} ref={scrollableDivRef}>
-                            {fields.map((field, index) => (
-                                <Paper variant="elevation" key={field.id} sx={{ p: 2 }}>
-                                    <Stack direction="row" gap={2} alignItems="center" >
-                                        <TermForm {...{ form, prefix: `terms.${index}.` }} />
-                                        {isMobile && (<Divider orientation="vertical" flexItem />)}
-                                        <Tooltip title="Delete" sx={{ height: "fit-content" }}>
-                                            <IconButton onClick={() => remove(index)} >
-                                                <DeleteForeverIcon />
-                                            </IconButton >
-                                        </Tooltip>
-                                    </Stack>
-                                </Paper>
-                            ))}
-                        </Stack>
+                    <form onSubmit={form.handleSubmit(submit)}>
+                        <Stack >
+                            <Stack direction="row" gap={2} p={2}>
+                                <Button variant="outlined" onClick={() => append(initRow)} startIcon={<AddIcon />}>
+                                    New term
+                                </Button>
+                                <SubmitButton
+                                    variant="contained"
+                                    formState={form.formState}
+                                    startIcon={<SaveIcon />}
+                                >
+                                    Save
+                                </SubmitButton>
 
-                    </Stack >
+                            </Stack>
+                            <Divider flexItem />
+                            <Stack gap={2} sx={{ height: 500, overflowY: "scroll", boxSizing: "content-box", p: 2 }} ref={scrollableDivRef}>
+                                {fields.map((field, index) => (
+                                    <Paper variant="elevation" key={field.id} sx={{ p: 2 }}>
+                                        <Stack direction="row" gap={2} alignItems="center" >
+                                            <TermForm {...{ form, prefix: `terms.${index}.` }} />
+                                            {isMobile && (<Divider orientation="vertical" flexItem />)}
+                                            <Tooltip title="Delete" sx={{ height: "fit-content" }}>
+                                                <IconButton onClick={() => remove(index)} >
+                                                    <DeleteForeverIcon />
+                                                </IconButton >
+                                            </Tooltip>
+                                        </Stack>
+                                    </Paper>
+                                ))}
+                            </Stack>
+
+                        </Stack >
+                    </form>
                 </Box>
             </Modal >
         </Fragment >
