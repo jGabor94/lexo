@@ -7,7 +7,6 @@ import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { FC, ReactNode } from "react";
-import ConfigProvider from "./_providers/ConfigProvider/ConfigProvider";
 import { AlertProvider, DateTimePickerProvider } from "./_providers/providers";
 
 export const metadata: Metadata = {
@@ -33,23 +32,21 @@ const RootLayout: FC<{
   return (
     <html lang="en" suppressHydrationWarning>
       <SessionProvider>
-        <ConfigProvider>
-          <ThemeProvider theme={RootTheme}>
-            <DateTimePickerProvider>
-              <AlertProvider>
-                <body>
-                  <AppRouterCacheProvider>
-                    <InitColorSchemeScript attribute="class" />
-                    <CssBaseline />
-                    <SnackbarAlert />
-                    {children}
-                    <Footer />
-                  </AppRouterCacheProvider>
-                </body>
-              </AlertProvider>
-            </DateTimePickerProvider>
-          </ThemeProvider>
-        </ConfigProvider>
+        <ThemeProvider theme={RootTheme}>
+          <DateTimePickerProvider>
+            <AlertProvider>
+              <body>
+                <AppRouterCacheProvider>
+                  <InitColorSchemeScript attribute="class" />
+                  <CssBaseline />
+                  <SnackbarAlert />
+                  {children}
+                  <Footer />
+                </AppRouterCacheProvider>
+              </body>
+            </AlertProvider>
+          </DateTimePickerProvider>
+        </ThemeProvider>
       </SessionProvider>
     </html>
   );

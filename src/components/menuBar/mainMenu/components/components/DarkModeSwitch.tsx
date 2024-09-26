@@ -1,13 +1,13 @@
 "use client"
 
-import { Stack, Tooltip, useColorScheme } from "@mui/material";
-import LightModeIcon from "@mui/icons-material/LightMode";
 import ComputerIcon from "@mui/icons-material/Computer";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import { Stack, Tooltip, useColorScheme } from "@mui/material";
 
 const props = {
     sx: {
-        color: "text.secondary",
+        color: "text.primary",
         cursor: "pointer",
         height: 25,
         width: 25,
@@ -24,11 +24,6 @@ const ThemeSwitch = () => {
 
     const { mode, setMode, systemMode } = useColorScheme();
 
-    const currentMode = mode === "system" ? systemMode : mode
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setMode(e.target.checked ? "dark" : "light");
-    }
 
     return (
         <Stack direction="row" gap={0.2}>
@@ -38,7 +33,7 @@ const ThemeSwitch = () => {
                         ...props,
                         sx: {
                             ...props.sx,
-                            borderColor: mode === "light" ? "text.secondary" : "transparent",
+                            borderColor: mode === "light" ? "text.primary" : "transparent",
                         },
                     }}
                     onClick={() => setMode("light")}
@@ -51,7 +46,7 @@ const ThemeSwitch = () => {
                         ...props,
                         sx: {
                             ...props.sx,
-                            borderColor: mode === "system" ? "text.secondary" : "transparent",
+                            borderColor: mode === "system" ? "text.primary" : "transparent",
                         },
                     }}
                     onClick={() => setMode("system")}

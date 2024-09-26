@@ -16,7 +16,6 @@ const MainMenu: FC<MenuBarProps> = async ({ height }) => {
                 height,
                 borderBottomStyle: "solid",
                 borderBottomWidth: "1px",
-                borderBottomColor: "text.secondary",
                 width: "100%",
                 position: "fixed",
                 pr: 3,

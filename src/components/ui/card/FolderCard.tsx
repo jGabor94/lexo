@@ -13,7 +13,7 @@ const FolderCard: FC<{ folder: FolderListItem }> = ({ folder }) => {
         <Card component={Link} href={`/folders/${folder._id}`} sx={{ textDecoration: "none", width: "100%", p: 2 }}>
             <Stack direction="row" justifyContent="space-between">
                 <Stack direction="row" gap={2} alignItems="center" sx={{ height: 70, }} >
-                    <FolderIcon sx={{ color: "text.secondary", width: 60, height: 70 }} />
+                    <FolderIcon sx={{ color: "text.primary", width: 60, height: 70 }} />
                     <Stack justifyContent="space-between" sx={{ height: 60 }}>
                         <Typography fontSize={20}>
                             {folder.name}

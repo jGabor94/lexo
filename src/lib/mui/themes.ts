@@ -27,6 +27,10 @@ export const RootTheme = createTheme({
                 action: {
                     hover: "white",
                 },
+                text: {
+                    primary: "rgba(0, 0, 0, 0.6)",
+                    secondary: "rgba(0, 0, 0, 0.87)",
+                },
             },
         },
         dark: {
@@ -43,9 +47,14 @@ export const RootTheme = createTheme({
                 action: {
                     hover: "black",
                 },
+                text: {
+                    primary: "rgba(255, 255, 255, 0.7)",
+                    secondary: "#fff",
+                },
             },
         },
     },
+
     components: {
         MuiPaper: {
             defaultProps: {
@@ -63,6 +72,7 @@ export const RootTheme = createTheme({
                 target: "blank",
                 color: "inherit"
             },
+
         },
         MuiButton: {
             styleOverrides: {
@@ -93,13 +103,6 @@ export const RootTheme = createTheme({
                             borderColor: theme.palette.text.primary,
                         },
                     }
-                })
-            }
-        },
-        MuiTypography: {
-            styleOverrides: {
-                root: ({ theme }) => ({
-                    color: "theme.palette.text.secondary",
                 })
             }
         },

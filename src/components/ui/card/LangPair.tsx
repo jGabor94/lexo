@@ -11,7 +11,6 @@ const LangLabel: FC<{ children: ReactNode }> = ({ children }) => (
         width: 30,
         height: 30,
         borderSize: "1px",
-        borderColor: "text.secondary",
         borderStyle: "solid",
         borderRadius: "100%",
     }}>
@@ -22,7 +21,7 @@ const LangLabel: FC<{ children: ReactNode }> = ({ children }) => (
 const LangPair: FC<{ termLangCode: LanguageCode, definitionLangCode: LanguageCode }> = ({ termLangCode, definitionLangCode }) => (
     <Stack direction="row" gap={0.5} alignItems="center">
         <LangLabel>{termLangCode}</LangLabel>
-        <SwapHorizIcon sx={{ color: 'text.secondary' }} />
+        <SwapHorizIcon />
         <LangLabel>{definitionLangCode}</LangLabel>
     </Stack>
 )
