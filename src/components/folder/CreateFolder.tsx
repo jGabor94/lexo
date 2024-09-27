@@ -4,7 +4,7 @@ import SA_CreateFolder from "@/lib/actions/folder/createFolder";
 import useAction from "@/lib/assets/serverAction/useAction";
 import useModalControl from "@/lib/hooks/useModalControl";
 import AddIcon from '@mui/icons-material/Add';
-import { Button } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
@@ -12,7 +12,7 @@ import FolderForm from "./FolderForm";
 
 type Input = { name: string }
 
-const CreateFolder: FC<{}> = () => {
+const CreateFolder: FC<ButtonProps> = (props) => {
 
     const router = useRouter()
     const modalControl = useModalControl()
@@ -30,7 +30,11 @@ const CreateFolder: FC<{}> = () => {
 
     return (
         <Fragment>
-            <Button variant="contained" onClick={modalControl.handleOpen} startIcon={<AddIcon />} >
+            <Button variant="contained" onClick={modalControl.handleOpen} startIcon={<AddIcon sx={{
+                color: "primary.contrastText"
+            }} />}
+                {...props}
+            >
                 New Folder
             </Button>
             <FolderForm

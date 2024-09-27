@@ -7,7 +7,7 @@ import { Stack, Tooltip, useColorScheme } from "@mui/material";
 
 const props = {
     sx: {
-        color: "text.primary",
+        color: "text.secondary",
         cursor: "pointer",
         height: 25,
         width: 25,
@@ -33,7 +33,7 @@ const ThemeSwitch = () => {
                         ...props,
                         sx: {
                             ...props.sx,
-                            borderColor: mode === "light" ? "text.primary" : "transparent",
+                            borderColor: mode === "light" ? "text.secondary" : "transparent",
                         },
                     }}
                     onClick={() => setMode("light")}
@@ -46,7 +46,7 @@ const ThemeSwitch = () => {
                         ...props,
                         sx: {
                             ...props.sx,
-                            borderColor: mode === "system" ? "text.primary" : "transparent",
+                            borderColor: mode === "system" ? "text.secondary" : "transparent",
                         },
                     }}
                     onClick={() => setMode("system")}

@@ -13,6 +13,7 @@ const LangLabel: FC<{ children: ReactNode }> = ({ children }) => (
         borderSize: "1px",
         borderStyle: "solid",
         borderRadius: "100%",
+        borderColor: "text.secondary"
     }}>
         <Typography fontSize={12} sx={{ fontWeight: 600 }}>{children}</Typography>
     </Stack>

@@ -93,7 +93,7 @@ const CreateTerms: FC<{}> = () => {
     return (
         <Fragment>
             <LinearLoading loading={form.formState.isSubmitting} />
-            <Button variant="contained" onClick={handleOpen} startIcon={<AddIcon />}>
+            <Button variant="contained" onClick={handleOpen} startIcon={<AddIcon sx={{ color: "primary.contrastText" }} />}>
                 Add Terms
             </Button>
             <Modal
@@ -115,7 +115,7 @@ const CreateTerms: FC<{}> = () => {
                     <form onSubmit={form.handleSubmit(submit)}>
                         <Stack >
                             <Stack direction="row" gap={2} p={2}>
-                                <Button variant="outlined" onClick={() => append(initRow)} startIcon={<AddIcon />}>
+                                <Button variant="outlined" onClick={() => append(initRow)} startIcon={<AddIcon sx={{ color: "primary.main" }} />}>
                                     New term
                                 </Button>
                                 <SubmitButton

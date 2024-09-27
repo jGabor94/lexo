@@ -19,13 +19,13 @@ const MenuList: FC<{ menuItems: Array<{ label: string, path: string }> }> = ({ m
                     href={item.path}
                     sx={{
                         '&:hover': {
-                            color: "text.secondary"
+                            color: "text.primary"
                         },
                         textAlign: 'center',
                         fontWeight: 400,
                         fontSize: 15,
                         textDecoration: "none",
-                        color: pathname === item.path ? "text.secondary" : "text.primary"
+                        color: pathname === item.path ? "text.primary" : "text.secondary"
                     }}>{item.label}</Typography>
             ))}
         </Stack>

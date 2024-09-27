@@ -18,7 +18,7 @@ export const RootTheme = createTheme({
                     main: "#3CC8AF",
                     light: "#47dfc5",
                     dark: "#28b59c",
-                    contrastText: "#fff",
+                    contrastText: "rgba(0, 0, 0, 0.87)",
                 },
                 background: {
                     default: "#fafafa",
@@ -27,10 +27,7 @@ export const RootTheme = createTheme({
                 action: {
                     hover: "white",
                 },
-                text: {
-                    primary: "rgba(0, 0, 0, 0.6)",
-                    secondary: "rgba(0, 0, 0, 0.87)",
-                },
+
             },
         },
         dark: {
@@ -39,6 +36,7 @@ export const RootTheme = createTheme({
                     main: "#3CC8AF",
                     light: "#47dfc5",
                     dark: "#28b59c",
+                    contrastText: "rgba(0, 0, 0, 0.87)",
                 },
                 background: {
                     default: "#151515",
@@ -47,14 +45,10 @@ export const RootTheme = createTheme({
                 action: {
                     hover: "black",
                 },
-                text: {
-                    primary: "rgba(255, 255, 255, 0.7)",
-                    secondary: "#fff",
-                },
+
             },
         },
     },
-
     components: {
         MuiPaper: {
             defaultProps: {
@@ -63,7 +57,6 @@ export const RootTheme = createTheme({
             styleOverrides: {
                 root: () => ({
                     borderRadius: 10,
-
                 }),
             },
         },
@@ -88,6 +81,20 @@ export const RootTheme = createTheme({
                 })
             },
 
+        },
+        MuiTypography: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    color: theme.vars.palette.text.secondary,
+                })
+            }
+        },
+        MuiSvgIcon: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    color: theme.vars.palette.text.secondary,
+                })
+            }
         },
         MuiTextField: {
             styleOverrides: {
