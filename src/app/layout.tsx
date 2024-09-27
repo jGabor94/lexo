@@ -15,7 +15,9 @@ export const metadata: Metadata = {
   creator: 'Jakucs Gábor',
   referrer: 'no-referrer',
   keywords: ['lexo', 'practice', "language", "learn"],
-
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export const viewport = {
