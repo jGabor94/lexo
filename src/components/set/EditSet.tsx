@@ -14,9 +14,8 @@ import SetForm, { SetInput } from "./SetForm";
 
 const EditSet: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
 
-    const { set } = useSet()
     const modalControl = useModalControl()
-    const { mutate } = useSet()
+    const { mutate, set } = useSet()
 
     const { action: updateSet } = useAction(SA_UpdateSet, {
         200: { severity: "success", content: "Set successfully edited 🙂" }

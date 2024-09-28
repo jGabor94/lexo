@@ -2,9 +2,9 @@ import SA_GetFolders from '@/lib/actions/folder/getFolders';
 import SA_AddToFolder from '@/lib/actions/set/addToFolder';
 import useAction from '@/lib/assets/serverAction/useAction';
 import { FolderListItem } from '@/lib/database/queries/getFolders';
-import { Set } from '@/lib/database/queries/getSet';
 import { MenuControl } from '@/lib/hooks/useMenuControl';
 import useModalControl from '@/lib/hooks/useModalControl';
+import useSet from '@/lib/hooks/useSet';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import FolderIcon from '@mui/icons-material/Folder';
 import { Box, Button, FormControl, InputLabel, ListItemIcon, ListItemText, MenuItem, Modal, OutlinedInput, Paper, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
@@ -12,11 +12,13 @@ import { FC, Fragment, useEffect, useMemo, useState } from 'react';
 import LinearLoading from '../LinearLoading';
 
 
-const MoveToFolder: FC<{ set: Set, menuControl: MenuControl }> = ({ set, menuControl }) => {
+const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
 
     const [folders, setFolders] = useState<FolderListItem[] | null>(null)
     const [selectedFolderId, setSelectedFolderId] = useState<string>("");
     const [loading, setLoading] = useState(false)
+
+    const { set } = useSet()
 
     const selectedFolder = useMemo(
         () => folders?.find(folder => folder._id === selectedFolderId),

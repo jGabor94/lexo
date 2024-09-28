@@ -1,7 +1,6 @@
 "use client"
 
 import useMenuControl from "@/lib/hooks/useMenuControl"
-import useSet from "@/lib/hooks/useSet"
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { Button, Menu } from "@mui/material"
 import { FC, Fragment } from "react"
@@ -11,7 +10,6 @@ import MoveToFolder from "./MoveToFolder"
 
 const SetMenu: FC<{}> = () => {
 
-    const { set } = useSet()
     const menuControl = useMenuControl()
 
     return (
@@ -34,9 +32,9 @@ const SetMenu: FC<{}> = () => {
                     'aria-labelledby': 'menu-button',
                 }}
             >
-                <MoveToFolder  {...{ set, menuControl }} />
-                <EditSet {...{ set, menuControl }} />
-                <DeleteSet {...{ set }} />
+                <MoveToFolder  {...{ menuControl }} />
+                <EditSet {...{ menuControl }} />
+                <DeleteSet />
             </Menu>
         </Fragment>
 

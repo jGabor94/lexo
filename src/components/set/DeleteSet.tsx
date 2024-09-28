@@ -2,17 +2,18 @@
 
 import SA_DeleteSet from '@/lib/actions/set/deleteSet'
 import useAction from '@/lib/assets/serverAction/useAction'
-import { Set } from '@/lib/database/queries/getSet'
 import useConfirmControll from '@/lib/hooks/useConfirmControll'
+import useSet from '@/lib/hooks/useSet'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import { ListItemIcon, ListItemText, MenuItem } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { FC, Fragment } from 'react'
 import ConfirmDialog from '../ConfirmDialog'
 
-const DeleteSet: FC<{ set: Set }> = ({ set }) => {
+const DeleteSet: FC<{}> = () => {
 
     const router = useRouter()
+    const { set } = useSet()
 
     const { action: deleteSet } = useAction(SA_DeleteSet, {
         200: { severity: "success", content: "Set successfully deleted 🙂" },
