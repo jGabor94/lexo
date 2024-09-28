@@ -5,6 +5,8 @@ import { auth } from "@/lib/services/authentication/auth";
 import { Stack, Typography } from "@mui/material";
 import { FC } from "react";
 
+const wait = () => new Promise(res => setTimeout(res, 4000))
+
 const Page: FC<{}> = async () => {
 
     const session = await auth()
@@ -13,8 +15,7 @@ const Page: FC<{}> = async () => {
         { $match: { user: createObjectId(session?.user._id as string) } },
     ])
 
-    console.log(sets)
-
+    await wait()
 
     return (
         <Stack gap={2}>
