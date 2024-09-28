@@ -9,12 +9,14 @@ import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import FolderIcon from '@mui/icons-material/Folder';
 import { Box, Button, FormControl, InputLabel, ListItemIcon, ListItemText, MenuItem, Modal, OutlinedInput, Paper, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
 import { FC, Fragment, useEffect, useMemo, useState } from 'react';
+import LinearLoading from '../LinearLoading';
 
 
 const MoveToFolder: FC<{ set: Set, menuControl: MenuControl }> = ({ set, menuControl }) => {
 
     const [folders, setFolders] = useState<FolderListItem[] | null>(null)
     const [selectedFolderId, setSelectedFolderId] = useState<string>("");
+    const [loading, setLoading] = useState(false)
 
     const selectedFolder = useMemo(
         () => folders?.find(folder => folder._id === selectedFolderId),
@@ -38,14 +40,14 @@ const MoveToFolder: FC<{ set: Set, menuControl: MenuControl }> = ({ set, menuCon
     };
 
     const handleAdd = async () => {
-
+        setLoading(true)
         await addToFolder(selectedFolderId, set._id)
         closeModal()
+        setLoading(false)
     }
 
     useEffect(() => {
         SA_GetFolders().then((res) => {
-            console.log({ res })
             if (res.statusCode === 200) {
                 setFolders(res.payload.filter(folder => !folder.sets.includes(set._id)))
             }
@@ -55,6 +57,7 @@ const MoveToFolder: FC<{ set: Set, menuControl: MenuControl }> = ({ set, menuCon
 
     return (
         <Fragment>
+            <LinearLoading {...{ loading }} />
             <MenuItem onClick={() => modalControl.handleOpen()}>
                 <ListItemIcon>
                     <DriveFileMoveIcon fontSize="small" />
