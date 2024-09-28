@@ -1,7 +1,8 @@
 "use client"
 
+import ModalOverlay from "@/components/ui/modal";
 import useModalControl from "@/lib/hooks/useModalControl";
-import { Box, Divider, Link, Modal, Paper, Stack, Typography } from "@mui/material";
+import { Divider, Link, Modal, Stack, Typography } from "@mui/material";
 import { FC, Fragment } from "react";
 
 const PrivacyPolicy: FC<{}> = () => {
@@ -14,19 +15,7 @@ const PrivacyPolicy: FC<{}> = () => {
                 Privacy Policy
             </Link>
             <Modal open={open} onClose={handleClose}>
-                <Box
-                    component={Paper}
-                    sx={{
-                        boxShadow: 10,
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        width: 700,
-                        maxWidth: "95%",
-                        outline: "none",
-                    }}
-                >
+                <ModalOverlay width={700} onClose={handleClose}>
                     <Stack gap={2} sx={{ p: 2, height: 600, overflowY: "scroll" }}>
                         <Typography fontWeight={600} fontSize={25}>
                             Privacy Policy
@@ -100,7 +89,7 @@ const PrivacyPolicy: FC<{}> = () => {
                             </Typography>
                         </Stack>
                     </Stack>
-                </Box>
+                </ModalOverlay>
             </Modal>
         </Fragment>
 

@@ -1,12 +1,13 @@
 "use client"
 
+import ModalOverlay from '@/components/ui/modal';
+import useModalControl from '@/lib/hooks/useModalControl';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Avatar, Box, Divider, IconButton, Modal, Paper, Stack, Tooltip, Typography } from "@mui/material";
+import { Avatar, Divider, IconButton, Modal, Stack, Tooltip, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { FC, Fragment } from "react";
 import SignOutButton from "./SignOutButton";
 import ThemeSwitch from "./components/DarkModeSwitch";
-import useModalControl from '@/lib/hooks/useModalControl';
 
 const Settings: FC<{}> = () => {
 
@@ -25,17 +26,7 @@ const Settings: FC<{}> = () => {
                 onClose={handleClose}
 
             >
-                <Box component={Paper} sx={{
-                    boxShadow: 10,
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 400,
-                    maxWidth: "95%",
-                    outline: "none",
-                    p: 2
-                }}>
+                <ModalOverlay width={400} onClose={handleClose}>
                     <Stack gap={2}>
                         <Typography fontSize={23}>Settings</Typography>
                         <Divider flexItem />
@@ -55,7 +46,7 @@ const Settings: FC<{}> = () => {
                         </Stack>
 
                     </Stack>
-                </Box>
+                </ModalOverlay>
 
             </Modal>
         </Fragment>

@@ -7,9 +7,10 @@ import useModalControl from '@/lib/hooks/useModalControl';
 import useSet from '@/lib/hooks/useSet';
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
 import FolderIcon from '@mui/icons-material/Folder';
-import { Box, Button, FormControl, InputLabel, ListItemIcon, ListItemText, MenuItem, Modal, OutlinedInput, Paper, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
+import { Button, FormControl, InputLabel, ListItemIcon, ListItemText, MenuItem, Modal, OutlinedInput, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
 import { FC, Fragment, useEffect, useMemo, useState } from 'react';
 import LinearLoading from '../LinearLoading';
+import ModalOverlay from '../ui/modal';
 
 
 const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
@@ -70,17 +71,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
                 open={modalControl.open}
                 onClose={closeModal}
             >
-                <Box component={Paper} sx={{
-                    boxShadow: 10,
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 500,
-                    maxWidth: "95%",
-                    outline: "none",
-                    p: 3
-                }}>
+                <ModalOverlay width={400} onClose={closeModal} sx={{ pt: 6 }}>
                     {folders && (
                         <Stack gap={2}>
                             <FormControl sx={{ width: "100%" }}>
@@ -119,7 +110,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
 
                     )}
 
-                </Box>
+                </ModalOverlay>
             </Modal>
         </Fragment >
     )

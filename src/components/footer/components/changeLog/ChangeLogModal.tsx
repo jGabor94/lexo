@@ -1,7 +1,8 @@
 "use client"
 
+import ModalOverlay from "@/components/ui/modal";
 import useModalControl from "@/lib/hooks/useModalControl";
-import { Box, Link, Modal, Paper } from "@mui/material";
+import { Link, Modal } from "@mui/material";
 import { FC, Fragment, ReactNode } from "react";
 
 const ChangeLogModal: FC<{ children: ReactNode }> = ({ children }) => {
@@ -15,18 +16,9 @@ const ChangeLogModal: FC<{ children: ReactNode }> = ({ children }) => {
                 open={open}
                 onClose={handleClose}
             >
-                <Box component={Paper} sx={{
-                    boxShadow: 10,
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 700,
-                    maxWidth: "95%",
-                    outline: "none",
-                }}>
+                <ModalOverlay width={700} onClose={handleClose}>
                     {children}
-                </Box>
+                </ModalOverlay>
             </Modal>
         </Fragment>
     )

@@ -2,11 +2,12 @@
 
 import { languages } from "@/lib/data/languages"
 import { ModalControl } from "@/lib/hooks/useModalControl"
-import { Autocomplete, Box, Modal, Paper, Stack, TextField, Typography } from "@mui/material"
+import { Autocomplete, Modal, Stack, TextField, Typography } from "@mui/material"
 import { FC, Fragment } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import LinearLoading from "../LinearLoading"
 import SubmitButton from "../SubmitButton"
+import ModalOverlay from "../ui/modal"
 
 export type SetInput = {
     name: string,
@@ -39,17 +40,7 @@ const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, l
                 onClose={closeModal}
                 keepMounted={true}
             >
-                <Box component={Paper} sx={{
-                    boxShadow: 10,
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 500,
-                    maxWidth: "95%",
-                    outline: "none",
-                    p: 3
-                }}>
+                <ModalOverlay width={500} onClose={closeModal}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Stack gap={2}>
                             <Typography fontSize={23}>{label}</Typography>
@@ -95,7 +86,7 @@ const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, l
                             </SubmitButton>
                         </Stack>
                     </form>
-                </Box>
+                </ModalOverlay>
             </Modal >
         </Fragment>
 

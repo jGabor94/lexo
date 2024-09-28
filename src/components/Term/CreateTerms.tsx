@@ -5,15 +5,17 @@ import { LanguageCode } from "@/lib/assets/language_tools/types";
 import useAction from "@/lib/assets/serverAction/useAction";
 import { ITerm } from "@/lib/database/types";
 import useAlert from "@/lib/hooks/useAlert";
+import useModalControl from "@/lib/hooks/useModalControl";
 import useSet from "@/lib/hooks/useSet";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
-import { Box, Button, Divider, IconButton, Modal, Paper, Stack, Tooltip, useMediaQuery, useTheme } from "@mui/material";
-import { FC, Fragment, useEffect, useRef, useState } from "react";
+import { Button, Divider, IconButton, Modal, Paper, Stack, Tooltip, useMediaQuery, useTheme } from "@mui/material";
+import { FC, Fragment, useEffect, useRef } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import LinearLoading from "../LinearLoading";
 import SubmitButton from "../SubmitButton";
+import ModalOverlay from "../ui/modal";
 import TermForm from "./TermForm";
 
 
@@ -49,10 +51,10 @@ const CreateTerms: FC<{}> = () => {
 
     const { setAlert } = useAlert()
 
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => {
-        setOpen(false)
+    const { open, handleOpen, handleClose } = useModalControl()
+
+    const closeModal = () => {
+        handleClose()
         form.reset()
     };
 
@@ -98,20 +100,9 @@ const CreateTerms: FC<{}> = () => {
             </Button>
             <Modal
                 open={open}
-                onClose={handleClose}
+                onClose={closeModal}
             >
-                <Box component={Paper} sx={{
-                    boxShadow: 10,
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 1200,
-                    maxWidth: "95%",
-                    outline: "none",
-                    height: 700,
-
-                }}>
+                <ModalOverlay width={1200} height={700} onClose={closeModal}>
                     <form onSubmit={form.handleSubmit(submit)}>
                         <Stack >
                             <Stack direction="row" gap={2} p={2}>
@@ -146,7 +137,7 @@ const CreateTerms: FC<{}> = () => {
 
                         </Stack >
                     </form>
-                </Box>
+                </ModalOverlay>
             </Modal >
         </Fragment >
 

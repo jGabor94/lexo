@@ -1,11 +1,12 @@
 "use client"
 
 import { ModalControl } from "@/lib/hooks/useModalControl";
-import { Box, Modal, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Modal, Stack, TextField, Typography } from "@mui/material";
 import { FC, Fragment } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import LinearLoading from "../LinearLoading";
 import SubmitButton from "../SubmitButton";
+import ModalOverlay from "../ui/modal";
 
 export type FolderInput = {
     name: string
@@ -37,18 +38,7 @@ const FolderForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel
                 onClose={closeModal}
                 keepMounted={true}
             >
-                <Box component={Paper} sx={{
-                    boxShadow: 10,
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: 500,
-                    maxWidth: "95%",
-                    outline: "none",
-                    p: 3
-                }}>
-
+                <ModalOverlay width={500} onClose={closeModal}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Stack gap={2}>
                             <Typography fontSize={23}>{label}</Typography>
@@ -61,7 +51,7 @@ const FolderForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel
                             </SubmitButton>
                         </Stack>
                     </form>
-                </Box>
+                </ModalOverlay>
             </Modal >
         </Fragment>
 
