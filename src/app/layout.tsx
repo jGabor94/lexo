@@ -1,9 +1,10 @@
 import Footer from "@/components/footer/Footer";
 import SnackbarAlert from "@/components/SnackbarAlert";
 import { RootTheme } from "@/lib/mui/themes";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
+import { ThemeProvider } from '@mui/material/styles';
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { FC, ReactNode } from "react";

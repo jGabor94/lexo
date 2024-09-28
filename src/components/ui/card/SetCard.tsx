@@ -1,13 +1,12 @@
 import { SetListItem } from "@/lib/database/queries/getSets";
-import { Card } from "@/lib/mui/styled";
-import { Avatar, Chip, Divider, Stack, Typography } from "@mui/material";
+import { Avatar, Chip, Divider, Paper, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { FC } from "react";
 import LangPair from "./LangPair";
 
 const SetCard: FC<{ set: SetListItem, href: string }> = ({ set, href }) => {
     return (
-        <Card component={Link} href={href} sx={{ textDecoration: "none" }}>
+        <Paper component={Link} href={href} sx={{ textDecoration: "none" }}>
             <Stack
                 sx={{
                     width: 300,
@@ -42,7 +41,7 @@ const SetCard: FC<{ set: SetListItem, href: string }> = ({ set, href }) => {
                     </Stack>
                 </Stack>
             </Stack>
-        </Card>
+        </Paper>
 
     );
 };

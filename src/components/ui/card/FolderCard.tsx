@@ -1,7 +1,6 @@
 import { FolderListItem } from "@/lib/database/queries/getFolders";
-import { Card } from "@/lib/mui/styled";
 import FolderIcon from '@mui/icons-material/Folder';
-import { Chip, Stack, Typography } from "@mui/material";
+import { Chip, Paper, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { FC } from "react";
 
@@ -10,7 +9,7 @@ import { FC } from "react";
 const FolderCard: FC<{ folder: FolderListItem }> = ({ folder }) => {
 
     return (
-        <Card component={Link} href={`/folders/${folder._id}`} sx={{ textDecoration: "none", width: "100%", p: 2 }}>
+        <Paper component={Link} href={`/folders/${folder._id}`} sx={{ textDecoration: "none", width: "100%", p: 2 }}>
             <Stack direction="row" justifyContent="space-between">
                 <Stack direction="row" gap={2} alignItems="center" sx={{ height: 70, }} >
                     <FolderIcon sx={{ width: 60, height: 70 }} />
@@ -24,7 +23,7 @@ const FolderCard: FC<{ folder: FolderListItem }> = ({ folder }) => {
             </Stack>
 
 
-        </Card>
+        </Paper>
     )
 }
 

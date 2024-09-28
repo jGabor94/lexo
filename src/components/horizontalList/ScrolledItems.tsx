@@ -5,6 +5,7 @@ import { SetListItem } from '@/lib/database/queries/getSets'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { Box, IconButton, Stack } from '@mui/material'
+import type { } from '@mui/material/themeCssVarsAugmentation'
 import { FC, useEffect, useRef, useState } from 'react'
 
 const ScrolledItems: FC<{ sets: SetListItem[] }> = ({ sets }) => {
@@ -60,7 +61,7 @@ const ScrolledItems: FC<{ sets: SetListItem[] }> = ({ sets }) => {
                 height: '100%',
                 zIndex: 1,
                 pointerEvents: 'none',
-                boxShadow: `inset 120px 0px 50px -38px ${theme.palette.background.default}`
+                boxShadow: `inset 120px 0px 50px -38px ${theme.vars.palette.background.default}`
             },
             "&::after": !isAtEnd && {
                 content: '""',
@@ -71,7 +72,7 @@ const ScrolledItems: FC<{ sets: SetListItem[] }> = ({ sets }) => {
                 height: '100%',
                 zIndex: 1,
                 pointerEvents: 'none',
-                boxShadow: `inset -120px 0px 50px -38px ${theme.palette.background.default}`
+                boxShadow: `inset -120px 0px 50px -38px ${theme.vars.palette.background.default}`
             },
         })}>
             <Stack position="relative" direction="row" alignItems="center">
@@ -87,17 +88,14 @@ const ScrolledItems: FC<{ sets: SetListItem[] }> = ({ sets }) => {
                     </IconButton>
                 )}
 
-                <Stack direction="row" flexWrap="nowrap" sx={(theme) => ({
+                <Stack direction="row" flexWrap="nowrap" sx={{
                     overflowX: "scroll",
                     "::-webkit-scrollbar": {
                         display: "none"
                     },
                     position: "relative",
                     scrollSnapType: 'x mandatory',
-
-
-
-                })} ref={scrollContainerRef} gap={3}>
+                }} ref={scrollContainerRef} gap={3}>
                     {sets.map((set) => (
                         <SetCard key={set._id} {...{ set, href: `/set/${set._id}` }} />
                     ))}

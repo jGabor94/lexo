@@ -1,13 +1,9 @@
 "use client"
 
-import { Paper, Stack, styled, Typography } from "@mui/material";
+import { Stack, styled, Typography } from "@mui/material";
 import { JuraFont } from "./fonts";
 
-export const Card = styled(Paper)(({ theme }) => ({
-    "&:hover": {
-        backgroundColor: theme.palette.background.paper,
-    },
-})) as typeof Paper
+
 
 export const LogoText = styled(Typography)({
     fontFamily: JuraFont.style.fontFamily,
