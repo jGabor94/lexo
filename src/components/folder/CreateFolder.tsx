@@ -8,9 +8,9 @@ import { Button, ButtonProps } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
+import { SetInput } from "../set/SetForm";
 import FolderForm from "./FolderForm";
 
-type Input = { name: string }
 
 const CreateFolder: FC<ButtonProps> = (props) => {
 
@@ -21,7 +21,7 @@ const CreateFolder: FC<ButtonProps> = (props) => {
         200: { severity: "success", content: "Folder successfully created 🙂" }
     })
 
-    const submit: SubmitHandler<Input> = async ({ name }) => {
+    const submit: SubmitHandler<SetInput> = async ({ name }) => {
         const res = await createFolder(name)
         if (res.statusCode === 200) {
             router.push(`/folders/${res.payload._id}`)

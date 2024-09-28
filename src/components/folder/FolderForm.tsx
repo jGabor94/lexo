@@ -7,9 +7,13 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import LinearLoading from "../LinearLoading";
 import SubmitButton from "../SubmitButton";
 
+export type FolderInput = {
+    name: string
+}
+
 interface props {
     modalControl: ModalControl,
-    initValues: { name: string },
+    initValues: FolderInput,
     onSubmit: SubmitHandler<any>,
     submitLabel: string,
     label: string
@@ -17,7 +21,7 @@ interface props {
 
 const FolderForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, label }) => {
 
-    const { handleSubmit, formState, reset, control } = useForm<typeof initValues>({ mode: "all", defaultValues: initValues });
+    const { handleSubmit, formState, reset, control } = useForm<FolderInput>({ mode: "all", defaultValues: initValues });
 
     const closeModal = () => {
         modalControl.handleClose()

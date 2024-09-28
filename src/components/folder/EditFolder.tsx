@@ -9,9 +9,9 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
+import { SetInput } from "../set/SetForm";
 import FolderForm from "./FolderForm";
 
-type Input = { name: string }
 
 const EditFolder: FC<{ folder: Folder, menuControl: MenuControl }> = ({ folder, menuControl }) => {
 
@@ -21,7 +21,7 @@ const EditFolder: FC<{ folder: Folder, menuControl: MenuControl }> = ({ folder, 
 
     const modalControl = useModalControl()
 
-    const submit: SubmitHandler<Input> = async (data) => {
+    const submit: SubmitHandler<SetInput> = async (data) => {
         const res = await editFolder(folder._id, data)
         if (res.statusCode === 200) {
             modalControl.handleClose()
