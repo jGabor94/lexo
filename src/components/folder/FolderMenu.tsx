@@ -33,7 +33,7 @@ const FolderMenu: FC<{ folder: Folder }> = ({ folder }) => {
                 }}
             >
                 <EditFolder {...{ folder, menuControl }} />
-                <DeleteFolder {...{ folder, menuControl }} />
+                <DeleteFolder {...{ folder }} />
             </Menu>
         </Fragment >
     )

@@ -4,14 +4,13 @@ import SA_DeleteSet from '@/lib/actions/set/deleteSet'
 import useAction from '@/lib/assets/serverAction/useAction'
 import { Set } from '@/lib/database/queries/getSet'
 import useConfirmControll from '@/lib/hooks/useConfirmControll'
-import { MenuControl } from '@/lib/hooks/useMenuControl'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import { ListItemIcon, ListItemText, MenuItem } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { FC, Fragment } from 'react'
 import ConfirmDialog from '../ConfirmDialog'
 
-const DeleteSet: FC<{ set: Set, menuControl: MenuControl }> = ({ set, menuControl }) => {
+const DeleteSet: FC<{ set: Set }> = ({ set }) => {
 
     const router = useRouter()
 

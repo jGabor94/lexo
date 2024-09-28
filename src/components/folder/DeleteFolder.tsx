@@ -4,14 +4,13 @@ import SA_DeleteFolder from '@/lib/actions/folder/deleteFolder'
 import useAction from '@/lib/assets/serverAction/useAction'
 import { Folder } from '@/lib/database/queries/getFolder'
 import useConfirmControll from '@/lib/hooks/useConfirmControll'
-import { MenuControl } from '@/lib/hooks/useMenuControl'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import { ListItemIcon, ListItemText, MenuItem } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { FC, Fragment } from 'react'
 import ConfirmDialog from '../ConfirmDialog'
 
-const DeleteFolder: FC<{ folder: Folder, menuControl: MenuControl }> = ({ folder, menuControl }) => {
+const DeleteFolder: FC<{ folder: Folder }> = ({ folder }) => {
 
     const router = useRouter()
 

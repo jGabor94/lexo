@@ -36,7 +36,7 @@ const SetMenu: FC<{}> = () => {
             >
                 <MoveToFolder  {...{ set, menuControl }} />
                 <EditSet {...{ set, menuControl }} />
-                <DeleteSet {...{ set, menuControl }} />
+                <DeleteSet {...{ set }} />
             </Menu>
         </Fragment>
 
