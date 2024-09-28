@@ -24,8 +24,8 @@ const SA_DeleteSet = createServerAction(isLogged, aclMiddleware(getSetAcl, "dele
     await Term.deleteMany({ set: setid })
     await Progress.deleteMany({ term: { $in: terms.map(term => term._id) } })
 
-    revalidatePath("/sets/all", "page")
-    revalidatePath("/sets/favorites", "page")
+    revalidatePath("/library/all", "page")
+    revalidatePath("/library/favorites", "page")
 
     return createServerActionResponse()
 })

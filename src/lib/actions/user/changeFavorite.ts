@@ -24,7 +24,7 @@ const SA_changeFavorite = createServerAction(isLogged, async ({ session, params 
         await User.updateOne({ _id: session.user._id }, { $pull: { favoriteSets: setid } })
     }
     revalidatePath("/home", "page")
-    revalidatePath("/sets/favorites", "page")
+    revalidatePath("/library/favorites", "page")
 
     return createServerActionResponse()
 })

@@ -31,7 +31,7 @@ const MainMenu: FC<MenuBarProps> = async ({ height }) => {
                         <MenuList {...{
                             menuItems: [
                                 { label: "Home", path: "/home" },
-                                { label: "Sets", path: "/sets/all" },
+                                { label: "Library", path: "/library/all" },
                                 { label: "Folders", path: "/folders" },
                             ]
                         }} />

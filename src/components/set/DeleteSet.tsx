@@ -21,7 +21,7 @@ const DeleteSet: FC<{}> = () => {
 
     const { controll, trigger: triggerDelete } = useConfirmControll(async () => {
         const res = await deleteSet(set._id)
-        if (res.statusCode === 200) router.push("/sets/all")
+        if (res.statusCode === 200) router.push("/library/all")
     })
 
     return (

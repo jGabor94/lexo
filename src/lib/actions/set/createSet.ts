@@ -26,7 +26,7 @@ const SA_CreateSet = createServerAction(isLogged, aclMiddleware(createAcl, "crea
         await Folder.updateOne({ _id: folderid }, { $addToSet: { sets: res._id } })
         revalidatePath(`/folders/${folderid}`, "page")
     }
-    revalidatePath("/sets", "page")
+    revalidatePath("/library", "page")
     return createServerActionResponse({ payload: res })
 })
 
