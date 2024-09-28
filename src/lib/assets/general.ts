@@ -26,7 +26,6 @@ export const createObjectId = (raw: string) => {
         const objectId = new mongoose.mongo.ObjectId(raw)
         return objectId
     } catch (err) {
-        console.log(err)
         return new mongoose.mongo.ObjectId()
     }
 }

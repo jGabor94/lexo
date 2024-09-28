@@ -25,7 +25,6 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
     const change = async (value: string, section: "term" | "definition") => {
         const state = prefixRaw ? { ...getValues(prefixRaw) } : { ...getValues() };
         const lang = await langDetector(value);
-        console.log({ lang })
         setValue(`${prefix}${section}.lang`, lang)
 
         state[section].lang = lang

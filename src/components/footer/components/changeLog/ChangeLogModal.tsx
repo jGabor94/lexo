@@ -1,15 +1,12 @@
 "use client"
 
+import useModalControl from "@/lib/hooks/useModalControl";
 import { Box, Link, Modal, Paper } from "@mui/material";
-import { FC, Fragment, ReactNode, useState } from "react";
+import { FC, Fragment, ReactNode } from "react";
 
 const ChangeLogModal: FC<{ children: ReactNode }> = ({ children }) => {
 
-
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
+    const { open, handleOpen, handleClose } = useModalControl()
 
     return (
         <Fragment>

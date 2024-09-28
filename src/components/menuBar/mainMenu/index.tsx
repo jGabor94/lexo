@@ -35,11 +35,6 @@ const MainMenu: FC<MenuBarProps> = async ({ height }) => {
                                 { label: "Folders", path: "/folders" },
                             ]
                         }} />
-
-
-
-
-
                     </Stack>
                     <Stack direction="row" gap={1}>
                         <Settings />

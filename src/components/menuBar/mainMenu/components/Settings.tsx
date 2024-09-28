@@ -1,19 +1,17 @@
 "use client"
 
-import { FC, Fragment, useState } from "react"
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Avatar, Box, Divider, IconButton, Modal, Paper, Stack, Tooltip, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
+import { FC, Fragment } from "react";
 import SignOutButton from "./SignOutButton";
 import ThemeSwitch from "./components/DarkModeSwitch";
+import useModalControl from '@/lib/hooks/useModalControl';
 
 const Settings: FC<{}> = () => {
 
     const { data: session } = useSession()
-
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const { open, handleOpen, handleClose } = useModalControl()
 
     return (
         <Fragment>
