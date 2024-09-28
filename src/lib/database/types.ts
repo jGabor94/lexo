@@ -102,7 +102,7 @@ type Sets_Serializable<T> = T extends { sets: infer U } ? { sets: U } : { sets: 
 export type Mongoose_User_Serializable = ExpandObject<Omit<Mongoose_User, "_id" | "currentTime" | "favoriteSets"> & Id_Serializable & { favoriteSets: string[] }>
 export type Mongoose_Term_Serializable<T = {}> = ExpandObject<Omit<Mongoose_Term, "_id" | "currentTime"> & Id_Serializable & T>
 export type Mongoose_ChangeLog_Serializable = ExpandObject<Omit<Mongoose_ChangeLog, "_id" | "currentTime"> & Id_Serializable>
-export type Mongoose_Set_Serializable<T = {}> = ExpandObject<Omit<Mongoose_Set, "_id" | "currentTime" | keyof T | "user" | "folder"> & User_Serializable<T> & Id_Serializable & Folder_Serializable<T> & T>
+export type Mongoose_Set_Serializable<T = {}> = ExpandObject<Omit<Mongoose_Set, "_id" | "currentTime" | keyof T | "user"> & User_Serializable<T> & Id_Serializable & T>
 export type Mongoose_Folder_Serializable<T = {}> = ExpandObject<Omit<Mongoose_Folder, "_id" | "currentTime" | keyof T> & Id_Serializable & User_Serializable<T> & Sets_Serializable<T> & T>
 export type Mongoose_Progress_Serializable = ExpandObject<Omit<Mongoose_Progress, "_id" | "currentTime"> & Id_Serializable>
 
