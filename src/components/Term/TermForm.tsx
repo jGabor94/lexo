@@ -92,7 +92,6 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                                     name: "term",
                                 }}
                             >
-                                <option aria-label="None" value="" />
                                 {
                                     languages.map((lang) => (
                                         <option key={lang.langCode} value={lang.langCode}>{lang.name}</option>
@@ -141,7 +140,6 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                                 }}
                                 onChange={(e) => handleSelectChange(e, onChange)}
                             >
-                                <option aria-label="None" value="" />
                                 {languages.map((lang) => (
                                     <option key={lang.langCode} value={lang.langCode}>{lang.name}</option>
                                 ))}
