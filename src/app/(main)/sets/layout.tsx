@@ -13,7 +13,7 @@ const layout: FC<{ children: ReactNode }> = ({ children }) => {
             <Stack direction="row" justifyContent="space-between">
                 <ChipMenu list={[
                     { label: "All sets", href: "/sets/all" },
-                    { label: "Favorites", href: "/sets/favorites", icon: <GradeIcon /> },
+                    { label: "Favorites", href: "/sets/favorites", icon: <GradeIcon sx={{ "&&": { color: "text.primary", width: 20, height: 20 } }} /> },
                 ]} />
                 <CreateSet sx={{ alignSelf: "flex-end" }} />
             </Stack>

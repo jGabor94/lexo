@@ -24,7 +24,7 @@ const DeleteChangeLog: FC<{ log: ChangeLogListItem }> = ({ log }) => {
     return (
         <Tooltip title="Delete">
             <IconButton onClick={() => handleDelete(log._id)} disabled={isDelete}>
-                <HighlightOffIcon sx={{ cursor: "pointer", color: "text.secondary" }} />
+                <HighlightOffIcon />
             </IconButton>
         </Tooltip>
     )

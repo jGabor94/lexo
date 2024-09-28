@@ -11,7 +11,7 @@ const PrivacyPolicy: FC<{}> = () => {
 
     return (
         <Fragment>
-            <Link onClick={handleOpen} sx={{ cursor: "pointer", width: "fit-content", textDecoration: "none" }}>
+            <Link onClick={handleOpen} sx={{ cursor: "pointer", width: "fit-content", textDecoration: "none", }}>
                 Privacy Policy
             </Link>
             <Modal open={open} onClose={handleClose}>

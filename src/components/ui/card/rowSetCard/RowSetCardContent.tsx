@@ -25,7 +25,7 @@ const RowSetCardContent: FC<props> = ({ set, ...linkProps }) => (
         >
 
             <Stack gap={1} justifyContent="center">
-                <Typography color="text.primary">{set.name}</Typography>
+                <Typography >{set.name}</Typography>
 
                 <Stack direction="row" gap={0.5} alignItems="center">
                     <LangPair

@@ -10,7 +10,6 @@ const Logo: FC<TypographyProps> = (props) => (
         href="/"
         sx={{
             fontFamily: JuraFont.style.fontFamily,
-            color: "text.primary",
             cursor: "pointer",
             fontWeight: 700,
             fontSize: 30,

@@ -18,7 +18,7 @@ export const RootTheme = createTheme({
                     main: "#3CC8AF",
                     light: "#47dfc5",
                     dark: "#28b59c",
-                    contrastText: "rgba(0, 0, 0, 0.87)",
+                    contrastText: "#fff",
                 },
                 background: {
                     default: "#fafafa",
@@ -27,6 +27,10 @@ export const RootTheme = createTheme({
                 action: {
                     hover: "white",
                 },
+                text: {
+                    primary: "rgba(0, 0, 0, 0.6)",
+                    secondary: "rgba(0, 0, 0, 0.87)"
+                }
 
             },
         },
@@ -45,6 +49,11 @@ export const RootTheme = createTheme({
                 action: {
                     hover: "black",
                 },
+                text: {
+                    primary: "rgba(255, 255, 255, 0.7)",
+                    secondary: "#fff"
+                }
+
 
             },
         },
@@ -65,8 +74,8 @@ export const RootTheme = createTheme({
                 target: "blank",
                 color: "inherit"
             },
-
         },
+
         MuiButton: {
             styleOverrides: {
                 root: ({ theme }) => ({
@@ -82,17 +91,11 @@ export const RootTheme = createTheme({
             },
 
         },
-        MuiTypography: {
-            styleOverrides: {
-                root: ({ theme }) => ({
-                    color: theme.vars.palette.text.secondary,
-                })
-            }
-        },
+
         MuiSvgIcon: {
             styleOverrides: {
                 root: ({ theme }) => ({
-                    color: theme.vars.palette.text.secondary,
+                    color: theme.vars.palette.text.primary,
                 })
             }
         },

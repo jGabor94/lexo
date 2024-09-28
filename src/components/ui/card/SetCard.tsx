@@ -18,7 +18,7 @@ const SetCard: FC<{ set: SetListItem, href: string }> = ({ set, href }) => {
                 }}
             >
                 <Stack gap={1}>
-                    <Typography color="text.primary">{set.name}</Typography>
+                    <Typography>{set.name}</Typography>
                     <LangPair
                         termLangCode={set.preferredTermLang.langCode}
                         definitionLangCode={set.preferredDefinitionLang.langCode}

@@ -20,8 +20,7 @@ const ChipMenu: FC<{ list: Array<{ label: string, href: string, icon?: JSX.Eleme
                         component={Link}
                         href={href}
                         variant={pathname === href ? "filled" : "outlined"}
-                        sx={{ cursor: "pointer" }
-                        }
+                        clickable={true}
                     />
                 ))}
         </Stack>

@@ -26,6 +26,12 @@ const ToggleButton: FC<Props> = ({ value, children, ...rest }) => {
     return (
         <MuiToggleButton
             {...rest}
+            sx={{
+                ...rest.sx,
+                "&.MuiToggleButton-root": {
+                    color: "text.primary"
+                }
+            }}
             value={value}
             selected={selected === value}
             onChange={handleChange}
