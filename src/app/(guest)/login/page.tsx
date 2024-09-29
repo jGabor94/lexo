@@ -1,6 +1,6 @@
 import GoogleSignInButton from "@/components/ui/GoogleSignInButton";
 import Logo from "@/components/ui/Logo";
-import { Stack, Typography } from "@mui/material";
+import { Stack, TextField, Typography } from "@mui/material";
 import { FC, Fragment } from "react";
 
 const Page: FC<{}> = () => {
@@ -10,6 +10,7 @@ const Page: FC<{}> = () => {
                 <Stack alignItems="center">
                     <Logo fontSize={50} />
                 </Stack>
+                <TextField />
                 <Typography sx={{ textAlign: "center" }}>
                     Create your own collections and practice them through different tasks.
                 </Typography>

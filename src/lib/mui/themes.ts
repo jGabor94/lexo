@@ -101,11 +101,7 @@ export const RootTheme = createTheme({
         },
         MuiTextField: {
             defaultProps: {
-                slotProps: {
-                    htmlInput: {
-                        autoCapitalize: 'none'
-                    }
-                }
+                inputProps: { autoCapitalize: "none" },
             },
             styleOverrides: {
                 root: ({ theme }) => ({
