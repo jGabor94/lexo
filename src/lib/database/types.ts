@@ -95,7 +95,6 @@ export type Mongoose_ChangeLog = {
 
 type Id_Serializable = { _id: string }
 type User_Serializable<T> = T extends { user: infer U } ? { user: U } : { user: string };
-type Folder_Serializable<T> = T extends { folder: infer U } ? { folder: U } : { folder: string };
 type Sets_Serializable<T> = T extends { sets: infer U } ? { sets: U } : { sets: string[] };
 
 

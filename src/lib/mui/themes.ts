@@ -100,6 +100,13 @@ export const RootTheme = createTheme({
             }
         },
         MuiTextField: {
+            defaultProps: {
+                slotProps: {
+                    htmlInput: {
+                        autoCapitalize: 'none'
+                    }
+                }
+            },
             styleOverrides: {
                 root: ({ theme }) => ({
                     '& label.Mui-focused': {

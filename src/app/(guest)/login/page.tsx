@@ -1,7 +1,7 @@
-import { Stack, Typography } from "@mui/material";
-import { FC, Fragment } from "react";
 import GoogleSignInButton from "@/components/ui/GoogleSignInButton";
 import Logo from "@/components/ui/Logo";
+import { Stack, Typography } from "@mui/material";
+import { FC, Fragment } from "react";
 
 const Page: FC<{}> = () => {
     return (
