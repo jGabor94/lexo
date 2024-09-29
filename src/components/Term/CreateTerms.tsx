@@ -112,7 +112,7 @@ const CreateTerms: FC<{}> = () => {
                                 <SubmitButton
                                     variant="contained"
                                     formState={form.formState}
-                                    startIcon={<SaveIcon />}
+                                    startIcon={<SaveIcon sx={{ color: "primary.contrastText" }} />}
                                 >
                                     Save
                                 </SubmitButton>
