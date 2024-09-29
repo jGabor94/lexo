@@ -50,7 +50,7 @@ export const RootTheme = createTheme({
                     hover: "black",
                 },
                 text: {
-                    primary: "rgba(255, 255, 255, 0.7)",
+                    primary: "rgba(255, 255, 255, 0.8)",
                     secondary: "#fff"
                 }
 
