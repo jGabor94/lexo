@@ -35,11 +35,12 @@ const Page: FC<{}> = async () => {
                 <HorizontalList promise={promise_userSets} label="New in the library" icon={<NewReleasesIcon />} />
             </Suspense>
             <Suspense fallback={<HorizontalListSkeleton />}>
-                <HorizontalList promise={promise_favorites} label={"Other people's collections"} icon={<GradeIcon />} />
+                <HorizontalList promise={promise_favorites} label="My favorites" icon={<PeopleAltIcon />} />
             </Suspense>
             <Suspense fallback={<HorizontalListSkeleton />}>
-                <HorizontalList promise={promise_otherSets} label="My favorites" icon={<PeopleAltIcon />} />
+                <HorizontalList promise={promise_otherSets} label={"Other people's collections"} icon={<GradeIcon />} />
             </Suspense>
+
 
         </Stack >
     );

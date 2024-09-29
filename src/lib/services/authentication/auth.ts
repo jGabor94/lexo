@@ -1,6 +1,6 @@
-import Google from "next-auth/providers/google"
-import NextAuth from "next-auth"
 import { mongooseAdapter } from "@/lib/services/authentication/NextAuth_adapter"
+import NextAuth from "next-auth"
+import Google from "next-auth/providers/google"
 import { authConfig } from "./auth.config"
 
 export const { handlers: { GET, POST }, auth, signIn, signOut, unstable_update } = NextAuth({
@@ -26,7 +26,7 @@ export const { handlers: { GET, POST }, auth, signIn, signOut, unstable_update }
                 return { ...token, userData: { ...session.user } }
             }
 
-            if (userData) return { ...token, userData: { _id: userData.id, username: userData.username, roles: userData.roles, image: profile ? profile.picture : token.image, email: userData.email, name: userData.name } }
+            if (userData) return { ...token, userData: { _id: userData.id, username: userData.username, roles: userData.roles, email: userData.email } }
             return token
         },
 

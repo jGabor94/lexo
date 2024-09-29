@@ -1,15 +1,16 @@
 import { MainMenu } from "@/components/menuBar";
 import { Box } from "@mui/material";
-import { FC, Fragment, ReactNode } from "react";
+import { FC, ReactNode } from "react";
+import UserDataProvider from "../_providers/ConfigProvider/UserDataProvider";
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
     return (
-        <Fragment>
+        <UserDataProvider>
             <MainMenu height={60} />
             <Box sx={{ width: 1100, maxWidth: "100%", margin: "0 auto", mt: 4, mb: 4 }} >
                 {children}
             </Box>
-        </Fragment>
+        </UserDataProvider>
     );
 }
 

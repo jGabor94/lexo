@@ -2,16 +2,16 @@
 
 import ModalOverlay from '@/components/ui/modal';
 import useModalControl from '@/lib/hooks/useModalControl';
+import useUserData from '@/lib/hooks/useuserData';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Avatar, Divider, IconButton, Modal, Stack, Tooltip, Typography } from "@mui/material";
-import { useSession } from "next-auth/react";
 import { FC, Fragment } from "react";
 import SignOutButton from "./SignOutButton";
 import ThemeSwitch from "./components/DarkModeSwitch";
 
 const Settings: FC<{}> = () => {
 
-    const { data: session } = useSession()
+    const { data: userData } = useUserData()
     const { open, handleOpen, handleClose } = useModalControl()
 
     return (
@@ -37,8 +37,8 @@ const Settings: FC<{}> = () => {
                             </Stack>
                             <Stack gap={2} >
                                 <Stack direction="row" justifyContent="space-between" alignItems="center">
-                                    <Typography>Signed in as <b>{session?.user.name}</b></Typography>
-                                    <Avatar src={session?.user.image} />
+                                    <Typography>Signed in as <b>{userData?.name}</b></Typography>
+                                    <Avatar src={userData?.image} />
                                 </Stack>
                                 <SignOutButton size="small" />
 
