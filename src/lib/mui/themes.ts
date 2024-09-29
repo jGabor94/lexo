@@ -105,15 +105,18 @@ export const RootTheme = createTheme({
             },
             styleOverrides: {
                 root: ({ theme }) => ({
+                    '& label': {
+                        color: theme.vars.palette.text.primary,
+                    },
                     '& label.Mui-focused': {
-                        color: theme.palette.text.primary,
+                        color: theme.vars.palette.text.primary,
                     },
                     '& .MuiOutlinedInput-root': {
                         '&:hover fieldset': {
-                            borderColor: theme.palette.text.primary,
+                            borderColor: theme.vars.palette.text.primary,
                         },
                         '&.Mui-focused fieldset': {
-                            borderColor: theme.palette.text.primary,
+                            borderColor: theme.vars.palette.text.primary,
                         },
                     }
                 })
