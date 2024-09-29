@@ -55,8 +55,8 @@ export const accountSchema = new mongoose.Schema<Mongoose_Account>({
 export const setSchema = new mongoose.Schema<Mongoose_Set>({
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     name: String,
-    preferredTermLang: mongoosePreferredLang,
-    preferredDefinitionLang: mongoosePreferredLang,
+    preferredTermLang: mongooseLanguageCodeEnum,
+    preferredDefinitionLang: mongooseLanguageCodeEnum,
     acl: {}
 }, schemaConfig)
 

@@ -29,8 +29,8 @@ const RowSetCardContent: FC<props> = ({ set, ...linkProps }) => (
 
                 <Stack direction="row" gap={0.5} alignItems="center">
                     <LangPair
-                        termLangCode={set.preferredTermLang.langCode}
-                        definitionLangCode={set.preferredDefinitionLang.langCode}
+                        termLangCode={set.preferredTermLang}
+                        definitionLangCode={set.preferredDefinitionLang}
                     />
                 </Stack>
             </Stack>

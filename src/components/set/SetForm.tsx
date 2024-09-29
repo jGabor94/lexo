@@ -2,7 +2,7 @@
 
 import { languages } from "@/lib/data/languages"
 import { ModalControl } from "@/lib/hooks/useModalControl"
-import { Autocomplete, Modal, Stack, TextField, Typography } from "@mui/material"
+import { FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
 import { FC, Fragment } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import LinearLoading from "../LinearLoading"
@@ -11,8 +11,8 @@ import ModalOverlay from "../ui/modal"
 
 export type SetInput = {
     name: string,
-    preferredTermLang: { langCode: string, name: string } | null,
-    preferredDefinitionLang: { langCode: string, name: string } | null
+    preferredTermLang: string,
+    preferredDefinitionLang: string
 }
 
 interface props {
@@ -52,33 +52,35 @@ const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, l
                             <Stack direction="row" gap={3}>
                                 <Controller control={control} rules={{ required: true }} name={`preferredTermLang`} render={
                                     ({ field }) => (
-                                        <Autocomplete
-                                            value={field.value}
-                                            disablePortal
-                                            options={languages}
-                                            getOptionLabel={(option) => option.name}
-                                            isOptionEqualToValue={(option, value) => option.langCode === value.langCode}
-                                            onChange={(event: any, newValue: { langCode: string, name: string } | null) => {
-                                                field.onChange(newValue)
-                                            }}
-                                            sx={{ width: 300 }}
-                                            renderInput={(params) => <TextField {...params} label="Term language" />}
-                                        />
+                                        <FormControl sx={{ width: "50%" }}>
+                                            <InputLabel id="term-lang-label">Term lang</InputLabel>
+                                            <Select
+                                                {...field}
+                                                labelId="term-lang-labe"
+                                                label="Term lang"
+                                            >
+                                                {languages.map((lang) => (
+                                                    <MenuItem key={lang.langCode} value={lang.langCode}>{lang.name}</MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+
                                     )} />
                                 <Controller control={control} rules={{ required: true }} name={`preferredDefinitionLang`} render={
                                     ({ field }) => (
-                                        <Autocomplete
-                                            value={field.value}
-                                            disablePortal
-                                            options={languages}
-                                            getOptionLabel={(option) => option.name}
-                                            isOptionEqualToValue={(option, value) => option.langCode === value.langCode}
-                                            onChange={(event: any, newValue: { langCode: string, name: string } | null) => {
-                                                field.onChange(newValue)
-                                            }}
-                                            sx={{ width: 300 }}
-                                            renderInput={(params) => <TextField {...params} label="Definition language" />}
-                                        />
+                                        <FormControl sx={{ width: "50%" }}>
+                                            <InputLabel id="term-lang-label">Definition lang</InputLabel>
+                                            <Select
+                                                {...field}
+                                                labelId="term-lang-labe"
+                                                label="Definition lang"
+                                            >
+                                                {languages.map((lang) => (
+                                                    <MenuItem key={lang.langCode} value={lang.langCode}>{lang.name}</MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+
                                     )} />
                             </Stack>
                             <SubmitButton variant="contained" formState={formState}>

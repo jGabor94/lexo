@@ -59,8 +59,8 @@ export type Mongoose_Set = {
     _id: Types.ObjectId,
     user: Types.ObjectId,
     name: string,
-    preferredTermLang: PreferredLang,
-    preferredDefinitionLang: PreferredLang,
+    preferredTermLang: LanguageCode,
+    preferredDefinitionLang: LanguageCode,
     acl: Acl,
 } & SchemaTimestampsConfig
 

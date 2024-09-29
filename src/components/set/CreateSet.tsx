@@ -39,7 +39,7 @@ const CreateSet: FC<ButtonProps> = (props) => {
             <SetForm
                 modalControl={modalControl}
                 onSubmit={submit}
-                initValues={{ name: "", preferredTermLang: null, preferredDefinitionLang: null }}
+                initValues={{ name: "", preferredTermLang: "", preferredDefinitionLang: "" }}
                 submitLabel="Create"
                 label="Create set" />
         </Fragment >

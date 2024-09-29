@@ -1,7 +1,6 @@
 'use client'
 
 import SA_CreateTerms from "@/lib/actions/term/createTerms";
-import { LanguageCode } from "@/lib/assets/language_tools/types";
 import useAction from "@/lib/assets/serverAction/useAction";
 import { ITerm } from "@/lib/database/types";
 import useAlert from "@/lib/hooks/useAlert";
@@ -35,11 +34,11 @@ const CreateTerms: FC<{}> = () => {
     const initRow: ITerm = {
         term: {
             content: "",
-            lang: set.preferredTermLang.langCode as LanguageCode
+            lang: set.preferredTermLang
         },
         definition: {
             content: [],
-            lang: set.preferredDefinitionLang.langCode as LanguageCode
+            lang: set.preferredDefinitionLang
         }
     }
 
