@@ -136,7 +136,9 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                             }}
                             onInputChange={(e, current) => {
                                 if (current.endsWith(",")) {
-                                    onChange([...value, current.slice(0, -1)])
+                                    if (current.length > 1) {
+                                        onChange([...value, current.slice(0, -1)])
+                                    }
                                     setDefinitionInputValue("")
                                 } else {
                                     setDefinitionInputValue(current)
