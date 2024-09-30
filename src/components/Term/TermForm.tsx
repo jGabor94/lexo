@@ -5,10 +5,10 @@ import translate from "@/lib/assets/language_tools/translate";
 import { languages } from "@/lib/data/languages";
 import { ITerm } from "@/lib/database/types";
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-import { Autocomplete, AutocompleteChangeReason, Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, debounce } from "@mui/material";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Autocomplete, AutocompleteChangeReason, Box, FormControl, IconButton, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, debounce } from "@mui/material";
 import { ChangeEvent, FC, useCallback, useState } from "react";
 import { Controller, UseFieldArrayRemove, UseFormReturn } from "react-hook-form";
-
 
 const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseFieldArrayRemove, prefix: string }> = ({ form: { control, getValues, setValue, formState }, prefix }) => {
 
@@ -17,6 +17,8 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
     const [options, setOptions] = useState<Array<string>>([]);
 
     const [definitionInputValue, setDefinitionInputValue] = useState("")
+
+    const [dropDownOpen, setDropDownOpen] = useState(false)
 
     const wrappedTtranslate = async ({ term, definition }: ITerm) => {
         if (definition.lang && term.lang && term.content && (term.lang !== definition.lang)) {
@@ -104,7 +106,6 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                     )} />
 
             </Stack >
-
             <Stack sx={{ gap: 0.5, flexBasis: 1, flexGrow: 1 }}>
                 <Controller control={control} rules={{
                     validate: (value) => value.length > 0 || definitionInputValue
@@ -114,14 +115,25 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                             size="small"
                             multiple
                             freeSolo
+                            open={dropDownOpen}
                             options={options}
                             noOptionsText=""
                             value={[...value]}
                             inputValue={definitionInputValue}
                             filterOptions={(options) => options}
                             getOptionLabel={(option) => option}
-                            renderInput={(params) => (<TextField {...params} error={error ? true : false} label="Definition" value={value} fullWidth />
-                            )}
+                            renderInput={(params) => {
+                                console.log({ params })
+                                return <TextField {...params} error={error ? true : false} label="Definition" value={value} InputProps={{
+                                    ...params.InputProps,
+                                    endAdornment: (
+                                        <IconButton sx={{ position: "absolute", right: 0 }} onClick={() => setDropDownOpen(!dropDownOpen)}>
+                                            <KeyboardArrowDownIcon />
+                                        </IconButton>
+                                    )
+                                }} fullWidth />
+                            }
+                            }
                             onChange={(e, newValue, reason) => {
                                 handleAutoCompleteChange(newValue, reason, onChange)
                             }}
