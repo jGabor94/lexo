@@ -46,6 +46,7 @@ const CreateTerms: FC<{}> = () => {
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "terms",
+        rules: { required: true }
     });
 
     const { setAlert } = useAlert()

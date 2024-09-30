@@ -4,16 +4,19 @@ import langDetector from "@/lib/assets/language_tools/langDetector";
 import translate from "@/lib/assets/language_tools/translate";
 import { languages } from "@/lib/data/languages";
 import { ITerm } from "@/lib/database/types";
-import { Autocomplete, AutocompleteChangeReason, Box, FormControl, NativeSelect, Stack, TextField, Typography, debounce } from "@mui/material";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import { Autocomplete, AutocompleteChangeReason, Box, FormControl, MenuItem, Select, Stack, TextField, Typography, debounce } from "@mui/material";
 import { ChangeEvent, FC, useCallback, useState } from "react";
 import { Controller, UseFieldArrayRemove, UseFormReturn } from "react-hook-form";
 
 
-const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseFieldArrayRemove, prefix: string }> = ({ form: { control, getValues, setValue }, prefix }) => {
+const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseFieldArrayRemove, prefix: string }> = ({ form: { control, getValues, setValue, formState }, prefix }) => {
 
     const prefixRaw = prefix.substring(0, prefix.length - 1)
 
     const [options, setOptions] = useState<Array<string>>([]);
+
+    const [definitionInputValue, setDefinitionInputValue] = useState("")
 
     const wrappedTtranslate = async ({ term, definition }: ITerm) => {
         if (definition.lang && term.lang && term.content && (term.lang !== definition.lang)) {
@@ -65,25 +68,24 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
         }}>
             <Stack sx={{ gap: 0.5, flexBasis: 1, flexGrow: 1 }}>
                 <Controller control={control} rules={{ required: true }} name={`${prefix}term.content`} render={
-                    ({ field, fieldState: { error } }) => (
+                    ({ field }) => (
                         <TextField
-
                             size="small"
                             {...field}
                             inputProps={{ section: "term" }}
                             onChange={(e) => handleTextFieldChange(e, field.onChange)}
                             label="Term"
-                            error={error ? true : false} />
+                        />
 
                     )
                 } />
 
-                <Controller control={control} rules={{ required: true }} name={`${prefix}term.lang`} render={
-                    ({ field: { onChange, value }, fieldState: { error } }) => (
+                <Controller control={control} name={`${prefix}term.lang`} render={
+                    ({ field: { onChange, value } }) => (
                         <FormControl sx={{ width: "fit-content", ml: 1 }}>
-                            <NativeSelect
+                            <Select
                                 disableUnderline
-                                error={error ? true : false}
+                                variant="standard"
                                 size="small"
                                 value={value}
                                 onChange={onChange}
@@ -94,17 +96,19 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                             >
                                 {
                                     languages.map((lang) => (
-                                        <option key={lang.langCode} value={lang.langCode}>{lang.name}</option>
+                                        <MenuItem key={lang.langCode} value={lang.langCode}>{lang.name}</MenuItem>
                                     ))
                                 }
-                            </NativeSelect >
+                            </Select >
                         </FormControl >
                     )} />
 
             </Stack >
 
             <Stack sx={{ gap: 0.5, flexBasis: 1, flexGrow: 1 }}>
-                <Controller control={control} rules={{ required: true }} name={`${prefix}definition.content`} render={
+                <Controller control={control} rules={{
+                    validate: (value) => value.length > 0 || definitionInputValue
+                }} name={`${prefix}definition.content`} render={
                     ({ field: { onChange, value }, fieldState: { error } }) => (
                         <Autocomplete
                             size="small"
@@ -113,11 +117,22 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                             options={options}
                             noOptionsText=""
                             value={[...value]}
+                            inputValue={definitionInputValue}
+                            filterOptions={(options) => options}
                             getOptionLabel={(option) => option}
-                            renderInput={(params) => (
-                                <TextField {...params} error={error ? true : false} label="Definition" value={value} fullWidth />
+                            renderInput={(params) => (<TextField {...params} error={error ? true : false} label="Definition" value={value} fullWidth />
                             )}
-                            onChange={(e, newValue, reason) => handleAutoCompleteChange(newValue, reason, onChange)}
+                            onChange={(e, newValue, reason) => {
+                                handleAutoCompleteChange(newValue, reason, onChange)
+                            }}
+                            onInputChange={(e, current) => {
+                                if (current.endsWith(",")) {
+                                    onChange([...value, current.slice(0, -1)])
+                                    setDefinitionInputValue("")
+                                } else {
+                                    setDefinitionInputValue(current)
+                                }
+                            }}
                             renderOption={(props, option) => (
                                 <Box component="li" {...props} key={option}>
                                     <Typography>{option}</Typography>
@@ -125,28 +140,39 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                             )}
                         />
                     )} />
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                    <Controller control={control} name={`${prefix}definition.lang`} render={
+                        ({ field: { onChange, value } }) => (
+                            <FormControl sx={{ width: "fit-content", ml: 1 }}>
+                                <Select
+                                    disableUnderline
+                                    variant="standard"
+                                    size="small"
+                                    value={value}
+                                    inputProps={{
+                                        IconComponent: () => null,
+                                        name: 'definition',
+                                    }}
+                                    onChange={(e) => handleSelectChange(e, onChange)}
+                                >
+                                    {languages.map((lang) => (
+                                        <MenuItem key={lang.langCode} value={lang.langCode}>
+                                            {lang.name}</MenuItem>
+                                    ))}
 
-                <Controller control={control} rules={{ required: true }} name={`${prefix}definition.lang`} render={
-                    ({ field: { onChange, value }, fieldState: { error } }) => (
-                        <FormControl sx={{ width: "fit-content", ml: 1 }}>
-                            <NativeSelect
-                                disableUnderline
-                                error={error ? true : false}
-                                size="small"
-                                value={value}
-                                inputProps={{
-                                    IconComponent: () => null,
-                                    name: 'definition',
-                                }}
-                                onChange={(e) => handleSelectChange(e, onChange)}
-                            >
-                                {languages.map((lang) => (
-                                    <option key={lang.langCode} value={lang.langCode}>{lang.name}</option>
-                                ))}
+                                </Select>
+                            </FormControl>
+                        )} />
+                    {definitionInputValue && (
+                        <Stack direction="row" gap={0.5} alignItems="center">
+                            <ErrorOutlineOutlinedIcon sx={{ color: "warning.main", width: 20, height: 20 }} />
+                            <Typography color="warning.main" sx={{ fontSize: 12 }}>Press enter or type a comma to add.</Typography>
+                        </Stack>
+                    )}
 
-                            </NativeSelect>
-                        </FormControl>
-                    )} />
+
+                </Stack>
+
 
             </Stack>
 
