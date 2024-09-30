@@ -120,19 +120,16 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                             noOptionsText=""
                             value={[...value]}
                             inputValue={definitionInputValue}
-                            filterOptions={(options) => options}
                             getOptionLabel={(option) => option}
-                            renderInput={(params) => {
-                                console.log({ params })
-                                return <TextField {...params} error={error ? true : false} label="Definition" value={value} InputProps={{
-                                    ...params.InputProps,
-                                    endAdornment: (
-                                        <IconButton sx={{ position: "absolute", right: 0 }} onClick={() => setDropDownOpen(!dropDownOpen)}>
-                                            <KeyboardArrowDownIcon />
-                                        </IconButton>
-                                    )
-                                }} fullWidth />
-                            }
+                            renderInput={(params) => (<TextField {...params} error={error ? true : false} label="Definition" value={value} InputProps={{
+                                ...params.InputProps,
+                                endAdornment: (
+                                    <IconButton sx={{ position: "absolute", right: 0 }} onClick={() => setDropDownOpen(!dropDownOpen)}>
+                                        <KeyboardArrowDownIcon />
+                                    </IconButton>
+                                )
+                            }} fullWidth />
+                            )
                             }
                             onChange={(e, newValue, reason) => {
                                 handleAutoCompleteChange(newValue, reason, onChange)
