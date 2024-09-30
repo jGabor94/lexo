@@ -5,7 +5,7 @@ import translate from "@/lib/assets/language_tools/translate";
 import { languages } from "@/lib/data/languages";
 import { ITerm } from "@/lib/database/types";
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-import { Autocomplete, AutocompleteChangeReason, Box, FormControl, MenuItem, Select, Stack, TextField, Typography, debounce } from "@mui/material";
+import { Autocomplete, AutocompleteChangeReason, Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, debounce } from "@mui/material";
 import { ChangeEvent, FC, useCallback, useState } from "react";
 import { Controller, UseFieldArrayRemove, UseFormReturn } from "react-hook-form";
 
@@ -48,7 +48,7 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
         if (e.target.value) debounceChange(e.target.value, "term")
     }
 
-    const handleSelectChange = async (e: ChangeEvent<HTMLSelectElement>, onChange: (...event: any[]) => void) => {
+    const handleSelectChange = async (e: SelectChangeEvent<any>, onChange: (...event: any[]) => void) => {
         onChange(e)
         const state = prefixRaw ? { ...getValues(prefixRaw) } : { ...getValues() };
         state.definition.lang = e.target.value
