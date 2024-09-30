@@ -2,13 +2,14 @@
 
 import { toSerializableObject } from "@/lib/assets/general"
 import mongoose from "mongoose"
+import { unstable_cache } from "next/cache"
 import { dbConnect } from "../dbConnect"
 import { Folder } from "../models"
 import { Mongoose_Folder_Serializable } from "../types"
 
 export type FolderListItem = Mongoose_Folder_Serializable<{ setsCount: number }>
 
-const getFolders = async (userid: mongoose.Types.ObjectId) => {
+export default unstable_cache(async (userid: mongoose.Types.ObjectId) => {
 
     await dbConnect()
 
@@ -20,6 +21,4 @@ const getFolders = async (userid: mongoose.Types.ObjectId) => {
 
     return toSerializableObject<FolderListItem[]>(res)
 
-}
-
-export default getFolders
+}, ["folders"], { tags: ["folders"], revalidate: 60 * 60 })
