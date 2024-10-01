@@ -69,7 +69,7 @@ const CreateTerms: FC<{}> = () => {
 
         if (res.statusCode === 200) {
             mutate()
-            handleClose()
+            closeModal()
         }
     }
 
