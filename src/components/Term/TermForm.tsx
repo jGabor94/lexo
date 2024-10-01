@@ -6,6 +6,7 @@ import { languages } from "@/lib/data/languages";
 import { ITerm } from "@/lib/database/types";
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Autocomplete, AutocompleteChangeReason, Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, debounce } from "@mui/material";
 import { ChangeEvent, FC, useCallback, useState } from "react";
 import { Controller, UseFieldArrayRemove, UseFormReturn } from "react-hook-form";
@@ -59,6 +60,7 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
 
     const handleAutoCompleteChange = (newValue: Array<string>, reason: AutocompleteChangeReason, onChange: (...event: any[]) => void) => {
         onChange(newValue)
+        setDropDownOpen(false)
         if (reason === "createOption" && newValue.length === 1) change(newValue[0], "definition")
     }
 
@@ -124,12 +126,15 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                             renderInput={(params) => (<TextField
                                 {...params}
                                 onFocus={() => setDropDownOpen(true)}
+                                onBlur={() => setDropDownOpen(false)}
                                 label="Definition"
                                 value={value}
                                 InputProps={{
                                     ...params.InputProps,
-                                    endAdornment: (
-                                        <KeyboardArrowDownIcon sx={{ position: "absolute", right: 0, m: 1, cursor: "pointer" }} onClick={() => setDropDownOpen(!dropDownOpen)} />
+                                    endAdornment: dropDownOpen ? (
+                                        <KeyboardArrowUpIcon sx={{ position: "absolute", right: 0, m: 1, cursor: "pointer" }} onClick={() => setDropDownOpen(false)} />
+                                    ) : (
+                                        <KeyboardArrowDownIcon sx={{ position: "absolute", right: 0, m: 1, cursor: "pointer" }} onClick={() => setDropDownOpen(true)} />
                                     )
                                 }} fullWidth />
                             )
