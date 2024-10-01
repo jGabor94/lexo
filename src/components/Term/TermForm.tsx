@@ -167,8 +167,10 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                                     onChange={(e) => handleSelectChange(e, onChange)}
                                 >
                                     {languages.map((lang) => (
-                                        <MenuItem key={lang.langCode} value={lang.langCode}>
-                                            {lang.name}</MenuItem>
+                                        <MenuItem key={lang.langCode} value={lang.langCode} >
+
+                                            {lang.name}
+                                        </MenuItem>
                                     ))}
 
                                 </Select>
