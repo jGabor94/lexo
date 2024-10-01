@@ -6,7 +6,7 @@ import { languages } from "@/lib/data/languages";
 import { ITerm } from "@/lib/database/types";
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Autocomplete, AutocompleteChangeReason, Box, FormControl, IconButton, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, debounce } from "@mui/material";
+import { Autocomplete, AutocompleteChangeReason, Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, debounce } from "@mui/material";
 import { ChangeEvent, FC, useCallback, useState } from "react";
 import { Controller, UseFieldArrayRemove, UseFormReturn } from "react-hook-form";
 
@@ -110,7 +110,7 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                 <Controller control={control} rules={{
                     validate: (value) => value.length > 0 || definitionInputValue
                 }} name={`${prefix}definition.content`} render={
-                    ({ field: { onChange, value }, fieldState: { error } }) => (
+                    ({ field: { onChange, value } }) => (
                         <Autocomplete
                             size="small"
                             multiple
@@ -121,14 +121,17 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                             value={[...value]}
                             inputValue={definitionInputValue}
                             getOptionLabel={(option) => option}
-                            renderInput={(params) => (<TextField {...params} error={error ? true : false} label="Definition" value={value} InputProps={{
-                                ...params.InputProps,
-                                endAdornment: (
-                                    <IconButton sx={{ position: "absolute", right: 0 }} onClick={() => setDropDownOpen(!dropDownOpen)}>
-                                        <KeyboardArrowDownIcon />
-                                    </IconButton>
-                                )
-                            }} fullWidth />
+                            renderInput={(params) => (<TextField
+                                {...params}
+                                onFocus={() => setDropDownOpen(true)}
+                                label="Definition"
+                                value={value}
+                                InputProps={{
+                                    ...params.InputProps,
+                                    endAdornment: (
+                                        <KeyboardArrowDownIcon sx={{ position: "absolute", right: 0, m: 1, cursor: "pointer" }} onClick={() => setDropDownOpen(!dropDownOpen)} />
+                                    )
+                                }} fullWidth />
                             )
                             }
                             onChange={(e, newValue, reason) => {
@@ -145,7 +148,7 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                                 }
                             }}
                             renderOption={(props, option) => (
-                                <Box component="li" {...props} key={option}>
+                                <Box component="li" {...props} key={option} >
                                     <Typography>{option}</Typography>
                                 </Box>
                             )}
