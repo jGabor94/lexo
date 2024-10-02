@@ -15,7 +15,7 @@
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.1",
     "@mui/lab": "^6.0.0-beta.9",
-    "@mui/material": "^6.1.1",
+    "@mui/material": "https://pkg.csb.dev/mui/material-ui/commit/e07eebfd/@mui/material",
     "@mui/material-nextjs": "^6.1.1",
     "@mui/x-date-pickers": "^7.15.0",
     "@tsparticles/engine": "^3.5.0",

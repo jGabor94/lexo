@@ -15,6 +15,7 @@ export const RootTheme = createTheme({
         },
         fontFamily: 'Geist Variable',
     },
+    defaultColorScheme: "dark",
     colorSchemes: {
         light: {
             palette: {

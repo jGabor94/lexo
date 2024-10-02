@@ -76,7 +76,6 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                         <TextField
                             size="small"
                             {...field}
-                            inputProps={{ section: "term" }}
                             onChange={(e) => handleTextFieldChange(e, field.onChange)}
                             label="Term"
                         />

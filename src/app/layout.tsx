@@ -35,7 +35,7 @@ const RootLayout: FC<{
   return (
     <html lang="en" suppressHydrationWarning>
       <SessionProvider>
-        <ThemeProvider theme={RootTheme}>
+        <ThemeProvider theme={RootTheme} defaultMode="dark">
           <DateTimePickerProvider>
             <AlertProvider>
               <body>
