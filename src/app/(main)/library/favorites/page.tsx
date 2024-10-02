@@ -18,7 +18,7 @@ const Page: FC<{}> = async () => {
         {
             sets.map(set => (
                 <RowSetCardLayout key={set._id}>
-                    <RowSetCardContent {...{ set, href: `/set/${set._id}` }} />
+                    <RowSetCardContent {...{ set, href: `/sets/${set._id}` }} />
                 </RowSetCardLayout>
             ))
         }

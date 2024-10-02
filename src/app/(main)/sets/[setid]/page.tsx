@@ -2,12 +2,13 @@
 
 import FavoriteButton from '@/components/set/FavoriteButton'
 import SetMenu from '@/components/set/SetMenu'
-import CreateTerms from '@/components/Term/CreateTerms'
 import TermList from '@/components/Term/TermList'
 import TextLine from '@/components/ui/TextLine'
 import { getDate } from '@/lib/assets/general'
 import useSet from '@/lib/hooks/useSet'
-import { Avatar, Divider, Paper, Stack, Typography } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import { Avatar, Button, Divider, Paper, Stack, Typography } from '@mui/material'
+import Link from 'next/link'
 import { FC } from 'react'
 
 const PageClient: FC<{}> = () => {
@@ -35,7 +36,9 @@ const PageClient: FC<{}> = () => {
                     {isOwner && (
                         <Stack direction="row" gap={2}>
                             <SetMenu />
-                            <CreateTerms />
+                            <Button component={Link} href={`/sets/${set._id}/terms/create`} variant="contained" startIcon={<AddIcon sx={{ color: "primary.contrastText" }} />}>
+                                Create Terms
+                            </Button>
                         </Stack>
                     )}
                 </Stack>

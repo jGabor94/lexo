@@ -97,7 +97,7 @@ const ScrolledItems: FC<{ sets: SetListItem[] }> = ({ sets }) => {
                     scrollSnapType: 'x mandatory',
                 }} ref={scrollContainerRef} gap={3}>
                     {sets.map((set) => (
-                        <SetCard key={set._id} {...{ set, href: `/set/${set._id}` }} />
+                        <SetCard key={set._id} {...{ set, href: `/sets/${set._id}` }} />
                     ))}
 
                 </Stack>
