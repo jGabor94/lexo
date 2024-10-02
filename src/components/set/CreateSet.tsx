@@ -25,7 +25,7 @@ const CreateSet: FC<ButtonProps> = (props) => {
         const res = await createSet(data, folderid)
 
         if (res.statusCode === 200) {
-            router.push(`/set/${res.payload._id}`)
+            router.push(`/sets/${res.payload._id}`)
         }
 
     }

@@ -125,8 +125,8 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                             getOptionLabel={(option) => option}
                             renderInput={(params) => (<TextField
                                 {...params}
-                                onFocus={() => setDropDownOpen(true)}
                                 onBlur={() => setDropDownOpen(false)}
+                                onClick={() => setDropDownOpen(!dropDownOpen)}
                                 label="Definition"
                                 value={value}
                                 InputProps={{

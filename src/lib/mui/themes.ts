@@ -9,6 +9,10 @@ export const RootTheme = createTheme({
         colorSchemeSelector: 'class'
     },
     typography: {
+        allVariants: {
+            fontFamily: 'Geist Variable',
+            fontWeight: 300
+        },
         fontFamily: 'Geist Variable',
     },
     colorSchemes: {

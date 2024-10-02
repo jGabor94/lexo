@@ -33,7 +33,7 @@ const Page: FC<{ params: { folderid: string } }> = async ({ params }) => {
             <Stack mt={4} gap={3}>
                 {folder.sets.length > 0 ? folder.sets.map((set) => (
                     <RowSetCardLayout key={set._id}>
-                        <RowSetCardContent {...{ set, href: `/set/${set._id}` }} />
+                        <RowSetCardContent {...{ set, href: `/sets/${set._id}` }} />
                         <RowSetCardMenu>
                             <RemoveFromFolder set={set} />
                         </RowSetCardMenu>
