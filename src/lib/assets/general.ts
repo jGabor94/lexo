@@ -1,7 +1,12 @@
+import { ClassValue, clsx } from "clsx";
 import mongoose from "mongoose";
+import { twMerge } from "tailwind-merge";
 import { ThemeMode } from "../database/types";
 import { Email } from "../types/types";
 
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs));
+}
 
 export type NumFormatter = (input: number | string) => string
 

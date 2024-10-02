@@ -29,7 +29,7 @@ const scrollToBottom = () => {
     });
 };
 
-const page: FC<{}> = () => {
+const Page: FC<{}> = () => {
 
     const { set, mutate } = useSet()
     const router = useRouter()
@@ -157,4 +157,4 @@ const page: FC<{}> = () => {
     )
 }
 
-export default page
+export default Page

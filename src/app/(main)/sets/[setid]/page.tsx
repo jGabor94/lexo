@@ -11,7 +11,7 @@ import { Avatar, Button, Divider, Paper, Stack, Typography } from '@mui/material
 import Link from 'next/link'
 import { FC } from 'react'
 
-const PageClient: FC<{}> = () => {
+const Page: FC<{}> = () => {
 
     const { set, isOwner } = useSet()
 
@@ -59,4 +59,4 @@ const PageClient: FC<{}> = () => {
     )
 }
 
-export default PageClient
+export default Page
