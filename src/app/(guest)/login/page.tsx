@@ -1,7 +1,7 @@
 import GoogleSignInButton from "@/components/ui/GoogleSignInButton";
+import { AnimatedLogo } from "@/components/ui/logo";
 import { Stack, Typography } from "@mui/material";
 import { FC, Fragment } from "react";
-import AnimatedLogo from "../../../components/ui/AnimatedLogo";
 
 const Page: FC<{}> = () => {
     return (

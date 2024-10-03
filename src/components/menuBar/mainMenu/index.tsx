@@ -1,4 +1,4 @@
-import Logo from "@/components/ui/Logo";
+import { Logo } from "@/components/ui/logo";
 import { Box, Stack } from "@mui/material";
 import { FC } from "react";
 import MenuList from "./components/MenuList";

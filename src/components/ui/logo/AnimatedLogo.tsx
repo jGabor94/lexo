@@ -1,20 +1,20 @@
 "use client"
 
-import Line from '@/components/ui/Line'
-import Logo from '@/components/ui/Logo'
-import { SparklesCore } from '@/components/ui/Sparkles'
+import Logo from '@/components/ui/logo/Logo'
 import { Box, Stack, useTheme } from '@mui/material'
 import { FC } from 'react'
+import Line from './components/Line'
+import { SparklesCore } from './components/Sparkles'
 
 const AnimatedLogo: FC<{}> = () => {
 
     const theme = useTheme()
 
     return (
-        <Stack alignItems="center" gap={0.2}>
-            <Logo fontSize={100} mb={-3} />
+        <Stack alignItems="center" gap={1}>
+            <Logo fontSize={75} mb={-3} fontWeight={500} />
             <Line
-                width="40%"
+                width="30%"
                 color1="rgb(60, 200, 244)"
                 color2="rgb(60, 200, 175)"
             />
