@@ -2,27 +2,29 @@
 
 import useMenuControl from '@/lib/hooks/useMenuControl';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { IconButton, Menu } from '@mui/material';
+import { Menu, SvgIconProps } from '@mui/material';
 import { FC, Fragment, MouseEvent, ReactNode } from 'react';
 
-const RowSetCardMenu: FC<{ children: ReactNode }> = ({ children }) => {
+interface props extends SvgIconProps {
+    children: ReactNode
+}
+
+const RowSetCardMenu: FC<props> = ({ children, ...svgIconProps }) => {
 
     const menuControl = useMenuControl()
 
-    const handleCLick = (e: MouseEvent<HTMLButtonElement>) => {
+    const handleCLick = (e: MouseEvent<SVGSVGElement>) => {
         e.preventDefault()
         menuControl.handleOpen(e)
     }
 
     return (
         <Fragment>
-            <IconButton
-                id="menu-button"
-                aria-controls={menuControl.open ? 'menu' : undefined}
-                sx={{ height: "fit-content", alignSelf: "center" }}
-                onClick={handleCLick} >
-                <MoreVertIcon />
-            </IconButton>
+            <MoreVertIcon
+                onClick={handleCLick}
+                {...svgIconProps}
+                sx={{ alignSelf: "center", cursor: "pointer", ...svgIconProps.sx }}
+            />
             <Menu
                 id="menu"
                 anchorEl={menuControl.anchorEl}

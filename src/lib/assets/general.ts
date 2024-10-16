@@ -57,7 +57,7 @@ export const getUnixTimestamp = (date: Date) => {
 
 }
 
-export const getDate = (ISO8601Time: number | string | Date) => {
+export const getDate = (ISO8601Time: number | string | Date, time: boolean = true) => {
     const dateObj = new Date(ISO8601Time);
     const currentDate = new Date()
     if (dateObj.toISOString().slice(0, 10) === currentDate.toISOString().slice(0, 10)) {
@@ -72,13 +72,19 @@ export const getDate = (ISO8601Time: number | string | Date) => {
             hour: 'numeric',
             minute: 'numeric'
         })
-    } else {
+    } else if (time) {
         return dateObj.toLocaleDateString('hu-HU', {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
             hour: 'numeric',
             minute: 'numeric'
+        })
+    } else {
+        return dateObj.toLocaleDateString('hu-HU', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
         })
     }
 }

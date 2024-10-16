@@ -4,7 +4,7 @@ import { MouseEvent, useState } from "react";
 
 export interface MenuControl {
     open: boolean,
-    handleOpen: (e: MouseEvent<HTMLButtonElement>) => void,
+    handleOpen: (e: MouseEvent<any>) => void,
     handleClose: () => void,
     anchorEl: null | HTMLElement
 }

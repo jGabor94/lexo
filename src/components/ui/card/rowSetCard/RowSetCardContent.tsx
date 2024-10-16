@@ -13,34 +13,46 @@ interface props extends LinkProps {
 
 const RowSetCardContent: FC<props> = ({ set, ...linkProps }) => (
     <Link {...linkProps} legacyBehavior>
-        <Stack
-            direction="row"
-            sx={{
-                textDecoration: "none",
-                justifyContent: "space-between",
-                cursor: "pointer",
-                flexGrow: 1,
-            }}
+        <Stack sx={{ gap: 2, flexGrow: 1, minWidth: 0, cursor: "pointer" }}>
+            <Stack
+                direction="row"
+                sx={{
+                    textDecoration: "none",
+                    justifyContent: "space-between",
+                    gap: 2,
+                    alignItems: "center",
 
-        >
+                }}
+            >
 
-            <Stack gap={1} justifyContent="center">
-                <Typography >{set.name}</Typography>
+                <Typography sx={{
+                    textWrap: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap"
+                }}>{set.name}</Typography>
 
-                <Stack direction="row" gap={0.5} alignItems="center">
-                    <LangPair
-                        termLangCode={set.preferredTermLang}
-                        definitionLangCode={set.preferredDefinitionLang}
-                    />
-                </Stack>
+                <Typography fontSize={12} sx={{ textWrap: "nowrap" }}>Created: {getDate(set.createdAt as string, false)}</Typography>
             </Stack>
+            <Stack
+                direction="row"
+                sx={{
+                    textDecoration: "none",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                    flexGrow: 1,
+                }}
 
-            <Stack gap={1} alignItems="flex-end" justifyContent="space-between">
-                <Typography fontSize={12}>Created at: {getDate(set.createdAt as string)}</Typography>
+            >
+                <LangPair
+                    termLangCode={set.preferredTermLang}
+                    definitionLangCode={set.preferredDefinitionLang}
+                />
+
                 <Stack direction="row" gap={1} alignItems="center" sx={{ height: "fit-content", alignSelf: "flex-end" }}>
                     <Stack direction="row" gap={0.5} alignItems="center">
                         <Avatar src={set.user.image} sx={{ width: 25, height: 25 }} />
-                        <Typography fontSize={12}>{set.user.name}</Typography>
+                        <Typography fontSize={12} sx={{ textWrap: "nowrap" }}>{set.user.name}</Typography>
                     </Stack>
                     <Divider flexItem orientation="vertical" />
                     <Chip
@@ -53,7 +65,11 @@ const RowSetCardContent: FC<props> = ({ set, ...linkProps }) => (
             </Stack>
 
         </Stack>
-    </Link>
+    </Link >
+
+
+
+
 
 )
 
