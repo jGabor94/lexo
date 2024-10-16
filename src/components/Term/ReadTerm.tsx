@@ -5,6 +5,7 @@ import useSet from "@/lib/hooks/useSet";
 import EditIcon from '@mui/icons-material/Edit';
 import { Divider, IconButton, Stack, Tooltip, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Dispatch, FC, SetStateAction, useState } from "react";
+import ProgressStatus from "../ui/ProgressStatus";
 import { HiddenMode } from "./TermList";
 
 const ReadTerm: FC<{
@@ -62,13 +63,20 @@ const ReadTerm: FC<{
 
 
             </Stack >
-            {isOwner && (
-                <Tooltip title="Edit">
-                    <IconButton onClick={() => setMode("edit")} sx={{ height: "fit-content" }}>
-                        <EditIcon />
-                    </IconButton >
-                </Tooltip>
-            )}
+            <Stack direction="row" gap={1} alignItems="center" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
+                {isOwner && (
+                    <Tooltip title="Edit">
+                        <IconButton onClick={() => setMode("edit")} sx={{ height: "fit-content" }}>
+                            <EditIcon />
+                        </IconButton >
+                    </Tooltip>
+                )}
+                {term.progress && (
+                    <ProgressStatus score={term.progress.status} />
+                )}
+            </Stack>
+
+
         </Stack>
 
     )

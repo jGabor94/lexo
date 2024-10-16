@@ -8,6 +8,14 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
+export const shuffle = (array: any[]) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+};
+
 export type NumFormatter = (input: number | string) => string
 
 /*
@@ -74,6 +82,11 @@ export const getDate = (ISO8601Time: number | string | Date) => {
         })
     }
 }
+
+export function isTouchDevice() {
+    return ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+}
+
 
 
 

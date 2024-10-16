@@ -42,5 +42,3 @@ const AnimatedLogo: FC<{}> = () => {
 }
 
 export default AnimatedLogo
-/*
-   */

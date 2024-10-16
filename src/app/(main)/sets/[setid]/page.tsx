@@ -7,6 +7,7 @@ import TextLine from '@/components/ui/TextLine'
 import { getDate } from '@/lib/assets/general'
 import useSet from '@/lib/hooks/useSet'
 import AddIcon from '@mui/icons-material/Add'
+import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import { Avatar, Button, Divider, Paper, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 import { FC } from 'react'
@@ -16,8 +17,8 @@ const Page: FC<{}> = () => {
     const { set, isOwner } = useSet()
 
     return (
-        <Stack gap={3} component={Paper} p={2} variant="elevation">
-            <Stack gap={3} >
+        <Stack gap={3} >
+            <Stack gap={3} component={Paper} variant="elevation" p={2}>
                 <Stack sx={{
                     gap: 2,
                     flexDirection: { xs: "column", sm: "row" },
@@ -54,6 +55,17 @@ const Page: FC<{}> = () => {
                     <Typography>Term number: {set.terms.length}</Typography>
                 </Stack>
             </Stack>
+            <Link href={`/sets/${set._id}/flashcards`} legacyBehavior>
+                <Paper sx={{ width: "fit-content", p: 3, cursor: "pointer" }} >
+                    <Stack direction="row" gap={1} alignItems="center">
+                        <StyleOutlinedIcon sx={{ width: 40, height: 40 }} />
+                        <Typography fontWeight={500} fontSize={18}>Flashcards</Typography>
+
+                    </Stack>
+
+                </Paper>
+            </Link>
+
             <TermList />
         </Stack>
     )

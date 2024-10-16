@@ -31,7 +31,10 @@ const getSet = async (setid: mongoose.Types.ObjectId, userid: mongoose.Types.Obj
                             localField: '_id',
                             foreignField: 'term',
                             as: 'progress',
-                            pipeline: [{ $match: { user: userid } }]
+                            pipeline: [
+                                { $match: { user: userid } }
+
+                            ]
                         }
                     },
                     { $set: { 'progress': { $first: '$progress' } } }

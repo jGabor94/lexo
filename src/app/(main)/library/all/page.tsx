@@ -13,6 +13,7 @@ const Page: FC<{}> = async () => {
 
     const sets = await getSets([
         { $match: { user: createObjectId(session?.user._id as string) } },
+        { $sort: { createdAt: -1 } },
     ])
 
     await wait()

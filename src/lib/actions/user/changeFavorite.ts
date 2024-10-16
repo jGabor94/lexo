@@ -6,7 +6,7 @@ import { dbConnect } from "@/lib/database/dbConnect"
 import { User } from "@/lib/database/models"
 import { isLogged } from "@/lib/middlewares/ServerAction-Middlewares"
 import { Session } from "next-auth"
-import { revalidatePath } from "next/cache"
+import { revalidateTag } from "next/cache"
 
 interface Request {
     session: Session,
@@ -23,8 +23,7 @@ const SA_changeFavorite = createServerAction(isLogged, async ({ session, params 
     } else {
         await User.updateOne({ _id: session.user._id }, { $pull: { favoriteSets: setid } })
     }
-    revalidatePath("/home", "page")
-    revalidatePath("/library/favorites", "page")
+    revalidateTag("sets")
 
     return createServerActionResponse()
 })

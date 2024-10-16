@@ -14,7 +14,7 @@ const mongoosePreferredLang = {
 
 const progressStatusEnum = {
     type: Number,
-    enum: [1, 2, 3, 4, 5]
+    enum: [0, 1, 2, 3, 4, 5]
 }
 
 const schemaConfig = { timestamps: true, versionKey: false }

@@ -50,7 +50,6 @@ export default unstable_cache(async (pipeline: any[]) => {
                 }
             }
         },
-        { $sort: { createdAt: -1 } },
         { $project: { terms: 0 } }
     ])
 

@@ -14,14 +14,17 @@ const Page: FC<{}> = async () => {
 
     const session = await auth()
 
-    const promise_userSets = getSets([
+
+    const userRecentSets = getSets([
         { $match: { user: createObjectId(session?.user._id as string) } },
-        { $limit: 10 }
+        { $limit: 10 },
+        { $sort: { updatedAt: -1 } },
     ])
 
-    const promise_otherSets = getSets([
+    const promise_otherNewSets = getSets([
         { $match: { user: { $ne: createObjectId(session?.user._id as string) } } },
-        { $sample: { size: 10 } }
+        { $sample: { size: 10 } },
+        { $sort: { createdAt: -1 } },
     ])
 
     const promise_favorites = getFavorites([
@@ -32,13 +35,13 @@ const Page: FC<{}> = async () => {
     return (
         <Stack gap={5}>
             <Suspense fallback={<HorizontalListSkeleton />}>
-                <HorizontalList promise={promise_userSets} label="New in the library" icon={<NewReleasesIcon />} />
+                <HorizontalList promise={userRecentSets} label="Recent sets" icon={<NewReleasesIcon />} />
             </Suspense>
             <Suspense fallback={<HorizontalListSkeleton />}>
                 <HorizontalList promise={promise_favorites} label="My favorites" icon={<GradeIcon />} />
             </Suspense>
             <Suspense fallback={<HorizontalListSkeleton />}>
-                <HorizontalList promise={promise_otherSets} label={"Other people's collections"} icon={<PeopleAltIcon />} />
+                <HorizontalList promise={promise_otherNewSets} label={"Other new sets"} icon={<PeopleAltIcon />} />
             </Suspense>
 
 

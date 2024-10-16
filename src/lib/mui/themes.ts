@@ -25,6 +25,9 @@ export const RootTheme = createTheme({
                     dark: "#28b59c",
                     contrastText: "#fff",
                 },
+                secondary: {
+                    main: "#3CC8F4",
+                },
                 background: {
                     default: "#fafafa",
                     paper: "#fafafa",
@@ -36,7 +39,6 @@ export const RootTheme = createTheme({
                     primary: "rgba(0, 0, 0, 0.6)",
                     secondary: "rgba(0, 0, 0, 0.87)"
                 }
-
             },
         },
         dark: {
@@ -46,6 +48,9 @@ export const RootTheme = createTheme({
                     light: "#47dfc5",
                     dark: "#28b59c",
                     contrastText: "rgba(0, 0, 0, 0.87)",
+                },
+                secondary: {
+                    main: "#3CC8F4",
                 },
                 background: {
                     default: "#151515",
@@ -80,7 +85,6 @@ export const RootTheme = createTheme({
                 color: "inherit"
             },
         },
-
         MuiButton: {
             styleOverrides: {
                 root: ({ theme }) => ({

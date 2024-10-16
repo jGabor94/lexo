@@ -38,7 +38,10 @@ const RootLayout: FC<{
         <ThemeProvider theme={RootTheme} defaultMode="dark">
           <DateTimePickerProvider>
             <AlertProvider>
-              <body>
+              <body style={{
+                WebkitTapHighlightColor: "rgba(0,0,0,0)",
+
+              }}>
                 <AppRouterCacheProvider>
                   <InitColorSchemeScript attribute="class" />
                   <CssBaseline />
@@ -46,6 +49,7 @@ const RootLayout: FC<{
                   {children}
                   <Footer />
                 </AppRouterCacheProvider>
+
               </body>
             </AlertProvider>
           </DateTimePickerProvider>

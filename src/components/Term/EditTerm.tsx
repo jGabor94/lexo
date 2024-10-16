@@ -8,7 +8,7 @@ import useAlert from "@/lib/hooks/useAlert";
 import useSet from "@/lib/hooks/useSet";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
-import { Divider, IconButton, Stack, Tooltip, useTheme } from "@mui/material";
+import { Box, Divider, IconButton, Stack, Tooltip, useTheme } from "@mui/material";
 import { Dispatch, FC, Fragment, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import LinearLoading from "../LinearLoading";
@@ -66,14 +66,18 @@ const EditTerm: FC<{
             <Divider flexItem orientation="vertical" />
             <Stack direction="row" sx={{ height: "fit-content" }}>
                 <Tooltip title="Delete">
-                    <IconButton onClick={handleDelete} disabled={loading} >
-                        <DeleteForeverIcon />
-                    </IconButton >
+                    <Box>
+                        <IconButton onClick={handleDelete} disabled={!form.formState.isValid || form.formState.isSubmitting || form.formState.isSubmitSuccessful || loading} >
+                            <DeleteForeverIcon />
+                        </IconButton >
+                    </Box>
                 </Tooltip>
                 <Tooltip title="Save">
-                    <IconButton type="submit" onClick={form.handleSubmit(submit)} disabled={!form.formState.isValid || form.formState.isSubmitting || form.formState.isSubmitSuccessful || loading} >
-                        <SaveIcon />
-                    </IconButton >
+                    <Box>
+                        <IconButton type="submit" onClick={form.handleSubmit(submit)} disabled={!form.formState.isValid || form.formState.isSubmitting || form.formState.isSubmitSuccessful || loading} >
+                            <SaveIcon />
+                        </IconButton >
+                    </Box>
                 </Tooltip>
             </Stack>
         </Stack>

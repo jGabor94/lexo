@@ -9,13 +9,14 @@ export const mongooseAdapter: Adapter = {
     async createUser(user) {
         const username = extractUsername(user.email as Email)
         await dbConnect()
-
+        console.log(user)
         const newUser = await User.create({
             username,
             email: user.email,
             name: user.name,
             roles: ["user", username],
-            image: user.image
+            image: user.image,
+            emailVerified: user.emailVerified
         })
 
         return {
