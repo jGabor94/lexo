@@ -11,7 +11,7 @@ const MenuList: FC<{ menuItems: Array<{ label: string, path: string }> }> = ({ m
     const pathname = usePathname()
 
     return (
-        <Stack direction="row" gap={4}>
+        <Stack direction="row" gap={4} sx={{ display: { xs: "none", sm: "flex" } }}>
             {menuItems.map((item, index) => (
                 <Typography
                     key={index}
@@ -29,8 +29,10 @@ const MenuList: FC<{ menuItems: Array<{ label: string, path: string }> }> = ({ m
                     }}>{item.label}</Typography>
             ))}
         </Stack>
-
     )
+
+
+
 }
 
 export default MenuList

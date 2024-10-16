@@ -3,7 +3,6 @@
 import FavoriteButton from '@/components/set/FavoriteButton'
 import SetMenu from '@/components/set/SetMenu'
 import TermList from '@/components/Term/TermList'
-import TextLine from '@/components/ui/TextLine'
 import { getDate } from '@/lib/assets/general'
 import useSet from '@/lib/hooks/useSet'
 import AddIcon from '@mui/icons-material/Add'
@@ -21,21 +20,25 @@ const Page: FC<{}> = () => {
             <Stack gap={3} component={Paper} variant="elevation" p={2}>
                 <Stack sx={{
                     gap: 2,
-                    flexDirection: { xs: "column", sm: "row" },
-                    alignItems: { xs: "flex-start", sm: "center" }
+                    flexDirection: { sm: "column", md: "row" },
+                    alignItems: { sm: "flex-start", md: "center" },
+                    justifyContent: "space-between"
                 }}>
-                    <TextLine>
-                        <Stack direction="row" gap={2} alignItems="center">
-                            <Typography sx={{ textWrap: "nowrap", fontSize: 35 }}>
-                                {set.name}
-                            </Typography>
-                            <Divider orientation="vertical" flexItem />
-                            <FavoriteButton />
-                        </Stack>
-                    </TextLine>
+                    <Stack direction="row" gap={2} alignItems="center" sx={{ flexShrink: 0, minWidth: 0, }}>
+                        <Typography sx={{
+                            textWrap: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap", minWidth: 0, fontSize: 35
+                        }}>
+                            {set.name}
+                        </Typography>
+                        <Divider orientation="vertical" flexItem />
+                        <FavoriteButton />
+                    </Stack>
 
                     {isOwner && (
-                        <Stack direction="row" gap={2}>
+                        <Stack direction="row" gap={2} sx={{ width: "fit-content" }}>
                             <SetMenu />
                             <Button component={Link} href={`/sets/${set._id}/terms/create`} variant="contained" startIcon={<AddIcon sx={{ color: "primary.contrastText" }} />}>
                                 Create Terms
