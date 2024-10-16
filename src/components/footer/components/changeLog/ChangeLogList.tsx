@@ -1,8 +1,8 @@
 import getChangleLog from "@/lib/database/queries/getChangleLog"
 import { auth } from "@/lib/services/authentication/auth"
 import { aclCheck } from "@/lib/services/authorization/aclAuthorization"
-import { Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material"
-import { FC, Fragment } from "react"
+import { Box, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material"
+import { FC } from "react"
 import DeleteChangeLog from "./DeleteChangeLog"
 
 
@@ -14,8 +14,11 @@ const ChangeLogList: FC<{}> = async () => {
     const isAdmin = session && aclCheck({ admin: true }, "create", session.user.roles)
 
     return (
-        <Fragment>
-            <Table>
+        <Box sx={{
+            maxHeight: 400,
+            overflowY: "scroll",
+        }}>
+            <Table >
                 <TableBody>
                     {changelog.map(log => (
                         <TableRow key={log._id}>
@@ -39,7 +42,7 @@ const ChangeLogList: FC<{}> = async () => {
                     ))}
                 </TableBody>
             </Table>
-        </Fragment>
+        </Box>
     )
 }
 

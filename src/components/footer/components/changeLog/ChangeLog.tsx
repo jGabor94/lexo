@@ -14,12 +14,7 @@ const ChangeLog: FC<{}> = async () => {
     return (
         <ChangeLogModal>
 
-            <Stack gap={2} sx={{
-                p: 2,
-                height: 600,
-                overflowY: "scroll",
-                boxSizing: "border-box"
-            }}>
+            <Stack gap={2} sx={{ p: 1 }}>
                 <Typography fontWeight={600} fontSize={25}>Change log</Typography>
                 <Divider flexItem />
                 {isAdmin && (<ChangeLogForm />)}
