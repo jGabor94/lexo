@@ -53,7 +53,7 @@ export type Mongoose_Account = {
     scope: string,
     id_token: string,
     session_state: string,
-} & SchemaTimestampsConfig
+} & ExpandObject<SchemaTimestampsConfig>
 
 export type Mongoose_Set = {
     _id: Types.ObjectId,
@@ -62,13 +62,13 @@ export type Mongoose_Set = {
     preferredTermLang: LanguageCode,
     preferredDefinitionLang: LanguageCode,
     acl: Acl,
-} & SchemaTimestampsConfig
+} & ExpandObject<SchemaTimestampsConfig>
 
 export type Mongoose_Term = {
     _id: Types.ObjectId,
     set: Types.ObjectId,
     acl: Acl
-} & SchemaTimestampsConfig & ITerm
+} & ExpandObject<SchemaTimestampsConfig & ITerm>
 
 export type Mongoose_Progress = {
     _id: Types.ObjectId,
@@ -77,7 +77,7 @@ export type Mongoose_Progress = {
     status: 1 | 2 | 3 | 4 | 5,
     lastLearned: Date,
     acl: Acl
-} & SchemaTimestampsConfig
+} & ExpandObject<SchemaTimestampsConfig>
 
 export type Mongoose_Folder = {
     _id: Types.ObjectId,
@@ -85,13 +85,13 @@ export type Mongoose_Folder = {
     name: string,
     sets: Types.ObjectId[],
     acl: Acl
-} & SchemaTimestampsConfig
+} & ExpandObject<SchemaTimestampsConfig>
 
 export type Mongoose_ChangeLog = {
     _id: Types.ObjectId,
     date: Date,
     description: string
-} & SchemaTimestampsConfig
+} & ExpandObject<SchemaTimestampsConfig>
 
 type Id_Serializable = { _id: string }
 type User_Serializable<T> = T extends { user: infer U } ? { user: U } : { user: string };
