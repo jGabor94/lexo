@@ -8,8 +8,6 @@ import { Paper, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 import { FC } from 'react'
 
-export const revalidate = 0
-
 const Page: FC<{}> = () => {
 
     const { set } = useSet()
