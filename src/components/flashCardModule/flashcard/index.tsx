@@ -12,7 +12,7 @@ const FlashCard: FC<{}> = () => {
     return (
         <Box sx={{
             width: 700,
-            maxWidth: "90%",
+            maxWidth: "100%",
             aspectRatio: "1 / 0.7",
             position: "relative",
             cursor: "pointer",
