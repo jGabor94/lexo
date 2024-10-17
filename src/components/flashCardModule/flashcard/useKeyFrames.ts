@@ -12,7 +12,6 @@ const useKeyFrames = () => {
             x: [0, 0, 0, "50%"],
             rotate: [0, 0, 0, "0.01turn"],
             opacity: [0, 1, 1, 0],
-            borderWidth: [1, 2, 2, 2],
             backgroundColor: [primary.main, null, null, null],
             transitionEnd: { display: "none" }
         },
@@ -21,7 +20,6 @@ const useKeyFrames = () => {
             x: [0, 0, 0, "-50%"],
             rotate: [0, 0, 0, "-0.01turn"],
             opacity: [0, 1, 1, 0],
-            borderWidth: [1, 2, 2, 2],
             backgroundColor: [background.default, null, null, null],
             transitionEnd: { display: "none" }
         },
@@ -30,7 +28,6 @@ const useKeyFrames = () => {
             x: [0, 0, 0, "-50%"],
             rotate: [0, 0, 0, "-0.01turn"],
             opacity: [0, 1, 1, 0],
-            borderWidth: [1, 2, 2, 2],
             backgroundColor: [warning.main, null, null, null],
             transitionEnd: { display: "none" }
         },

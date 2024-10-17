@@ -68,8 +68,6 @@ const FlashCardDrag: FC<{}> = () => {
                 borderRadius: "10px",
                 width: "100%",
                 height: "100%",
-                border: "1px solid",
-                borderColor: "text.primary",
                 willChange: "transform",
             }}
         >

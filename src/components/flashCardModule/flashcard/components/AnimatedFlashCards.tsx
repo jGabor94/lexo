@@ -9,6 +9,7 @@ interface props extends StackOwnProps {
 }
 
 const AnimatedFlashCard: FC<props> = ({ children, id }) => (
+
     <Stack
         alignItems="center"
         justifyContent="center"
@@ -19,8 +20,8 @@ const AnimatedFlashCard: FC<props> = ({ children, id }) => (
             borderRadius: "10px",
             width: "100%",
             height: "100%",
-            border: "1px solid",
             opacity: 0,
+            borderWidth: 2
         }}
     >
         <Typography fontSize={30} fontWeight={500}>{children}</Typography>
