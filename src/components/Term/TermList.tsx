@@ -77,7 +77,7 @@ const TermList: FC<{}> = () => {
                                 Hide terms
                             </ToggleButton>
                             <ToggleButton value="definitions" sx={{ textTransform: "none" }}>
-                                Hide terms
+                                Hide definitions
                             </ToggleButton>
                         </Stack>
 
