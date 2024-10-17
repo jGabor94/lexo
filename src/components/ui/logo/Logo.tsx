@@ -13,6 +13,7 @@ const Logo: FC<TypographyProps> = (props) => (
             cursor: "pointer",
             fontWeight: 700,
             fontSize: 30,
+            mt: -0.7,
             background: "linear-gradient(90deg, #3CC8AF 0%, #3CC8F4 100%)",
             backgroundClip: "text",
             textFillColor: "transparent",
