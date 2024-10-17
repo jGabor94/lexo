@@ -9,12 +9,12 @@ import { FC, useEffect, useState } from "react";
 import Completed from "./complete";
 import FlashCardProvider from "./components/FlashCardProvider";
 import FlashCardLayout from "./FlashCardLayout";
-import { ProgressResult, Term } from "./types";
+import { FlashCardMode, ProgressResult, Term } from "./types";
 
 
 
 
-const FlashCardMain: FC<{ mode: string }> = ({ mode }) => {
+const FlashCardMain: FC<{ mode: FlashCardMode }> = ({ mode }) => {
 
     const prepareArray = (array: Term[]) =>
         shuffle(mode === "progress" ? array.filter((term) => !term.progress || term.progress?.status < 5) : array);

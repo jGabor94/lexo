@@ -2,7 +2,6 @@
 
 import { toSerializableObject } from "@/lib/assets/general"
 import { ExpandObject } from "@/lib/types/types"
-import { unstable_cache } from "next/cache"
 import { dbConnect } from "../dbConnect"
 import { Set } from "../models"
 import { Mongoose_Set_Serializable } from "../types"
@@ -11,7 +10,7 @@ export type SetListItem = ExpandObject<Mongoose_Set_Serializable<
     { user: { name: string, image: string }, termsCount: number }
 >>
 
-export default unstable_cache(async (pipeline: any[]) => {
+export default async (pipeline: any[]) => {
 
     await dbConnect()
 
@@ -55,4 +54,4 @@ export default unstable_cache(async (pipeline: any[]) => {
 
     return toSerializableObject<SetListItem[]>(res)
 
-}, ["sets"], { tags: ["sets"], revalidate: 60 * 60 })
+}

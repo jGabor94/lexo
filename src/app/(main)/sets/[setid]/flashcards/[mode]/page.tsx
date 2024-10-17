@@ -1,6 +1,7 @@
 "use client";
 
 import FlashCardMain from "@/components/flashCardModule/FlashCardMain";
+import { FlashCardMode } from "@/components/flashCardModule/types";
 import useSet from "@/lib/hooks/useSet";
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Paper, Stack, Tooltip, Typography } from "@mui/material";
@@ -8,7 +9,7 @@ import Link from "next/link";
 import { FC } from "react";
 
 
-const Page: FC<{ params: { mode: "free" | "progress", setid: string } }> = ({ params: { mode } }) => {
+const Page: FC<{ params: { mode: FlashCardMode, setid: string } }> = ({ params: { mode } }) => {
 
     const { set } = useSet()
 

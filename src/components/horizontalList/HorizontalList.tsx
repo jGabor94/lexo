@@ -3,6 +3,8 @@ import { Stack, Typography } from '@mui/material';
 import { FC } from 'react';
 import TextLine from '../ui/TextLine';
 
+export const revalidate = 0
+
 const HorizontalList: FC<{ promise: Promise<any[]>, label: string, icon: JSX.Element }> = async ({ promise, label, icon }) => {
 
     const result = await promise

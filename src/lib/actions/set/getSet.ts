@@ -20,8 +20,8 @@ const SA_GetSet = createServerAction(isLogged, async ({ params, session }: Reque
 
     await dbConnect()
     const res = await getSet(createObjectId(setid), createObjectId(session.user._id))
-
     return createServerActionResponse({ payload: res })
+
 })
 
 

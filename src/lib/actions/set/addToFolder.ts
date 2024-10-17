@@ -8,7 +8,6 @@ import { isLogged } from "@/lib/middlewares/ServerAction-Middlewares"
 import { aclMiddleware } from "@/lib/services/authorization/aclAuthorization"
 import { getFolderAcl } from "@/lib/services/authorization/aclCallbacks"
 import { Session } from "next-auth"
-import { revalidateTag } from "next/cache"
 
 interface Request {
     session: Session,
@@ -21,7 +20,6 @@ const SA_AddToFolder = createServerAction(isLogged, aclMiddleware(getFolderAcl, 
 
     await dbConnect()
     await Folder.updateOne({ _id: folderid }, { $addToSet: { sets: setid } })
-    revalidateTag("folders")
     return createServerActionResponse()
 })
 

@@ -5,7 +5,7 @@ import { auth } from "@/lib/services/authentication/auth";
 import { Stack, Typography } from "@mui/material";
 import { FC } from "react";
 
-const wait = () => new Promise(res => setTimeout(res, 4000))
+export const revalidate = 0
 
 const Page: FC<{}> = async () => {
 
@@ -16,7 +16,6 @@ const Page: FC<{}> = async () => {
         { $sort: { createdAt: -1 } },
     ])
 
-    await wait()
 
     return (
         <Stack gap={2}>

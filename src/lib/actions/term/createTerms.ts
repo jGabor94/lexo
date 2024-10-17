@@ -9,7 +9,6 @@ import { isLogged } from "@/lib/middlewares/ServerAction-Middlewares";
 import { createAcl, defaultAcl } from "@/lib/services/authorization/acl";
 import { aclMiddleware } from "@/lib/services/authorization/aclAuthorization";
 import { Session } from "next-auth";
-import { revalidatePath, revalidateTag } from "next/cache";
 
 interface Request {
   params: [terms: Array<ITerm>, setid: string];
@@ -39,8 +38,7 @@ const SA_CreateTerms = createServerAction(
         acl: { ...defaultAcl, [session.user.username]: true },
       }))
     );
-    revalidatePath(`sets/${setid}`, "page");
-    revalidateTag("sets")
+
     return createServerActionResponse();
   }
 );

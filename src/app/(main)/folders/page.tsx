@@ -9,6 +9,7 @@ import FolderOffOutlinedIcon from '@mui/icons-material/FolderOffOutlined';
 import { Paper, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 
+export const revalidate = 0
 
 const Page: FC<{}> = async () => {
 

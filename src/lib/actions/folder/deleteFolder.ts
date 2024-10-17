@@ -8,7 +8,6 @@ import { isLogged } from "@/lib/middlewares/ServerAction-Middlewares"
 import { aclMiddleware } from "@/lib/services/authorization/aclAuthorization"
 import { getFolderAcl } from "@/lib/services/authorization/aclCallbacks"
 import { Session } from "next-auth"
-import { revalidateTag } from "next/cache"
 
 interface Request {
     session: Session,
@@ -22,7 +21,6 @@ const SA_DeleteFolder = createServerAction(isLogged, aclMiddleware(getFolderAcl,
     await dbConnect()
     await Folder.deleteOne({ _id: folderid })
     await Set.updateMany({ folder: folderid }, { folder: null })
-    revalidateTag("folders")
     return createServerActionResponse()
 })
 

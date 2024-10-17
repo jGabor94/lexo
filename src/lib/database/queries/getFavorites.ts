@@ -1,12 +1,11 @@
 "use server"
 
 import { toSerializableObject } from "@/lib/assets/general"
-import { unstable_cache } from "next/cache"
 import { dbConnect } from "../dbConnect"
 import { User } from "../models"
 import { SetListItem } from "./getSets"
 
-export default unstable_cache(async (pipeline: any[]) => {
+export default async (pipeline: any[]) => {
 
     await dbConnect()
 
@@ -62,5 +61,5 @@ export default unstable_cache(async (pipeline: any[]) => {
 
     return toSerializableObject<SetListItem[]>(res[0].favoriteSets)
 
-}, ["favorites"], { tags: ["sets"], revalidate: 60 * 60 })
+}
 

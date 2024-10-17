@@ -8,7 +8,6 @@ import { isLogged } from "@/lib/middlewares/ServerAction-Middlewares"
 import { createAcl, defaultAcl } from "@/lib/services/authorization/acl"
 import { aclMiddleware } from "@/lib/services/authorization/aclAuthorization"
 import { Session } from "next-auth"
-import { revalidateTag } from "next/cache"
 
 interface Request {
     session: Session,
@@ -24,7 +23,6 @@ const SA_CreateFolder = createServerAction(isLogged, aclMiddleware(createAcl, "c
     await dbConnect()
     await timeout()
     const res = await Folder.create({ name, user: session.user._id, acl: { ...defaultAcl, [session.user.username]: true } })
-    revalidateTag("folders")
     return createServerActionResponse({ payload: res })
 })
 

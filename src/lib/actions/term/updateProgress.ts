@@ -8,7 +8,6 @@ import { Progress, Set } from "@/lib/database/models"
 import { isLogged } from "@/lib/middlewares/ServerAction-Middlewares"
 import { defaultAcl } from "@/lib/services/authorization/acl"
 import { Session } from "next-auth"
-import { revalidateTag } from "next/cache"
 
 interface Request {
     params: [newProgresses: ProgressResult[], setid: string],
@@ -37,7 +36,6 @@ const SA_UpdateProgress = createServerAction(isLogged, async ({ params, session 
     await Promise.all(promises)
     await Set.updateOne({ _id: setid }, { updatedAt: new Date() })
 
-    revalidateTag("sets")
 
     return createServerActionResponse()
 })

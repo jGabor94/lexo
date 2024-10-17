@@ -5,6 +5,9 @@ import { auth } from "@/lib/services/authentication/auth";
 import { Stack, Typography } from "@mui/material";
 import { FC } from "react";
 
+export const revalidate = 0
+
+
 const Page: FC<{}> = async () => {
 
     const session = await auth()
