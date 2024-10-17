@@ -39,14 +39,16 @@ const useKeyFrames = () => {
             x: [x, x + 200],
             rotate: [x / 20, (x + 200) / 20],
             opacity: [1, 0],
-            backgroundColor: [primary.main, null]
+            backgroundColor: [primary.main, null],
+            transitionEnd: { display: "none" }
         }),
         wrongSlide: (x: number) => ({
             display: "flex",
             x: [x, x - 200],
             rotate: [x / 20, (x - 200) / 20],
             opacity: [1, 0],
-            backgroundColor: [warning.main, null]
+            backgroundColor: [warning.main, null],
+            transitionEnd: { display: "none" }
         })
     }
 

@@ -15,7 +15,7 @@ const FlashCard: FC<{}> = () => {
             maxWidth: "90%",
             aspectRatio: "1 / 0.7",
             position: "relative",
-            cursor: "pointer"
+            cursor: "pointer",
         }} onClick={() => setIsFlipped(state => !state)}
         >
             <FlashCardContent />

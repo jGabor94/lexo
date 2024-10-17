@@ -13,7 +13,9 @@ const FlashCardLayout: FC<{}> = () => {
     const { terms, index, successItems, wrongItems } = useFlashCard()
 
     return (
-        <Stack gap={2} sx={{ width: 700, maxWidth: "100%" }} alignItems="center" >
+        <Stack gap={2} sx={{
+            width: 700, maxWidth: "100%"
+        }} alignItems="center" >
             <Stack
                 direction="row"
                 justifyContent="space-between"

@@ -40,7 +40,7 @@ const RootLayout: FC<{
             <AlertProvider>
               <body style={{
                 WebkitTapHighlightColor: "rgba(0,0,0,0)",
-
+                overflow: "hidden"
               }}>
                 <AppRouterCacheProvider>
                   <InitColorSchemeScript attribute="class" />
