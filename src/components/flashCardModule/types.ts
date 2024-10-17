@@ -13,3 +13,5 @@ export type ProgressResult = {
 }
 
 export type Delta = { x: number, y: number }
+
+export type FlashCardMode = "progress" | "free"
