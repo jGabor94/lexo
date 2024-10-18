@@ -10,8 +10,6 @@ import { Paper, Stack, Typography } from "@mui/material";
 import { notFound } from "next/navigation";
 import { FC } from "react";
 
-export const revalidate = 0
-
 const Page: FC<{ params: { folderid: string } }> = async ({ params }) => {
 
     const folder = await getFolder(createObjectId(params.folderid))

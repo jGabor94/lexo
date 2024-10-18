@@ -14,6 +14,7 @@ const useSet = () => {
 
     const { data: set, mutate, isLoading } = useSWR(["set", setid as string], async ([key, setid]) => {
         const res = await SA_GetSet(setid)
+        console.log(res.payload)
         return res.payload
     }, { revalidateOnMount: false })
 

@@ -14,6 +14,7 @@ import { FC } from 'react'
 const Page: FC<{}> = () => {
 
     const { set, isOwner } = useSet()
+    console.log({ set })
 
     return (
         <Stack gap={3} >

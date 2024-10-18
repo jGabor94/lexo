@@ -13,6 +13,7 @@ const Page: FC<{ params: { mode: FlashCardMode, setid: string } }> = ({ params: 
 
     const { set } = useSet()
 
+
     return (
         <Stack sx={{ margin: "0 auto", gap: 2 }} >
             <Paper variant="elevation" component={Stack} p={1} pl={2} pr={2} mt={-2} direction="row" alignItems="center" justifyContent="space-between">
