@@ -1,7 +1,7 @@
 import Footer from "@/components/footer/Footer";
 import SnackbarAlert from "@/components/SnackbarAlert";
 import { RootTheme } from "@/lib/mui/themes";
-import { CssBaseline } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { ThemeProvider } from '@mui/material/styles';
@@ -38,17 +38,23 @@ const RootLayout: FC<{
         <ThemeProvider theme={RootTheme} defaultMode="dark">
           <DateTimePickerProvider>
             <AlertProvider>
-              <CssBaseline />
 
               <body style={{
                 WebkitTapHighlightColor: "rgba(0,0,0,0)",
               }}>
-                <AppRouterCacheProvider>
-                  <InitColorSchemeScript attribute="class" />
-                  <SnackbarAlert />
-                  {children}
-                  <Footer />
-                </AppRouterCacheProvider>
+                <CssBaseline />
+
+                <Box sx={{
+                  overflowX: "hidden",
+                }}>
+                  <AppRouterCacheProvider>
+                    <InitColorSchemeScript attribute="class" />
+                    <SnackbarAlert />
+                    {children}
+                    <Footer />
+                  </AppRouterCacheProvider>
+                </Box>
+
 
               </body>
             </AlertProvider>

@@ -14,14 +14,13 @@ const AnimatedFlashCard: FC<props> = ({ children, id }) => (
         alignItems="center"
         justifyContent="center"
         id={id}
-
         sx={{
             position: "absolute",
             borderRadius: "10px",
             width: "100%",
             height: "100%",
             opacity: 0,
-            borderWidth: 2
+            borderWidth: 1,
         }}
     >
         <Typography fontSize={30} fontWeight={500}>{children}</Typography>
