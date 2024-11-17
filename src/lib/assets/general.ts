@@ -1,7 +1,6 @@
 import { ClassValue, clsx } from "clsx";
 import mongoose from "mongoose";
 import { twMerge } from "tailwind-merge";
-import { ThemeMode } from "../database/types";
 import { Email } from "../types/types";
 
 export function cn(...inputs: ClassValue[]) {
@@ -29,10 +28,6 @@ export const toSerializableObject = <R>(data: any): R => JSON.parse(JSON.stringi
 */
 export const extractUsername = (email: Email): string => email.split('@')[0]
 
-
-
-
-export const toggleColorMode = (mode: ThemeMode) => mode === "dark" ? "light" : "dark"
 
 export const createObjectId = (raw: string) => {
     try {

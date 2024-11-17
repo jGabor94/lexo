@@ -32,7 +32,7 @@ export const createServerAction = <Args extends Stack>(...stack: Args) => {
             return result
         } catch (error) {
             console.error(error)
-            return createServerActionResponse({ status: 500, error: "Szerver hiba" })
+            return createServerActionResponse({ status: 500, error: "Server error" })
         }
     }
 }

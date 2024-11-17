@@ -69,7 +69,6 @@ const Page: FC<{}> = () => {
 
                 </Paper>
             </Link>
-
             <TermList />
         </Stack>
     )

@@ -12,7 +12,7 @@ export interface ITerm {
         lang: LanguageCode
     },
     definition: {
-        content: [],
+        content: string[],
         lang: LanguageCode
     }
 }
