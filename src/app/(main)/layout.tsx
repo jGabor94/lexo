@@ -1,7 +1,7 @@
 import { MainMenu } from "@/components/menuBar";
 import { Box } from "@mui/material";
 import { FC, ReactNode } from "react";
-import UserDataProvider from "../_providers/ConfigProvider/UserDataProvider";
+import UserDataProvider from "../../features/user/providers/UserDataProvider";
 
 const Layout: FC<{ children: ReactNode }> = ({ children }) => {
 

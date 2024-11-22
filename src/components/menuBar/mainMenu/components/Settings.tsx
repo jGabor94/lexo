@@ -1,8 +1,8 @@
 "use client"
 
-import ModalOverlay from '@/components/ui/modal';
-import useModalControl from '@/lib/hooks/useModalControl';
-import useUserData from '@/lib/hooks/useuserData';
+import ModalOverlay from '@/components/ui/ModalOverlay';
+import useUserData from '@/features/user/hooks/useUserData';
+import useModalControl from '@/hooks/useModalControl';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Avatar, Divider, IconButton, Modal, Stack, Tooltip, Typography } from "@mui/material";
 import { FC, Fragment } from "react";

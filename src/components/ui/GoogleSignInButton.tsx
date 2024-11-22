@@ -1,6 +1,6 @@
 "use client"
 
-import SA_googleSignIn from "@/lib/actions/user/googleSignIn";
+import SA_googleSignIn from "@/features/authentication/actions/googleSignIn";
 import { Box, Button, ButtonProps, Stack } from "@mui/material";
 import { FC } from "react";
 

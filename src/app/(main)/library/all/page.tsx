@@ -1,7 +1,7 @@
-import SetList from "@/components/set/SetList";
-import { createObjectId } from "@/lib/assets/general";
-import { getSets } from "@/lib/database/queries";
-import { auth } from "@/lib/services/authentication/auth";
+import { auth } from "@/features/authentication/lib/auth";
+import SetList from "@/features/set/components/SetList";
+import getSets from "@/features/set/queries/getSets";
+import { createObjectId } from "@/utils";
 import { FC } from "react";
 
 const Page: FC<{}> = async () => {

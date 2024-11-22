@@ -1,6 +1,6 @@
 "use client"
 
-import SA_signOut from "@/lib/actions/user/signOut"
+import SA_signOut from "@/features/authentication/actions/signOut"
 import { Button, ButtonProps } from "@mui/material"
 import { useRouter } from "next/navigation"
 import { FC } from "react"

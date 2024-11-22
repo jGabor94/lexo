@@ -1,10 +1,10 @@
 
-import CreateFolder from "@/components/folder/CreateFolder";
-import FolderCard from "@/components/ui/card/FolderCard";
 import TextLine from "@/components/ui/TextLine";
-import { createObjectId } from "@/lib/assets/general";
-import { getFolders } from "@/lib/database/queries";
-import { auth } from "@/lib/services/authentication/auth";
+import { auth } from "@/features/authentication/lib/auth";
+import CreateFolder from "@/features/folder/components/CreateFolder";
+import FolderCard from "@/features/folder/components/ui/FolderCard";
+import getFolders from "@/features/folder/queries/getFolders";
+import { createObjectId } from "@/utils";
 import FolderOffOutlinedIcon from '@mui/icons-material/FolderOffOutlined';
 import { Paper, Stack, Typography } from "@mui/material";
 import { FC } from "react";

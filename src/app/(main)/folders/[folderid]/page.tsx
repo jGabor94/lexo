@@ -1,10 +1,10 @@
-import FolderMenu from "@/components/folder/FolderMenu";
-import RemoveFromFolder from "@/components/folder/RemoveFromFolder";
-import CreateSet from "@/components/set/CreateSet";
-import { RowSetCardContent, RowSetCardLayout, RowSetCardMenu } from "@/components/ui/card/rowSetCard";
 import TextLine from "@/components/ui/TextLine";
-import { createObjectId } from "@/lib/assets/general";
-import { getFolder } from "@/lib/database/queries";
+import FolderMenu from "@/features/folder/components/FolderMenu";
+import RemoveFromFolder from "@/features/folder/components/RemoveFromFolder";
+import getFolder from "@/features/folder/queries/getFolder";
+import CreateSet from "@/features/set/components/CreateSet";
+import { RowSetCardContent, RowSetCardLayout, RowSetCardMenu } from "@/features/set/components/ui/rowSetCard";
+import { createObjectId } from "@/utils";
 import FolderIcon from '@mui/icons-material/Folder';
 import { Paper, Stack, Typography } from "@mui/material";
 import { notFound } from "next/navigation";
@@ -15,7 +15,6 @@ const Page: FC<{ params: { folderid: string } }> = async ({ params }) => {
     const folder = await getFolder(createObjectId(params.folderid))
 
     if (!folder) notFound()
-
 
     return (
         <Stack gap={1}>

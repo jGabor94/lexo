@@ -1,6 +1,6 @@
 "use client"
 
-import SA_SignIn from '@/lib/actions/user/signIn'
+import SA_SignIn from '@/features/authentication/actions/signIn'
 import { Alert, Button, Stack, TextField } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'

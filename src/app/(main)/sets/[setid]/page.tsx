@@ -1,10 +1,10 @@
 "use client"
 
-import FavoriteButton from '@/components/set/FavoriteButton'
-import SetMenu from '@/components/set/SetMenu'
-import TermList from '@/components/Term/TermList'
-import { getDate } from '@/lib/assets/general'
-import useSet from '@/lib/hooks/useSet'
+import FavoriteButton from '@/features/set/components/FavoriteButton'
+import SetMenu from '@/features/set/components/SetMenu'
+import useSet from '@/features/set/hooks/useSet'
+import TermList from '@/features/term/components/TermList'
+import { getDate } from '@/utils'
 import AddIcon from '@mui/icons-material/Add'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import { Avatar, Button, Divider, Paper, Stack, Typography } from '@mui/material'
@@ -14,7 +14,6 @@ import { FC } from 'react'
 const Page: FC<{}> = () => {
 
     const { set, isOwner } = useSet()
-    console.log({ set })
 
     return (
         <Stack gap={3} >

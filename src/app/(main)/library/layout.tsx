@@ -1,12 +1,10 @@
 import { ChipMenu } from '@/components/menuBar'
-import CreateSet from '@/components/set/CreateSet'
+import CreateSet from '@/features/set/components/CreateSet'
 import GradeIcon from '@mui/icons-material/Grade'
 import { Stack } from '@mui/material'
 import { FC, ReactNode } from 'react'
 
 const layout: FC<{ children: ReactNode }> = ({ children }) => {
-
-
 
     return (
         <Stack gap={5}>
@@ -17,11 +15,8 @@ const layout: FC<{ children: ReactNode }> = ({ children }) => {
                 ]} />
                 <CreateSet sx={{ alignSelf: "flex-end" }} />
             </Stack>
-
-
             {children}
         </Stack>
-
     )
 }
 

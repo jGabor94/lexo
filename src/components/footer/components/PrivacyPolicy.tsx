@@ -1,7 +1,7 @@
 "use client"
 
-import ModalOverlay from "@/components/ui/modal";
-import useModalControl from "@/lib/hooks/useModalControl";
+import ModalOverlay from "@/components/ui/ModalOverlay";
+import useModalControl from "@/hooks/useModalControl";
 import { Divider, Link, Modal, Stack, Typography } from "@mui/material";
 import { FC, Fragment } from "react";
 import Contact from "./Contact";

@@ -1,21 +1,17 @@
 import { HorizontalList, HorizontalListSkeleton } from "@/components/horizontalList";
-import { createObjectId } from "@/lib/assets/general";
-import { getSets } from "@/lib/database/queries";
-import getFavorites from "@/lib/database/queries/getFavorites";
-import { auth } from "@/lib/services/authentication/auth";
-import { Stack } from "@mui/material";
-import { FC, Suspense } from "react";
-
+import { auth } from "@/features/authentication/lib/auth";
+import getFavorites from "@/features/set/queries/getFavorites";
+import getSets from "@/features/set/queries/getSets";
+import { createObjectId } from "@/utils";
 import GradeIcon from '@mui/icons-material/Grade';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-
-
+import { Stack } from "@mui/material";
+import { FC, Suspense } from "react";
 
 const Page: FC<{}> = async () => {
 
     const session = await auth()
-
 
     const userRecentSets = getSets([
         { $match: { user: createObjectId(session?.user._id as string) } },

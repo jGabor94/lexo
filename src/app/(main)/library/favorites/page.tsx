@@ -1,7 +1,7 @@
-import SetList from "@/components/set/SetList";
-import { createObjectId } from "@/lib/assets/general";
-import getFavorites from "@/lib/database/queries/getFavorites";
-import { auth } from "@/lib/services/authentication/auth";
+import { auth } from "@/features/authentication/lib/auth";
+import SetList from "@/features/set/components/SetList";
+import getFavorites from "@/features/set/queries/getFavorites";
+import { createObjectId } from "@/utils";
 import { FC } from "react";
 export const revalidate = 0
 

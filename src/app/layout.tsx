@@ -1,6 +1,8 @@
 import Footer from "@/components/footer/Footer";
 import SnackbarAlert from "@/components/SnackbarAlert";
 import { RootTheme } from "@/lib/mui/themes";
+import { DateTimePickerProvider } from "@/providers";
+import { AlertProvider } from "@/providers/AlertProvider";
 import { Box, CssBaseline } from "@mui/material";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
@@ -8,7 +10,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { FC, ReactNode } from "react";
-import { AlertProvider, DateTimePickerProvider } from "./_providers/providers";
 
 export const metadata: Metadata = {
   title: "Lexo",
@@ -38,12 +39,10 @@ const RootLayout: FC<{
         <ThemeProvider theme={RootTheme} defaultMode="dark">
           <DateTimePickerProvider>
             <AlertProvider>
-
               <body style={{
                 WebkitTapHighlightColor: "rgba(0,0,0,0)",
               }}>
                 <CssBaseline />
-
                 <Box sx={{
                   overflowX: "hidden",
                 }}>
@@ -54,8 +53,6 @@ const RootLayout: FC<{
                     <Footer />
                   </AppRouterCacheProvider>
                 </Box>
-
-
               </body>
             </AlertProvider>
           </DateTimePickerProvider>

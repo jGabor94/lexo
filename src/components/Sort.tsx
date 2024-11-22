@@ -1,6 +1,6 @@
 "use client"
 
-import { SortState } from '@/lib/hooks/useSort';
+import { SortState } from '@/hooks/useSort';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { FormControl, MenuItem, Select, Stack } from '@mui/material';

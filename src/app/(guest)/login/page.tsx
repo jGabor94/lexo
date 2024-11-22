@@ -1,9 +1,9 @@
+import CredentialsSingIn from "@/components/CredentialsSingIn";
 import GoogleSignInButton from "@/components/ui/GoogleSignInButton";
 import { AnimatedLogo } from "@/components/ui/logo";
 import { Divider, Stack, Typography } from "@mui/material";
 import { env } from "process";
 import { FC, Fragment } from "react";
-import CredentialsSingIn from "../../../components/CredentialsSingIn";
 
 export const dynamic = "force-static"
 

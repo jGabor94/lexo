@@ -1,0 +1,31 @@
+"use server"
+
+import { dbConnect } from "@/database/dbConnect"
+import { isLogged } from "@/features/authentication/utils"
+import { User } from "@/features/user/models/UserModel"
+import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
+import { createServerActionResponse } from "@/lib/serverAction/response/response"
+import { Session } from "next-auth"
+import { revalidateTag } from "next/cache"
+
+interface Request {
+    session: Session,
+    params: [setid: string, isFavorite: boolean]
+}
+
+const SA_changeFavorite = createServerAction(isLogged, async ({ session, params }: Request) => {
+
+    const [setid, isFavorite] = params
+
+    await dbConnect()
+    if (isFavorite) {
+        await User.updateOne({ _id: session.user._id }, { $addToSet: { favoriteSets: [setid] } })
+    } else {
+        await User.updateOne({ _id: session.user._id }, { $pull: { favoriteSets: setid } })
+    }
+    revalidateTag("sets")
+
+    return createServerActionResponse()
+})
+
+export default SA_changeFavorite

@@ -1,7 +1,7 @@
 "use client"
 
 import TextLine from '@/components/ui/TextLine'
-import useSet from '@/lib/hooks/useSet'
+import useSet from '@/features/set/hooks/useSet'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import { Paper, Stack, Typography } from '@mui/material'

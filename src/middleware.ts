@@ -1,4 +1,4 @@
-import { authConfig } from '@/lib/services/authentication/auth.config';
+import { authConfig } from '@/features/authentication/lib/auth.config';
 import NextAuth from 'next-auth';
 
 
