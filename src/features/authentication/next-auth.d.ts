@@ -1,10 +1,10 @@
 import "next-auth";
+import { DefaultSession } from "next-auth";
 import "next-auth/jwt";
-import { Email } from ".";
-import { Mongoose_User } from "../user/models/UserModel";
+import { SelectUser } from "../user/types";
 
 interface TokenUserData {
-    _id: string,
+    id: string,
     username: string,
     roles: any[],
     email: string,
@@ -15,26 +15,22 @@ declare module "next-auth" {
     /**
      * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
      */
-    interface Session {
+    interface Session extends DefaultSession {
         user: TokenUserData
     }
 
-    interface User extends Mongoose_User { }
+    interface User extends Omit<SelectUser, "password"> { }
+    interface AdapterUser extends Omit<SelectUser, "password"> { }
 
 }
 
 
-declare module "next-auth" {
-    interface AdapterUser {
-        email: Email
-    }
-}
 
 
 declare module "next-auth/jwt" {
     /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
     interface JWT {
-        userData?: TokenUserData
+        userData: TokenUserData
     }
 }
 

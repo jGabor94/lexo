@@ -1,6 +1,6 @@
 "use client"
 
-import SA_DeleteChangeLog from '@/features/chnagelog/actions/deleteChangeLog'
+import SA_DeleteChangeLog from '@/features/changelog/actions/deleteChangeLog'
 import useAction from '@/lib/serverAction/useAction'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import { IconButton, Tooltip } from '@mui/material'

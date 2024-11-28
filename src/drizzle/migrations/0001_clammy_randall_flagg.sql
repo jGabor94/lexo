@@ -1,0 +1,1 @@
+ALTER TABLE "progresses" ADD CONSTRAINT "progresses_termid_unique" UNIQUE("termid");

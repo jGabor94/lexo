@@ -1,6 +1,6 @@
 "use client"
 
-import SA_CreateChangeLog from "@/features/chnagelog/actions/createChangeLog";
+import SA_CreateChangeLog from "@/features/changelog/actions/createChangeLog";
 import useAction from "@/lib/serverAction/useAction";
 import { LoadingButton } from "@mui/lab";
 import { Stack, TextField } from "@mui/material";

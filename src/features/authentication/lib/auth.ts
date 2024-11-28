@@ -1,15 +1,16 @@
-import { dbConnect } from "@/database/dbConnect"
-import { User } from "@/features/user/models/UserModel"
+import { db } from "@/drizzle/db"
+import { usersTable } from "@/drizzle/schema"
 import bcrypt from "bcrypt"
-import NextAuth from "next-auth"
+import { eq } from "drizzle-orm"
+import NextAuth, { Session } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google"
 import { authConfig } from "./auth.config"
-import { mongooseAdapter } from "./NextAuth_adapter"
+import { customAdapter } from "./NextAuth_adapter"
 
 export const { handlers: { GET, POST }, auth, signIn, signOut, unstable_update } = NextAuth({
     ...authConfig,
-    adapter: mongooseAdapter as any,
+    adapter: customAdapter,
     session: {
         strategy: "jwt",
     },
@@ -26,10 +27,7 @@ export const { handlers: { GET, POST }, auth, signIn, signOut, unstable_update }
                 password: {}
             },
             authorize: async (credentials) => {
-                await dbConnect()
-
-                const user = await User.findOne({ email: credentials.email })
-
+                const [user] = await db.select().from(usersTable).where(eq(usersTable.email, credentials.email as string))
                 if (!user || !bcrypt.compareSync(credentials.password as string, user.password)) {
                     throw new Error("Invalid credential data")
                 } else if (!user.emailVerified) {
@@ -47,16 +45,18 @@ export const { handlers: { GET, POST }, auth, signIn, signOut, unstable_update }
 
             let userData = user
             console.log({ userData })
-
             if (trigger === "update" && session) {
+                console.log("flag")
                 return { ...token, userData: { ...session.user } }
             }
 
-            if (userData) return { ...token, userData: { _id: userData.id || userData._id, username: userData.username, roles: userData.roles, email: userData.email } }
+            if (userData) return { ...token, userData: { id: userData.id, username: userData.username, roles: userData.roles, email: userData.email } }
             return token
         },
 
         session: async ({ session, token }) => {
+            const asd: Session = { ...session, user: { ...session.user, ...token.userData } }
+            console.log({ session })
             return { ...session, user: { ...session.user, ...token.userData } }
         },
 

@@ -1,8 +1,7 @@
 import { HorizontalList, HorizontalListSkeleton } from "@/components/horizontalList";
+import { db } from "@/drizzle/db";
+import { setsTable } from "@/drizzle/schema";
 import { auth } from "@/features/authentication/lib/auth";
-import getFavorites from "@/features/set/queries/getFavorites";
-import getSets from "@/features/set/queries/getSets";
-import { createObjectId } from "@/utils";
 import GradeIcon from '@mui/icons-material/Grade';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -12,7 +11,13 @@ import { FC, Suspense } from "react";
 const Page: FC<{}> = async () => {
 
     const session = await auth()
+    //console.log({ session })
 
+    const sets = await db.select().from(setsTable)
+
+    console.log({ sets })
+
+    /*
     const userRecentSets = getSets([
         { $match: { user: createObjectId(session?.user._id as string) } },
         { $limit: 10 },
@@ -29,6 +34,8 @@ const Page: FC<{}> = async () => {
         { $match: { _id: createObjectId(session?.user._id as string) } },
         { $sample: { size: 10 } }
     ])
+*/
+    return <></>
 
     return (
         <Stack gap={5}>
