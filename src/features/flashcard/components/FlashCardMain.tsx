@@ -26,7 +26,7 @@ const FlashCardMain: FC<{ mode: FlashCardMode }> = ({ mode }) => {
     const handleCompleted = async (successItems: ProgressResult[], wrongItems: ProgressResult[]) => {
         setLoading(true)
         if (mode === "progress") {
-            await SA_UpdateProgress([...successItems, ...wrongItems], set._id)
+            await SA_UpdateProgress([...successItems, ...wrongItems], set.id)
             await mutate()
         }
         setCompleted({ successItems, wrongItems })
@@ -55,7 +55,7 @@ const FlashCardMain: FC<{ mode: FlashCardMode }> = ({ mode }) => {
         return (
             <Stack gap={2} alignItems="center">
                 <Typography>You have learned all items</Typography>
-                <Button component={Link} href={`/sets/${set._id}`}>Vissza</Button>
+                <Button component={Link} href={`/sets/${set.id}`}>Vissza</Button>
             </Stack>
         );
     }

@@ -23,7 +23,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
     const { set } = useSet()
 
     const selectedFolder = useMemo(
-        () => folders?.find(folder => folder._id === selectedFolderId),
+        () => folders?.find(folder => folder.id === selectedFolderId),
         [selectedFolderId]
     );
 
@@ -45,7 +45,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
 
     const handleAdd = async () => {
         setLoading(true)
-        await addToFolder(selectedFolderId, set._id)
+        await addToFolder(selectedFolderId, set.id)
         closeModal()
         setLoading(false)
     }
@@ -53,7 +53,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
     useEffect(() => {
         SA_GetFolders().then((res) => {
             if (res.statusCode === 200) {
-                setFolders(res.payload.filter(folder => !folder.sets.includes(set._id)))
+                setFolders(res.payload.filter(folder => !folder.sets.includes(set.id)))
             }
         })
     }, [])
@@ -92,8 +92,8 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
                                 >
                                     {folders.map((folder) => (
                                         <MenuItem
-                                            key={folder._id}
-                                            value={folder._id}
+                                            key={folder.id}
+                                            value={folder.id}
                                         >
                                             <ListItemIcon>
                                                 <FolderIcon fontSize="small" />

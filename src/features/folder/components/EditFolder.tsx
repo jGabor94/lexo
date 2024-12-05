@@ -8,9 +8,9 @@ import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { SetInput } from "../../set/components/SetForm";
-import FolderForm from "./FolderForm";
 import SA_UpdateFolder from "../actions/updateFolder";
 import { Folder } from "../types";
+import FolderForm from "./FolderForm";
 
 
 const EditFolder: FC<{ folder: Folder, menuControl: MenuControl }> = ({ folder, menuControl }) => {
@@ -22,7 +22,7 @@ const EditFolder: FC<{ folder: Folder, menuControl: MenuControl }> = ({ folder, 
     const modalControl = useModalControl()
 
     const submit: SubmitHandler<SetInput> = async (data) => {
-        const res = await editFolder(folder._id, data)
+        const res = await editFolder(folder.id, data)
         if (res.statusCode === 200) {
             modalControl.handleClose()
             menuControl.handleClose()

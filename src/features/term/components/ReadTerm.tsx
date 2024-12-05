@@ -5,8 +5,7 @@ import useSet from '@/features/set/hooks/useSet';
 import EditIcon from '@mui/icons-material/Edit';
 import { Divider, IconButton, Stack, Tooltip, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Dispatch, FC, SetStateAction, useState } from "react";
-import { Term } from '../types';
-import { HiddenMode } from './TermList';
+import { HiddenMode, Term } from '../types';
 
 
 const ReadTerm: FC<{

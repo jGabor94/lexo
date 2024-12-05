@@ -1,11 +1,10 @@
 "use server"
 
-import { dbConnect } from "@/database/dbConnect"
 import { isLogged } from "@/features/authentication/utils"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
-import { createObjectId } from "@/utils"
 import { Session } from "next-auth"
+import getIsFavorite from "../queries/getIsFavorite"
 import getSet from "../queries/getSet"
 
 interface Request {
@@ -18,9 +17,10 @@ const SA_GetSet = createServerAction(isLogged, async ({ params, session }: Reque
 
     const [setid] = params
 
-    await dbConnect()
-    const res = await getSet(createObjectId(setid), createObjectId(session.user._id))
-    return createServerActionResponse({ payload: res })
+    const set = await getSet(setid, session.user.id)
+    const favorite = await getIsFavorite(session.user.id, setid)
+
+    return createServerActionResponse({ payload: { set, favorite } })
 
 })
 

@@ -1,15 +1,14 @@
 "use server"
 
-import { dbConnect } from "@/database/dbConnect"
+import { db } from "@/drizzle/db"
 import { isLogged } from "@/features/authentication/utils"
 import { createAcl, defaultAcl } from "@/features/authorization/acl"
 import { aclMiddleware } from "@/features/authorization/utils"
-import { Folder } from "@/features/folder/models/FolderModel"
 import { SetInput } from "@/features/set/components/SetForm"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
 import { Session } from "next-auth"
-import { Set } from "../models/SetModel"
+import { setsTable } from "../drizzle/schema"
 
 interface Request {
     session: Session,
@@ -20,11 +19,14 @@ const SA_CreateSet = createServerAction(isLogged, aclMiddleware(createAcl, "crea
 
     const [data, folderid] = params
 
-    await dbConnect()
-    const res = await Set.create({ ...data, folder: folderid, user: session.user._id, acl: { ...defaultAcl, [session.user.username]: true } })
-    if (folderid) {
-        await Folder.updateOne({ _id: folderid }, { $addToSet: { sets: res._id } })
+    const insertData = {
+        ...data,
+        folderid,
+        userid: session.user.id,
+        acl: { ...defaultAcl, [session.user.username]: true }
     }
+
+    const [res] = await db.insert(setsTable).values(insertData).returning()
     return createServerActionResponse({ payload: res })
 })
 

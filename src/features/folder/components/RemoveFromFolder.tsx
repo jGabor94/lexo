@@ -1,13 +1,13 @@
 "use client"
 
 import LinearLoading from '@/components/LinearLoading';
+import { SetListItem } from '@/features/set/types';
 import useAction from '@/lib/serverAction/useAction';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { ListItemIcon, ListItemText, MenuItem, } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { FC, Fragment, useState } from 'react';
 import SA_RemoveFromFolder from '../actions/removeFromFolder';
-import { SetListItem } from '@/features/set/types';
 
 const RemoveFromFolder: FC<{ set: SetListItem }> = ({ set }) => {
 
@@ -19,7 +19,7 @@ const RemoveFromFolder: FC<{ set: SetListItem }> = ({ set }) => {
 
     const handleCLick = async () => {
         setLoading(true)
-        await removeFromFolder(folderid, set._id)
+        await removeFromFolder(folderid, set.id)
         setLoading(false)
     }
 

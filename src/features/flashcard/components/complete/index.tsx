@@ -6,8 +6,8 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt'
 import { Box, Paper, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 import { Dispatch, FC, SetStateAction } from 'react'
-import ProgressGauge from './components/ProgressGauge'
 import { ProgressResult } from '../../types'
+import ProgressGauge from './components/ProgressGauge'
 
 interface props {
     successItems: ProgressResult[],
@@ -74,7 +74,7 @@ const Completed: FC<props> = ({ successItems, wrongItems, setCompleted }) => {
             <ProgressGauge percentage={percentage} />
 
             <Stack direction="row" justifyContent="space-between" gap={2} alignItems="flex-end">
-                <Stack direction="row" gap={0.5} component={Link} href={`/sets/${set._id}`} sx={{ textWrap: "nowrap", color: "text.primary", textDecoration: "none" }}>
+                <Stack direction="row" gap={0.5} component={Link} href={`/sets/${set.id}`} sx={{ textWrap: "nowrap", color: "text.primary", textDecoration: "none" }}>
                     <ArrowBackIcon />
                     <Typography>Back to the set</Typography>
                 </Stack>

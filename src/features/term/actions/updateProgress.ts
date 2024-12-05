@@ -1,14 +1,15 @@
 "use server"
 
-import { dbConnect } from "@/database/dbConnect"
+import { db } from "@/drizzle/db"
+import { setsTable } from "@/drizzle/schema"
 import { isLogged } from "@/features/authentication/utils"
 import { defaultAcl } from "@/features/authorization/acl"
 import { ProgressResult } from "@/features/flashcard/types"
-import { Set } from "@/features/set/models/SetModel"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
+import { eq } from "drizzle-orm"
 import { Session } from "next-auth"
-import { Progress } from "../models/ProgressModel"
+import { progressesTable } from "../drizzle/schema"
 
 interface Request {
     params: [newProgresses: ProgressResult[], setid: string],
@@ -16,27 +17,24 @@ interface Request {
 }
 
 const SA_UpdateProgress = createServerAction(isLogged, async ({ params, session }: Request) => {
+
     const [newProgresses, setid] = params
-    await dbConnect()
 
     const promises = newProgresses.map(progress => {
-        if (progress.progressid === null) return Progress.create({
+        if (progress.progressid === null) return db.insert(progressesTable).values({
             status: progress.status,
-            term: progress.termid,
-            user: session.user._id,
-            isLearned: new Date(),
+            termid: progress.termid,
+            userid: session.user.id,
             acl: { ...defaultAcl, [session.user.username]: true }
         })
 
-        return Progress.updateOne({ _id: progress.progressid }, {
-            $set: { status: progress.status },
-        })
+        return db.update(progressesTable).set({ status: progress.status }).where(eq(progressesTable.id, progress.progressid))
 
     })
 
     await Promise.all(promises)
-    await Set.updateOne({ _id: setid }, { updatedAt: new Date() })
 
+    await db.update(setsTable).set({ updatedAt: new Date() }).where(eq(setsTable.id, setid))
 
     return createServerActionResponse()
 })

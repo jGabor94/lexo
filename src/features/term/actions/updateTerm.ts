@@ -1,12 +1,13 @@
 "use server"
 
-import { dbConnect } from "@/database/dbConnect"
+import { db } from "@/drizzle/db"
 import { isLogged } from "@/features/authentication/utils"
 import { getTermAcl } from "@/features/authorization/aclCallbacks"
 import { aclMiddleware } from "@/features/authorization/utils"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
-import { Term } from "../models/TermModel"
+import { eq } from "drizzle-orm"
+import { termsTable } from "../drizzle/schema"
 import { TermInput } from "../types"
 
 interface Request {
@@ -16,9 +17,7 @@ interface Request {
 const SA_UpdateTerm = createServerAction(isLogged, aclMiddleware(getTermAcl, "update"), async ({ params }: Request) => {
 
     const [termid, newTerm] = params
-
-    await dbConnect()
-    await Term.updateOne({ _id: termid }, newTerm)
+    await db.update(termsTable).set(newTerm).where(eq(termsTable.id, termid))
     return createServerActionResponse()
 })
 

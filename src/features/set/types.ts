@@ -1,17 +1,14 @@
-import { Term } from "../term/types";
 import { setsTable } from "./drizzle/schema";
-import { Mongoose_Set } from "./models/SetModel";
+import getSet from "./queries/getSet";
+import getSets from "./queries/getSets";
 
-export type SetRaw<T = {}> = Omit<Mongoose_Set, "_id" | "currentTime" | keyof T | "user"> & (T extends { user: infer U } ? { user: U } : { user: string }) & { _id: string } & T
-
-export type Set = SetRaw<{
-    terms: Array<Term>,
-    user: { _id: string, name: string, image: string }
-}>
-
-export type SetListItem = SetRaw<
-    { user: { name: string, image: string }, termsCount: number }
->
+export type SetListItem = Awaited<ReturnType<typeof getSets>>[number]
+export type Set = NonNullable<Awaited<ReturnType<typeof getSet>>>
 
 export type InsertSet = typeof setsTable.$inferInsert;
 export type SelectSet = typeof setsTable.$inferSelect;
+
+
+
+
+

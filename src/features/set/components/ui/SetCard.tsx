@@ -1,8 +1,8 @@
 import { Avatar, Chip, Divider, Paper, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { FC } from "react";
-import LangPair from "./LangPair";
 import { SetListItem } from "../../types";
+import LangPair from "./LangPair";
 
 const SetCard: FC<{ set: SetListItem, href: string }> = ({ set, href }) => {
     return (
@@ -28,8 +28,8 @@ const SetCard: FC<{ set: SetListItem, href: string }> = ({ set, href }) => {
                     <Stack></Stack>
                     <Stack direction="row" gap={1} alignItems="center">
                         <Stack direction="row" gap={0.5} alignItems="center">
-                            <Avatar src={set.user.image} sx={{ width: 25, height: 25 }} />
-                            <Typography fontSize={12}>{set.user.name}</Typography>
+                            <Avatar src={set.user?.image} sx={{ width: 25, height: 25 }} />
+                            <Typography fontSize={12}>{set.user?.name}</Typography>
                         </Stack>
                         <Divider flexItem orientation="vertical" />
                         <Chip

@@ -59,11 +59,11 @@ const Page: FC<{}> = () => {
 
     const submit: SubmitHandler<Inputs> = async ({ terms }) => {
 
-        const res = await createTerms(terms, set?._id as string)
+        const res = await createTerms(terms, set?.id)
 
         if (res.statusCode === 200) {
             mutate()
-            router.push(`/sets/${set._id}`)
+            router.push(`/sets/${set.id}`)
         }
     }
 
@@ -97,7 +97,7 @@ const Page: FC<{}> = () => {
 
                         <Stack direction="row" gap={1} alignItems="center">
                             <Stack direction="row" gap={1} alignItems="center" >
-                                <IconButton onClick={() => router.push(`/sets/${set._id}`)} >
+                                <IconButton onClick={() => router.push(`/sets/${set.id}`)} >
                                     <ArrowBackIcon />
                                 </IconButton>
                                 <Divider orientation="vertical" flexItem />

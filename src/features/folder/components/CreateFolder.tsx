@@ -1,5 +1,6 @@
 "use client"
 
+import { SetInput } from "@/features/set/components/SetForm";
 import useModalControl from "@/hooks/useModalControl";
 import useAction from "@/lib/serverAction/useAction";
 import AddIcon from '@mui/icons-material/Add';
@@ -7,9 +8,8 @@ import { Button, ButtonProps } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
-import FolderForm from "./FolderForm";
-import { SetInput } from "@/features/set/components/SetForm";
 import SA_CreateFolder from "../actions/createFolder";
+import FolderForm from "./FolderForm";
 
 
 const CreateFolder: FC<ButtonProps> = (props) => {
@@ -24,7 +24,7 @@ const CreateFolder: FC<ButtonProps> = (props) => {
     const submit: SubmitHandler<SetInput> = async ({ name }) => {
         const res = await createFolder(name)
         if (res.statusCode === 200) {
-            router.push(`/folders/${res.payload._id}`)
+            router.push(`/folders/${res.payload.id}`)
         }
     }
 

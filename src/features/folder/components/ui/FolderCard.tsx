@@ -7,7 +7,7 @@ import { FolderListItem } from '../../types';
 const FolderCard: FC<{ folder: FolderListItem }> = ({ folder }) => {
 
     return (
-        <Paper component={Link} href={`/folders/${folder._id}`} sx={{ textDecoration: "none", width: "100%", p: 2 }}>
+        <Paper component={Link} href={`/folders/${folder.id}`} sx={{ textDecoration: "none", width: "100%", p: 2 }}>
             <Stack direction="row" justifyContent="space-between">
                 <Stack direction="row" gap={2} alignItems="center" sx={{ height: 70, }} >
                     <FolderIcon sx={{ width: 60, height: 70 }} />

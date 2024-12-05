@@ -1,22 +1,14 @@
 "use server"
 
-import { dbConnect } from "@/database/dbConnect"
-import { toSerializableObject } from "@/utils"
-import mongoose from "mongoose"
-import { User as UserModel } from "../models/UserModel"
-import { User } from "../types"
+import { db } from "@/drizzle/db"
+import { eq, getTableColumns } from "drizzle-orm"
+import { usersTable } from "../drizzle/schema"
 
-const getUserData = async (userid: mongoose.Types.ObjectId) => {
 
-    await dbConnect()
-
-    const res = await UserModel.aggregate([
-        { $match: { _id: userid } },
-        { $project: { password: 0 } }
-    ])
-
-    return toSerializableObject<User | null>(res[0] || null)
-
+const getUserData = async (userid: string) => {
+    const { password, ...userColumns } = getTableColumns(usersTable)
+    const [user] = await db.select(userColumns).from(usersTable).where(eq(usersTable.id, userid))
+    return user
 }
 
 export default getUserData

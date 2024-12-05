@@ -2,10 +2,9 @@
 
 import { Paper } from "@mui/material"
 import { FC, useState } from "react"
-import { Term as TermType } from "../types"
+import { HiddenMode, Term as TermType } from "../types"
 import EditTerm from "./EditTerm"
 import ReadTerm from "./ReadTerm"
-import { HiddenMode } from "./TermList"
 
 const Term: FC<{ term: TermType, hiddenMode: HiddenMode }> = ({ term, hiddenMode }) => {
 
@@ -20,7 +19,7 @@ const Term: FC<{ term: TermType, hiddenMode: HiddenMode }> = ({ term, hiddenMode
             {mode === "read" ? (
                 <ReadTerm {...{ setMode, term, hiddenMode }} />
             ) : (
-                <EditTerm {...{ setMode, term: { _id: term._id, term: term.term, definition: term.definition } }} />
+                <EditTerm {...{ setMode, term }} />
             )}
         </Paper>
     )

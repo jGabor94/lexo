@@ -21,7 +21,7 @@ const ChangeLogList: FC<{}> = async () => {
             <Table >
                 <TableBody>
                     {changelog.map(log => (
-                        <TableRow key={log._id}>
+                        <TableRow key={log.id}>
                             <TableCell>
                                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                                     <Stack direction="row" alignItems="center" gap={2}>

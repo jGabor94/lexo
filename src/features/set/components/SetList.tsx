@@ -8,7 +8,6 @@ import { FC } from "react";
 import { SetListItem } from "../types";
 
 const SetList: FC<{ sets: SetListItem[] }> = ({ sets }) => {
-
     const sortState = useSort([
         {
             label: "Original",
@@ -24,9 +23,10 @@ const SetList: FC<{ sets: SetListItem[] }> = ({ sets }) => {
         },
         {
             label: "CreatedAt",
-            sort: (a: SetListItem, b: SetListItem) => new Date(b.createdAt as string).getTime() - new Date(a.createdAt as string).getTime()
+            sort: (a: SetListItem, b: SetListItem) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         }
     ])
+
 
     return (
         <Stack gap={2}>
@@ -36,8 +36,8 @@ const SetList: FC<{ sets: SetListItem[] }> = ({ sets }) => {
             </Stack>
             {
                 sortState.sort(sets).map(set => (
-                    <RowSetCardLayout key={set._id}>
-                        <RowSetCardContent {...{ set, href: `/sets/${set._id}` }} />
+                    <RowSetCardLayout key={set.id}>
+                        <RowSetCardContent {...{ set, href: `/sets/${set.id}` }} />
                     </RowSetCardLayout>
                 ))
             }

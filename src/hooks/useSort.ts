@@ -1,30 +1,31 @@
-"use client"
+"use client";
 
 import { Dispatch, SetStateAction, useState } from "react";
 
-export interface SortState {
-    sort: (array: any[]) => any[],
-    sorts: { label: string, sort: ((a: any, b: any) => number) | undefined }[]
-    reverse: boolean,
-    setReverse: Dispatch<SetStateAction<boolean>>,
-    selectedSort: number,
-    setSelectedSort: Dispatch<SetStateAction<number>>
+export interface SortOption<T> {
+    label: string;
+    sort: (a: T, b: T) => number;
 }
 
-const useSort = (sorts: any): SortState => {
+export interface SortState<T> {
+    sort: (array: T[]) => T[];
+    sorts: SortOption<T>[];
+    reverse: boolean;
+    setReverse: Dispatch<SetStateAction<boolean>>;
+    selectedSort: number;
+    setSelectedSort: Dispatch<SetStateAction<number>>;
+}
 
+const useSort = <T>(sorts: SortOption<T>[]): SortState<T> => {
+    const [reverse, setReverse] = useState(false);
+    const [selectedSort, setSelectedSort] = useState(0);
 
-    const [reverse, setReverse] = useState(false)
-    const [selectedSort, setSelectedSort] = useState(0)
-
-    const sort = (array: any[]) => {
-        const sorted = array.sort(sorts[selectedSort].sort);
+    const sort = (array: T[]): T[] => {
+        const sorted = [...array].sort(sorts[selectedSort].sort);
         return reverse ? sorted.reverse() : sorted;
     };
 
-    return { sort, sorts, reverse, setReverse, selectedSort, setSelectedSort }
+    return { sort, sorts, reverse, setReverse, selectedSort, setSelectedSort };
+};
 
-
-}
-
-export default useSort
+export default useSort;

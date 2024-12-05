@@ -5,9 +5,9 @@ import useAction from '@/lib/serverAction/useAction'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import { IconButton, Tooltip } from '@mui/material'
 import { FC, useState } from 'react'
-import { ChangeLog } from '../types'
+import { SelectChangeLog } from '../types'
 
-const DeleteChangeLog: FC<{ log: ChangeLog }> = ({ log }) => {
+const DeleteChangeLog: FC<{ log: SelectChangeLog }> = ({ log }) => {
 
     const [isDelete, setIsDelete] = useState(false)
 
@@ -15,15 +15,15 @@ const DeleteChangeLog: FC<{ log: ChangeLog }> = ({ log }) => {
         200: ({ severity: "success", content: "Deletion successful 🙂" })
     })
 
-    const handleDelete = async (_id: string) => {
+    const handleDelete = async (id: string) => {
         setIsDelete(true)
-        await deleteChangeLog(_id)
+        await deleteChangeLog(id)
         setIsDelete(false)
     }
 
     return (
         <Tooltip title="Delete">
-            <IconButton onClick={() => handleDelete(log._id)} disabled={isDelete}>
+            <IconButton onClick={() => handleDelete(log.id)} disabled={isDelete}>
                 <HighlightOffIcon />
             </IconButton>
         </Tooltip>

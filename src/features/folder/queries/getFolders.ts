@@ -1,21 +1,37 @@
 "use server"
 
-import { dbConnect } from "@/database/dbConnect"
-import { toSerializableObject } from "@/utils"
-import mongoose from "mongoose"
-import { Folder } from "../models/FolderModel"
-import { FolderListItem } from "../types"
+import { db } from "@/drizzle/db"
+import { setToFolderTable } from "@/drizzle/schema"
+import { desc, eq, sql } from "drizzle-orm"
+import { foldersTable } from "../drizzle/schema"
 
-export default async (userid: mongoose.Types.ObjectId) => {
+export default async (userid: string) => {
 
-    await dbConnect()
+    const folders = await db.query.foldersTable.findMany({
+        where: eq(foldersTable.userid, userid),
+        columns: {
+            userid: false,
+        },
+        with: {
+            sets: {
+                with: {
+                    set: {
+                        columns: {
+                            id: true
+                        }
+                    }
+                }
+            }
+        },
+        extras: {
+            setsCount: sql<number>`(SELECT COUNT(*) FROM ${setToFolderTable} AS t WHERE t.folderid = ${foldersTable.id})`.as('setsCount')
+        },
+        orderBy: desc(foldersTable.createdAt)
 
-    const res = await Folder.aggregate([
-        { $match: { user: userid } },
-        { $addFields: { setsCount: { $size: '$sets' } } },
-        { $sort: { createdAt: -1 } },
-    ])
+    })
 
-    return toSerializableObject<FolderListItem[]>(res)
+    return folders.map(folder => ({
+        ...folder, sets: folder.sets.map(junctionRow => junctionRow.set.id)
+    }))
 
 }

@@ -1,13 +1,11 @@
 "use server"
 
-import { dbConnect } from "@/database/dbConnect"
-import { toSerializableObject } from "@/utils"
+import { db } from "@/drizzle/db"
+import { desc } from "drizzle-orm"
 import { unstable_cache } from "next/cache"
-import { ChangeLog as ChangeLogModel } from "../models/ChangeLogModel"
-import { ChangeLog } from "../types"
+import { changeLogsTable } from "../drizzle/schema"
 
-export default unstable_cache(async () => {
-    await dbConnect()
-    const res = await ChangeLogModel.find().sort({ _id: -1 })
-    return toSerializableObject<ChangeLog[]>(res)
-}, ["changeLog"], { tags: ["changeLog"] })
+export default unstable_cache(
+    async () => await db.select().from(changeLogsTable).orderBy(desc(changeLogsTable.createdAt)),
+    ["changeLog"], { tags: ["changeLog"] }
+)

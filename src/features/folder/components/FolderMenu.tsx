@@ -5,8 +5,8 @@ import useMenuControl from "@/hooks/useMenuControl"
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { Button, Menu } from "@mui/material"
 import { FC, Fragment } from "react"
-import DeleteFolder from "./DeleteFolder"
 import { Folder } from "../types"
+import DeleteFolder from "./DeleteFolder"
 
 const FolderMenu: FC<{ folder: Folder }> = ({ folder }) => {
 

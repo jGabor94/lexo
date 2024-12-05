@@ -1,11 +1,11 @@
 "use client"
 
+import { SetListItem } from '@/features/set/types'
 import { getDate } from '@/utils'
 import { Avatar, Chip, Divider, Stack, Typography } from '@mui/material'
 import Link, { LinkProps } from 'next/link'
 import { FC } from 'react'
 import LangPair from '../LangPair'
-import { SetListItem } from '@/features/set/types'
 
 interface props extends LinkProps {
     set: SetListItem
@@ -32,7 +32,7 @@ const RowSetCardContent: FC<props> = ({ set, ...linkProps }) => (
                     whiteSpace: "nowrap"
                 }}>{set.name}</Typography>
 
-                <Typography fontSize={12} sx={{ textWrap: "nowrap" }}>Created: {getDate(set.createdAt as string, false)}</Typography>
+                <Typography fontSize={12} sx={{ textWrap: "nowrap" }}>Created: {getDate(set.createdAt, false)}</Typography>
             </Stack>
             <Stack
                 direction="row"
@@ -51,8 +51,8 @@ const RowSetCardContent: FC<props> = ({ set, ...linkProps }) => (
 
                 <Stack direction="row" gap={1} alignItems="center" sx={{ height: "fit-content", alignSelf: "flex-end" }}>
                     <Stack direction="row" gap={0.5} alignItems="center">
-                        <Avatar src={set.user.image} sx={{ width: 25, height: 25 }} />
-                        <Typography fontSize={12} sx={{ textWrap: "nowrap" }}>{set.user.name}</Typography>
+                        <Avatar src={set.user?.image} sx={{ width: 25, height: 25 }} />
+                        <Typography fontSize={12} sx={{ textWrap: "nowrap" }}>{set.user?.name}</Typography>
                     </Stack>
                     <Divider flexItem orientation="vertical" />
                     <Chip

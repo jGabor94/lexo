@@ -1,23 +1,20 @@
 "use server"
 
-import { dbConnect } from "@/database/dbConnect"
+import { db } from "@/drizzle/db"
 import { isLogged } from "@/features/authentication/utils"
 import { aclMiddleware } from "@/features/authorization/utils"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
-import { Session } from "next-auth"
 import { revalidateTag } from "next/cache"
-import { ChangeLog } from "../models/ChangeLogModel"
+import { changeLogsTable } from "../drizzle/schema"
 
 interface Request {
-    params: [data: { description: string, date: Date | string | null }],
-    session: Session
+    params: [data: { description: string, date: Date }],
 }
 
-const SA_CreateChangeLog = createServerAction(isLogged, aclMiddleware({ admin: true }, "create"), async ({ params, session }: Request) => {
+const SA_CreateChangeLog = createServerAction(isLogged, aclMiddleware({ admin: true }, "create"), async ({ params }: Request) => {
     const [data] = params
-    await dbConnect()
-    await ChangeLog.create(data)
+    await db.insert(changeLogsTable).values(data)
     revalidateTag("changeLog")
     return createServerActionResponse()
 })

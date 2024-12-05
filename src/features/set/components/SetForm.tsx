@@ -5,20 +5,21 @@ import SubmitButton from "@/components/SubmitButton"
 import ModalOverlay from "@/components/ui/ModalOverlay"
 import { languages } from "@/constants/languages"
 import { ModalControl } from "@/hooks/useModalControl"
+import { LanguageCode } from "@/lib/language_tools/types"
 import { FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
 import { FC, Fragment } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 
 
-export type SetInput = {
+export interface SetInput {
     name: string,
-    preferredTermLang: string,
-    preferredDefinitionLang: string
+    preferredTermLang: LanguageCode,
+    preferredDefinitionLang: LanguageCode
 }
 
 interface props {
     modalControl: ModalControl,
-    initValues: SetInput,
+    initValues?: SetInput,
     onSubmit: SubmitHandler<any>,
     submitLabel: string,
     label: string
@@ -26,7 +27,11 @@ interface props {
 
 const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, label }) => {
 
-    const { handleSubmit, formState, reset, control } = useForm<SetInput>({ mode: "all", defaultValues: initValues });
+
+
+    const { handleSubmit, formState, reset, control, register } = useForm<SetInput>({
+        mode: "all", defaultValues: initValues
+    });
 
     const closeModal = () => {
         modalControl.handleClose()
@@ -45,10 +50,8 @@ const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, l
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Stack gap={2}>
                             <Typography fontSize={23}>{label}</Typography>
-                            <Controller control={control} rules={{ required: true }} name={`name`} render={
-                                ({ field }) => (
-                                    <TextField {...field} label="Set name" />
-                                )} />
+
+                            <TextField {...register("name", { required: true })} label="Set name" />
 
                             <Stack direction="row" gap={3}>
                                 <Controller control={control} rules={{ required: true }} name={`preferredTermLang`} render={
@@ -57,6 +60,7 @@ const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, l
                                             <InputLabel id="term-lang-label">Term lang</InputLabel>
                                             <Select
                                                 {...field}
+                                                value={field.value || ""}
                                                 labelId="term-lang-labe"
                                                 label="Term lang"
                                             >
@@ -73,6 +77,7 @@ const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, l
                                             <InputLabel id="term-lang-label">Definition lang</InputLabel>
                                             <Select
                                                 {...field}
+                                                value={field.value || ""}
                                                 labelId="term-lang-labe"
                                                 label="Definition lang"
                                             >

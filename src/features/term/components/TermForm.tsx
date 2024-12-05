@@ -11,14 +11,13 @@ import { ChangeEvent, FC, useCallback, useState } from "react";
 import { Controller, UseFieldArrayRemove, UseFormReturn } from "react-hook-form";
 import { TermInput } from "../types";
 
-const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseFieldArrayRemove, prefix: string }> = ({ form: { control, getValues, setValue, formState }, prefix }) => {
+
+const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseFieldArrayRemove, prefix: string }> = ({ form: { control, getValues, setValue, }, prefix }) => {
 
     const prefixRaw = prefix.substring(0, prefix.length - 1)
 
     const [options, setOptions] = useState<Array<string>>([]);
-
     const [definitionInputValue, setDefinitionInputValue] = useState("")
-
     const [dropDownOpen, setDropDownOpen] = useState(false)
 
     const wrappedTtranslate = async ({ term, definition }: TermInput) => {
@@ -34,9 +33,9 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
         setValue(`${prefix}${section}.lang`, lang)
 
         state[section].lang = lang
-        state[section].content = value
+        state[section].content = [value]
 
-        wrappedTtranslate(state)
+        wrappedTtranslate({ ...state, [section]: { ...state[section], content: value } })
 
 
     }
@@ -63,6 +62,8 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
         setDropDownOpen(false)
         if (reason === "createOption" && newValue.length === 1) change(newValue[0], "definition")
     }
+
+
 
     return (
         <Stack sx={{

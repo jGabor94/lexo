@@ -19,7 +19,7 @@ const DeleteFolder: FC<{ folder: Folder }> = ({ folder }) => {
     })
 
     const { controll, trigger: triggerDelete } = useConfirmControll(async () => {
-        const res = await deleteFolder(folder._id)
+        const res = await deleteFolder(folder.id)
         if (res.statusCode === 200) router.push("/folders")
     })
 

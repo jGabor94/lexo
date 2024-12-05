@@ -23,7 +23,7 @@ const Page: FC<{}> = () => {
                     </Stack>
                 </TextLine>
 
-                <Stack direction="row" gap={0.5} component={Link} href={`/sets/${set._id}`} sx={{ textWrap: "nowrap", color: "text.primary", textDecoration: "none" }}>
+                <Stack direction="row" gap={0.5} component={Link} href={`/sets/${set.id}`} sx={{ textWrap: "nowrap", color: "text.primary", textDecoration: "none" }}>
                     <ArrowBackIcon />
                     <Typography>Back to the set</Typography>
                 </Stack>
@@ -31,7 +31,7 @@ const Page: FC<{}> = () => {
 
             <Stack gap={2} sx={{ flexDirection: { xs: "column", sm: "row" } }}>
 
-                <Link href={`/sets/${set._id}/flashcards/free`} legacyBehavior>
+                <Link href={`/sets/${set.id}/flashcards/free`} legacyBehavior>
                     <Paper variant='elevation' component={Stack} sx={{
                         alignItems: "center",
                         justifyContent: "center",
@@ -42,7 +42,7 @@ const Page: FC<{}> = () => {
                         Free mode
                     </Paper>
                 </Link>
-                <Link href={`/sets/${set._id}/flashcards/progress`} legacyBehavior>
+                <Link href={`/sets/${set.id}/flashcards/progress`} legacyBehavior>
                     <Paper variant='elevation' component={Stack} sx={{
                         alignItems: "center",
                         justifyContent: "center",

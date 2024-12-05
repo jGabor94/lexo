@@ -1,7 +1,6 @@
 "use client"
 
-import SA_changeFavorite from '@/features/term/actions/changeFavorite';
-import useUserData from '@/features/user/hooks/useUserData';
+import SA_ChangeFavorite from '@/features/set/actions/changeFavorite';
 import GradeIcon from '@mui/icons-material/Grade';
 import GradeOutlinedIcon from '@mui/icons-material/GradeOutlined';
 import { Stack, Typography } from '@mui/material';
@@ -10,14 +9,13 @@ import useSet from '../hooks/useSet';
 
 const FavoriteButton: FC<{}> = () => {
 
-    const { data: userData } = useUserData()
-    const { set } = useSet()
+    const { set, favorite } = useSet()
 
-    const [isFavorite, setIsFavorite] = useState(userData?.favoriteSets.includes(set._id) ? true : false)
+    const [isFavorite, setIsFavorite] = useState(favorite)
 
     const handleClick = () => {
         setIsFavorite(!isFavorite)
-        SA_changeFavorite(set._id, !isFavorite)
+        SA_ChangeFavorite(set?.id as string, !isFavorite)
     }
 
     return (

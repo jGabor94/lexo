@@ -9,10 +9,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import { Paper, Stack, ToggleButton, Typography } from "@mui/material";
 import { FC, MouseEvent, useState } from "react";
-import { Term as TermType } from "../types";
+import { HiddenMode, Term as TermType } from "../types";
 import Term from "./Term";
-
-export type HiddenMode = "terms" | "definitions" | null
 
 const TermList: FC<{}> = () => {
 
@@ -51,7 +49,7 @@ const TermList: FC<{}> = () => {
         <Stack gap={3} justifyContent="center" alignItems="center" mt={4}>
             <Stack gap={1} width="100%">
                 {withoutProgessTerms.map(term => (
-                    <Term key={term._id}{...{ term, hiddenMode }} />
+                    <Term key={term.id}{...{ term, hiddenMode }} />
                 ))}
             </Stack>
 
@@ -71,7 +69,7 @@ const TermList: FC<{}> = () => {
 
 
                     {stillLearningTerms.map(term => (
-                        <Term key={term._id}{...{ term, hiddenMode }} />
+                        <Term key={term.id}{...{ term, hiddenMode }} />
                     ))}
                 </Stack>
             )
@@ -86,7 +84,7 @@ const TermList: FC<{}> = () => {
                             </Stack>
                         </TextLine>
                         {learnedTerms.map(term => (
-                            <Term key={term._id}{...{ term, hiddenMode }} />
+                            <Term key={term.id}{...{ term, hiddenMode }} />
                         ))}
                     </Stack>
                 )

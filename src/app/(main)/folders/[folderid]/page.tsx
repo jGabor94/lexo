@@ -4,16 +4,16 @@ import RemoveFromFolder from "@/features/folder/components/RemoveFromFolder";
 import getFolder from "@/features/folder/queries/getFolder";
 import CreateSet from "@/features/set/components/CreateSet";
 import { RowSetCardContent, RowSetCardLayout, RowSetCardMenu } from "@/features/set/components/ui/rowSetCard";
-import { createObjectId } from "@/utils";
 import FolderIcon from '@mui/icons-material/Folder';
 import { Paper, Stack, Typography } from "@mui/material";
 import { notFound } from "next/navigation";
 import { FC } from "react";
 
+export const revalidate = 0
+
 const Page: FC<{ params: { folderid: string } }> = async ({ params }) => {
 
-    const folder = await getFolder(createObjectId(params.folderid))
-
+    const folder = await getFolder(params.folderid)
     if (!folder) notFound()
 
     return (
@@ -31,8 +31,8 @@ const Page: FC<{ params: { folderid: string } }> = async ({ params }) => {
             </Stack>
             <Stack mt={4} gap={3}>
                 {folder.sets.length > 0 ? folder.sets.map((set) => (
-                    <RowSetCardLayout key={set._id}>
-                        <RowSetCardContent {...{ set, href: `/sets/${set._id}` }} />
+                    <RowSetCardLayout key={set.id}>
+                        <RowSetCardContent {...{ set, href: `/sets/${set.id}` }} />
                         <RowSetCardMenu sx={{ mr: -1, }}>
                             <RemoveFromFolder set={set} />
                         </RowSetCardMenu>

@@ -24,7 +24,7 @@ const ChangeLogForm: FC<{}> = () => {
 
         const res = await createChangeLog({
             description,
-            date: date ? date.toISOString() : null
+            date: date ? new Date(date.toISOString()) : new Date()
         })
 
         if (res.statusCode === 200) {

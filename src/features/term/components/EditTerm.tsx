@@ -8,17 +8,17 @@ import useAlert from "@/hooks/useAlert";
 import useAction from "@/lib/serverAction/useAction";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import SaveIcon from '@mui/icons-material/Save';
-import { Box, Divider, IconButton, Stack, Tooltip, useTheme } from "@mui/material";
-import { Dispatch, FC, Fragment, SetStateAction, useState } from "react";
+import { Box, Divider, IconButton, Stack, Tooltip } from "@mui/material";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { TermInput } from "../types";
+import { Term, TermInput } from "../types";
 import TermForm from "./TermForm";
 
 const EditTerm: FC<{
-    term: TermInput & { _id: string },
+    term: Term,
     setMode: Dispatch<SetStateAction<"read" | "edit">>,
 }
-> = ({ term: { _id: termid, ...term }, setMode }) => {
+> = ({ term: { id: termid, ...term }, setMode }) => {
 
     const [loading, setLoading] = useState(false)
 
@@ -32,11 +32,13 @@ const EditTerm: FC<{
     })
 
     const submit: SubmitHandler<TermInput> = async (data) => {
+
         const res = await updateTerm(termid, data)
         if (res.statusCode === 200) {
             mutate()
             setMode("read")
         }
+
     }
 
     const handleDelete = async () => {
@@ -55,9 +57,7 @@ const EditTerm: FC<{
 
     }
 
-    const theme = useTheme()
-
-    return <Fragment>
+    return <form onSubmit={form.handleSubmit(submit)}>
         <LinearLoading {...{ loading: loading || form.formState.isSubmitSuccessful }} />
         <Stack direction="row" gap={2} alignItems="center">
             <TermForm {...{ form, prefix: "" }} />
@@ -72,14 +72,14 @@ const EditTerm: FC<{
                 </Tooltip>
                 <Tooltip title="Save">
                     <Box>
-                        <IconButton type="submit" onClick={form.handleSubmit(submit)} disabled={!form.formState.isValid || form.formState.isSubmitting || form.formState.isSubmitSuccessful || loading} >
+                        <IconButton type="submit" disabled={!form.formState.isValid || form.formState.isSubmitting || form.formState.isSubmitSuccessful || loading} >
                             <SaveIcon />
                         </IconButton >
                     </Box>
                 </Tooltip>
             </Stack>
         </Stack>
-    </Fragment>
+    </form>
 
 
 

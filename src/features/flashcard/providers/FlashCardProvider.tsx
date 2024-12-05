@@ -39,8 +39,8 @@ const FlashCardProvider: FC<props> = ({ terms, onCompleted, children }) => {
     const handleSuccess = () => {
 
         setSuccessItems([...successItems, {
-            progressid: terms[index].progress?._id ? terms[index].progress._id : null,
-            termid: terms[index]._id,
+            progressid: terms[index].progress?.id ? terms[index].progress.id : null,
+            termid: terms[index].id,
             status: terms[index].progress?.status ? terms[index].progress.status < 5 ? terms[index].progress.status + 1 : 5 : 1
         }]);
 
@@ -51,8 +51,8 @@ const FlashCardProvider: FC<props> = ({ terms, onCompleted, children }) => {
     const handleWrong = () => {
 
         setWrongItems([...wrongItems, {
-            progressid: terms[index].progress?._id ? terms[index].progress._id : null,
-            termid: terms[index]._id,
+            progressid: terms[index].progress?.id ? terms[index].progress.id : null,
+            termid: terms[index].id,
             status: terms[index].progress?.status && (terms[index].progress.status > 0) ? terms[index].progress.status - 1 : 0
         }]);
 
@@ -62,7 +62,7 @@ const FlashCardProvider: FC<props> = ({ terms, onCompleted, children }) => {
 
     const handleUndo = () => {
 
-        const prevTermId = terms[index - 1]._id;
+        const prevTermId = terms[index - 1].id;
         setSuccessItems((prev) => prev.filter((result) => result.termid !== prevTermId));
         setWrongItems((prev) => prev.filter((result) => result.termid !== prevTermId));
         setIndex(index - 1);

@@ -6,7 +6,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { FormControl, MenuItem, Select, Stack } from '@mui/material';
 import { FC } from 'react';
 
-const Sort: FC<{ sortState: SortState }> = ({ sortState: { reverse, setReverse, sorts, setSelectedSort } }) => {
+const Sort: FC<{ sortState: SortState<any> }> = ({ sortState: { reverse, setReverse, sorts, setSelectedSort } }) => {
 
     return (
         <Stack direction="row" alignItems="center" gap={1}>

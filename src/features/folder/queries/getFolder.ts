@@ -1,89 +1,48 @@
 "use server"
 
-import { dbConnect } from "@/database/dbConnect"
-import { toSerializableObject } from "@/utils"
-import mongoose from "mongoose"
-import { Folder as FolderModel } from "../models/FolderModel"
-import { Folder } from "../types"
+import { db } from "@/drizzle/db"
+import { setsTable, termsTable } from "@/drizzle/schema"
+import { eq, sql } from "drizzle-orm"
+import { foldersTable } from "../drizzle/schema"
 
-const getFolder = async (folderid: mongoose.Types.ObjectId) => {
+export default async (folderid: string) => {
 
-    await dbConnect()
-
-    const res = await FolderModel.aggregate([
-        { $match: { _id: folderid } },
-        {
-            $lookup: {
-                from: 'users',
-                localField: 'user',
-                foreignField: '_id',
-                as: 'user'
-            }
-        },
-        {
-            $lookup: {
-                from: 'sets',
-                localField: 'sets',
-                foreignField: '_id',
-                as: 'sets',
-                pipeline: [
-                    {
-                        $lookup: {
-                            from: 'users',
-                            localField: 'user',
-                            foreignField: '_id',
-                            as: 'user'
-                        }
-                    },
-                    { $unwind: '$user' },
-                    {
-                        $lookup: {
-                            from: 'terms',
-                            localField: '_id',
-                            foreignField: 'set',
-                            as: 'terms'
-                        }
-                    },
-                    { $addFields: { termsCount: { $size: '$terms' } } },
-                    {
-                        $replaceRoot: {
-                            newRoot: {
-                                $mergeObjects: [
-                                    "$$ROOT",
-                                    {
-                                        "user": {
-                                            name: "$user.name",
-                                            image: "$user.image",
-                                        }
-                                    }
-                                ]
+    /*
+        const res = await db.select().from(setToFolderTable)
+            .where(sql`${foldersTable.id} IN (SELECT setid FROM ${setToFolderTable} WHERE ${setToFolderTable.userid} = ${userid})`)
+    */
+    const folder = await db.query.foldersTable.findFirst({
+        where: eq(foldersTable.id, folderid),
+        with: {
+            sets: {
+                with: {
+                    set: {
+                        with: {
+                            user: {
+                                columns: {
+                                    name: true,
+                                    image: true
+                                }
                             }
+                        },
+                        columns: {
+                            userid: false,
+                        },
+                        extras: {
+                            termsCount: sql<number>`(SELECT COUNT(*) FROM ${termsTable} AS t WHERE t.setid = ${setsTable.id})`.as('termsCount')
                         }
-                    },
-                ]
-            }
-        },
-        { $unwind: '$user' },
-        {
-            $replaceRoot: {
-                newRoot: {
-                    $mergeObjects: [
-                        "$$ROOT",
-                        {
-                            "user": {
-                                name: "$user.name",
-                                image: "$user.image"
-                            }
-                        }
-                    ]
+                    }
+
                 }
+
             }
         },
-    ])
+        columns: {
+            userid: false
+        }
+    })
 
 
-    return toSerializableObject<Folder | null>(res[0] || null)
-
+    return folder && { ...folder, sets: folder.sets.map(junctionRow => junctionRow.set) }
 }
 
-export default getFolder

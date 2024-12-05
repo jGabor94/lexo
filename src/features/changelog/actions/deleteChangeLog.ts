@@ -1,23 +1,23 @@
 "use server"
 
-import { dbConnect } from "@/database/dbConnect"
+import { db } from "@/drizzle/db"
 import { isLogged } from "@/features/authentication/utils"
 import { aclMiddleware } from "@/features/authorization/utils"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
+import { eq } from "drizzle-orm"
 import { Session } from "next-auth"
 import { revalidateTag } from "next/cache"
-import { ChangeLog } from "../models/ChangeLogModel"
+import { changeLogsTable } from "../drizzle/schema"
 
 interface Request {
-    params: [_id: string],
+    params: [changelogid: string],
     session: Session
 }
 
 const SA_DeleteChangeLog = createServerAction(isLogged, aclMiddleware({ admin: true }, "delete"), async ({ params }: Request) => {
-    const [_id] = params
-    await dbConnect()
-    await ChangeLog.deleteOne({ _id })
+    const [changelogid] = params
+    await db.delete(changeLogsTable).where(eq(changeLogsTable.id, changelogid))
     revalidateTag("changeLog")
     return createServerActionResponse()
 })

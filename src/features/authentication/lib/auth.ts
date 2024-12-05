@@ -2,7 +2,7 @@ import { db } from "@/drizzle/db"
 import { usersTable } from "@/drizzle/schema"
 import bcrypt from "bcrypt"
 import { eq } from "drizzle-orm"
-import NextAuth, { Session } from "next-auth"
+import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google"
 import { authConfig } from "./auth.config"
@@ -35,28 +35,29 @@ export const { handlers: { GET, POST }, auth, signIn, signOut, unstable_update }
                 } else {
                     return user
                 }
-
-
             },
         })
     ],
     callbacks: {
         jwt: async ({ token, user, profile, trigger, session }) => {
-
             let userData = user
-            console.log({ userData })
+
+
             if (trigger === "update" && session) {
-                console.log("flag")
                 return { ...token, userData: { ...session.user } }
             }
-
-            if (userData) return { ...token, userData: { id: userData.id, username: userData.username, roles: userData.roles, email: userData.email } }
+            if (userData) return {
+                ...token, userData: {
+                    id: userData.id,
+                    username: user.username,
+                    roles: userData.roles,
+                    email: user.email
+                }
+            }
             return token
         },
 
         session: async ({ session, token }) => {
-            const asd: Session = { ...session, user: { ...session.user, ...token.userData } }
-            console.log({ session })
             return { ...session, user: { ...session.user, ...token.userData } }
         },
 

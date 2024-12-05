@@ -8,8 +8,8 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
-import SetForm, { SetInput } from "./SetForm";
 import useSet from '../hooks/useSet';
+import SetForm, { SetInput } from "./SetForm";
 
 
 const EditSet: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
@@ -23,7 +23,7 @@ const EditSet: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
 
     const submit: SubmitHandler<SetInput> = async (data) => {
 
-        const res = await updateSet(set._id, data)
+        const res = await updateSet(set.id, data)
 
         if (res.statusCode === 200) {
             mutate()

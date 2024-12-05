@@ -1,31 +1,31 @@
 "use server"
 
-import { dbConnect } from "@/database/dbConnect"
+import { db } from "@/drizzle/db"
 import { isLogged } from "@/features/authentication/utils"
-import { User } from "@/features/user/models/UserModel"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
+import { and, eq } from "drizzle-orm"
 import { Session } from "next-auth"
 import { revalidateTag } from "next/cache"
+import { favoriteSetsTable } from "../drizzle/schema"
 
 interface Request {
     session: Session,
     params: [setid: string, isFavorite: boolean]
 }
 
-const SA_changeFavorite = createServerAction(isLogged, async ({ session, params }: Request) => {
+const SA_ChangeFavorite = createServerAction(isLogged, async ({ session, params }: Request) => {
 
     const [setid, isFavorite] = params
 
-    await dbConnect()
     if (isFavorite) {
-        await User.updateOne({ _id: session.user._id }, { $addToSet: { favoriteSets: [setid] } })
+        await db.insert(favoriteSetsTable).values({ userid: session.user.id, setid })
     } else {
-        await User.updateOne({ _id: session.user._id }, { $pull: { favoriteSets: setid } })
+        await db.delete(favoriteSetsTable).where(and(eq(favoriteSetsTable.userid, session.user.id), eq(favoriteSetsTable.setid, setid)));
     }
     revalidateTag("sets")
 
     return createServerActionResponse()
 })
 
-export default SA_changeFavorite
+export default SA_ChangeFavorite

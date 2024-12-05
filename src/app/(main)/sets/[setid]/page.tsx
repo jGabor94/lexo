@@ -40,7 +40,7 @@ const Page: FC<{}> = () => {
                     {isOwner && (
                         <Stack direction="row" gap={2} sx={{ width: "fit-content" }}>
                             <SetMenu />
-                            <Button component={Link} href={`/sets/${set._id}/terms/create`} variant="contained" startIcon={<AddIcon sx={{ color: "primary.contrastText" }} />}>
+                            <Button component={Link} href={`/sets/${set.id}/terms/create`} variant="contained" startIcon={<AddIcon sx={{ color: "primary.contrastText" }} />}>
                                 Create Terms
                             </Button>
                         </Stack>
@@ -52,13 +52,13 @@ const Page: FC<{}> = () => {
                         <Stack>
                             <Typography fontSize={12}>Created by</Typography>
                             <Typography fontSize={15} fontWeight={500}>{set.user.name}</Typography>
-                            <Typography fontSize={12}>{getDate(set.createdAt as string)}</Typography>
+                            <Typography fontSize={12}>{getDate(set.createdAt)}</Typography>
                         </Stack>
                     </Stack>
                     <Typography>Term number: {set.terms.length}</Typography>
                 </Stack>
             </Stack>
-            <Link href={`/sets/${set._id}/flashcards`} legacyBehavior>
+            <Link href={`/sets/${set.id}/flashcards`} legacyBehavior>
                 <Paper sx={{ width: "fit-content", p: 3, cursor: "pointer" }} >
                     <Stack direction="row" gap={1} alignItems="center">
                         <StyleOutlinedIcon sx={{ width: 40, height: 40 }} />

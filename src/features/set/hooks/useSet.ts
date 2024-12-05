@@ -12,14 +12,13 @@ const useSet = () => {
 
     const { data: userData } = useUserData()
 
-    const { data: set, mutate, isLoading } = useSWR(["set", setid as string], async ([key, setid]) => {
+    const { data: setData, mutate, isLoading } = useSWR(["setData", setid as string], async ([key, setid]) => {
         const res = await SA_GetSet(setid)
         return res.payload
     }, { revalidateOnMount: false })
+    const isOwner = setData?.set?.user.id === userData?.id
 
-    const isOwner = set?.user._id === userData?._id
-
-    return { set: set as Set, mutate, isLoading, isOwner }
+    return { set: setData?.set as Set, favorite: setData?.favorite, mutate, isLoading, isOwner }
 }
 
 export default useSet

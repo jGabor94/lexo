@@ -1,65 +1,21 @@
-"use server"
+import { db } from "@/drizzle/db";
+import { termsTable, usersTable } from "@/drizzle/schema";
+import { desc, eq, getTableColumns, sql } from "drizzle-orm";
+import { favoriteSetsTable, setsTable } from "../drizzle/schema";
 
-import { dbConnect } from "@/database/dbConnect"
-import { User } from "@/features/user/models/UserModel"
-import { toSerializableObject } from "@/utils"
-import { SetListItem } from "../types"
+const { userid: _, ...setsTableColumns } = getTableColumns(setsTable)
+const { image, name } = getTableColumns(usersTable)
 
-export default async (pipeline: any[]) => {
+export default (userid: string) => db.select({
+    ...setsTableColumns,
+    user: { image, name },
+    termsCount: db.$count(termsTable, eq(setsTable.id, termsTable.setid))
+})
+    .from(setsTable)
+    .where(sql`${setsTable.id} IN (SELECT setid FROM ${favoriteSetsTable} WHERE ${favoriteSetsTable.userid} = ${userid})`)
+    .leftJoin(usersTable, eq(setsTable.userid, usersTable.id))
+    .orderBy(desc(setsTable.createdAt))
+    .$dynamic()
 
-    await dbConnect()
 
-    const res = await User.aggregate([
-        ...pipeline,
-        {
-            $lookup: {
-                from: 'sets',
-                localField: 'favoriteSets',
-                foreignField: '_id',
-                as: 'favoriteSets',
-                pipeline: [
-                    {
-                        $lookup: {
-                            from: 'users',
-                            localField: 'user',
-                            foreignField: '_id',
-                            as: 'user'
-                        }
-                    },
-                    { $unwind: "$user" },
-                    {
-                        $lookup: {
-                            from: 'terms',
-                            localField: '_id',
-                            foreignField: 'set',
-                            as: 'terms'
-                        }
-                    },
-                    { $addFields: { termsCount: { $size: '$terms' } } },
-                    {
-                        $replaceRoot: {
-                            newRoot: {
-                                $mergeObjects: [
-                                    "$$ROOT",
-                                    {
-                                        "user": {
-                                            name: "$user.name",
-                                            image: "$user.image",
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    { $project: { terms: 0 } }
-                ]
-            }
-        },
-        { $sort: { createdAt: -1 } },
-        { $project: { "favoriteSets.sets": 0 } }
-    ])
-
-    return toSerializableObject<SetListItem[]>(res[0].favoriteSets)
-
-}
 

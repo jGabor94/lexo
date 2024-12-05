@@ -22,10 +22,11 @@ const CreateSet: FC<ButtonProps> = (props) => {
 
     const submit: SubmitHandler<SetInput> = async (data) => {
 
+
         const res = await createSet(data, folderid)
 
         if (res.statusCode === 200) {
-            router.push(`/sets/${res.payload._id}`)
+            router.push(`/sets/${res.payload.id}`)
         }
 
     }
@@ -39,7 +40,6 @@ const CreateSet: FC<ButtonProps> = (props) => {
             <SetForm
                 modalControl={modalControl}
                 onSubmit={submit}
-                initValues={{ name: "", preferredTermLang: "", preferredDefinitionLang: "" }}
                 submitLabel="Create"
                 label="Create set" />
         </Fragment >
