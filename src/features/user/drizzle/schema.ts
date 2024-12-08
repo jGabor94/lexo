@@ -1,11 +1,9 @@
-import { favoriteSetsTable, setsTable } from "@/drizzle/schema";
 import { createdAt, updatedAt } from "@/drizzle/schemaTypes";
-import { foldersTable } from "@/features/folder/drizzle/schema";
-import { relations, sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { integer, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
 import { AdapterAccountType } from "next-auth/adapters";
 
-export const usersTable = pgTable("users", {
+export const users = pgTable("user", {
     id: text("id")
         .primaryKey()
         .$defaultFn(() => crypto.randomUUID()),
@@ -21,10 +19,10 @@ export const usersTable = pgTable("users", {
     updatedAt,
 });
 
-export const accountsTable = pgTable("account", {
+export const accounts = pgTable("account", {
     userId: text("userId")
         .notNull()
-        .references(() => usersTable.id, { onDelete: "cascade" }),
+        .references(() => users.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccountType>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
@@ -42,10 +40,3 @@ export const accountsTable = pgTable("account", {
         }),
     })
 )
-
-export const usersTableRelations = relations(usersTable, ({ many }) => ({
-    sets: many(setsTable),
-    folders: many(foldersTable),
-    favorites: many(favoriteSetsTable, { relationName: "favorieSetsUsers" })
-}));
-

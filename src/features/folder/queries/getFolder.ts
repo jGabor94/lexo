@@ -1,9 +1,8 @@
 "use server"
 
 import { db } from "@/drizzle/db"
-import { setsTable, termsTable } from "@/drizzle/schema"
+import { foldersTable, setsTable, termsTable } from "@/drizzle/schema"
 import { eq, sql } from "drizzle-orm"
-import { foldersTable } from "../drizzle/schema"
 
 export default async (folderid: string) => {
 

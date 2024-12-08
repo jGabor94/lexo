@@ -1,13 +1,13 @@
 "use server"
 
 import { db } from "@/drizzle/db"
+import { favoriteSetsTable } from "@/drizzle/schema"
 import { isLogged } from "@/features/authentication/utils"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
 import { and, eq } from "drizzle-orm"
 import { Session } from "next-auth"
 import { revalidateTag } from "next/cache"
-import { favoriteSetsTable } from "../drizzle/schema"
 
 interface Request {
     session: Session,

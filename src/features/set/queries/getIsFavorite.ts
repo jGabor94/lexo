@@ -1,6 +1,6 @@
 import { db } from "@/drizzle/db";
+import { favoriteSetsTable } from "@/drizzle/schema";
 import { and, eq } from "drizzle-orm";
-import { favoriteSetsTable } from "../drizzle/schema";
 
 export default async (userid: string, setid: string) => {
     const res = await db.query.favoriteSetsTable.findFirst({

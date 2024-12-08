@@ -8,8 +8,8 @@ import { createServerAction } from "@/lib/serverAction/createServerAction/create
 import { createServerActionResponse } from "@/lib/serverAction/response/response";
 import { Session } from "next-auth";
 import { revalidatePath } from "next/cache";
-import { progressesTable, termsTable } from "../drizzle/schema";
 import { TermInput } from "../types";
+import { termsTable, progressesTable } from "@/drizzle/schema";
 
 interface Request {
   params: [terms: Array<TermInput>, setid: string];

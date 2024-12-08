@@ -1,7 +1,6 @@
 import { db } from "@/drizzle/db"
-import { progressesTable, termsTable } from "@/drizzle/schema"
+import { progressesTable, setsTable, termsTable } from "@/drizzle/schema"
 import { asc, eq } from "drizzle-orm"
-import { setsTable } from "../drizzle/schema"
 
 const getSet = async (setid: string, userid: string) => {
 

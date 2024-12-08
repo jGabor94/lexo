@@ -1,6 +1,6 @@
 import { LanguageCode } from "@/lib/language_tools/types";
 import { Set } from "../set/types";
-import { progressesTable, termsTable } from "./drizzle/schema";
+import { termsTable, progressesTable } from "@/drizzle/schema";
 
 export type TermInput = {
     term: {

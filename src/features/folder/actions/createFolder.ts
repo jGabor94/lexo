@@ -1,13 +1,13 @@
 "use server"
 
 import { db } from "@/drizzle/db"
+import { foldersTable } from "@/drizzle/schema"
 import { isLogged } from "@/features/authentication/utils"
 import { createAcl, defaultAcl } from "@/features/authorization/acl"
 import { aclMiddleware } from "@/features/authorization/utils"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
 import { Session } from "next-auth"
-import { foldersTable } from "../drizzle/schema"
 
 interface Request {
     session: Session,

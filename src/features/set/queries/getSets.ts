@@ -1,10 +1,9 @@
 import { db } from "@/drizzle/db"
-import { termsTable, usersTable } from "@/drizzle/schema"
+import { setsTable, termsTable, users } from "@/drizzle/schema"
 import { desc, eq, getTableColumns } from "drizzle-orm"
-import { setsTable } from "../drizzle/schema"
 
 const { userid: _, ...setsTableColumns } = getTableColumns(setsTable)
-const { image, name } = getTableColumns(usersTable)
+const { image, name } = getTableColumns(users)
 
 export default () => db.select({
     ...setsTableColumns,
@@ -12,7 +11,7 @@ export default () => db.select({
     termsCount: db.$count(termsTable, eq(setsTable.id, termsTable.setid))
 })
     .from(setsTable)
-    .leftJoin(usersTable, eq(setsTable.userid, usersTable.id))
+    .leftJoin(users, eq(setsTable.userid, users.id))
     .orderBy(desc(setsTable.createdAt))
     .$dynamic()
 

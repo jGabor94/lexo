@@ -1,5 +1,5 @@
 import { db } from "@/drizzle/db"
-import { usersTable } from "@/drizzle/schema"
+import { users } from "@/drizzle/schema"
 import bcrypt from "bcrypt"
 import { eq } from "drizzle-orm"
 import NextAuth from "next-auth"
@@ -27,7 +27,7 @@ export const { handlers: { GET, POST }, auth, signIn, signOut, unstable_update }
                 password: {}
             },
             authorize: async (credentials) => {
-                const [user] = await db.select().from(usersTable).where(eq(usersTable.email, credentials.email as string))
+                const [user] = await db.select().from(users).where(eq(users.email, credentials.email as string))
                 if (!user || !bcrypt.compareSync(credentials.password as string, user.password)) {
                     throw new Error("Invalid credential data")
                 } else if (!user.emailVerified) {

@@ -1,10 +1,9 @@
 import { db } from "@/drizzle/db";
-import { termsTable, usersTable } from "@/drizzle/schema";
+import { favoriteSetsTable, setsTable, termsTable, users } from "@/drizzle/schema";
 import { desc, eq, getTableColumns, sql } from "drizzle-orm";
-import { favoriteSetsTable, setsTable } from "../drizzle/schema";
 
 const { userid: _, ...setsTableColumns } = getTableColumns(setsTable)
-const { image, name } = getTableColumns(usersTable)
+const { image, name } = getTableColumns(users)
 
 export default (userid: string) => db.select({
     ...setsTableColumns,
@@ -13,7 +12,7 @@ export default (userid: string) => db.select({
 })
     .from(setsTable)
     .where(sql`${setsTable.id} IN (SELECT setid FROM ${favoriteSetsTable} WHERE ${favoriteSetsTable.userid} = ${userid})`)
-    .leftJoin(usersTable, eq(setsTable.userid, usersTable.id))
+    .leftJoin(users, eq(setsTable.userid, users.id))
     .orderBy(desc(setsTable.createdAt))
     .$dynamic()
 

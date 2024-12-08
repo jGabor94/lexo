@@ -7,8 +7,8 @@ import { aclMiddleware } from "@/features/authorization/utils"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
 import { eq } from "drizzle-orm"
-import { termsTable } from "../drizzle/schema"
 import { TermInput } from "../types"
+import { termsTable } from "@/drizzle/schema"
 
 interface Request {
     params: [termid: string, newTerm: TermInput],

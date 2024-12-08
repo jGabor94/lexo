@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npx drizzle-kit migrate && next build",
     "start": "next start",
-    "lint": "next lint",
-    "db:migrate": "tsx ./src/migrate.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.4",

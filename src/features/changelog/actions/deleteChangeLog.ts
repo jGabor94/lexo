@@ -1,6 +1,7 @@
 "use server"
 
 import { db } from "@/drizzle/db"
+import { changeLogsTable } from "@/drizzle/schema"
 import { isLogged } from "@/features/authentication/utils"
 import { aclMiddleware } from "@/features/authorization/utils"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
@@ -8,7 +9,6 @@ import { createServerActionResponse } from "@/lib/serverAction/response/response
 import { eq } from "drizzle-orm"
 import { Session } from "next-auth"
 import { revalidateTag } from "next/cache"
-import { changeLogsTable } from "../drizzle/schema"
 
 interface Request {
     params: [changelogid: string],

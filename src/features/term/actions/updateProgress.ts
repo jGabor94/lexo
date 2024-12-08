@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/drizzle/db"
-import { setsTable } from "@/drizzle/schema"
+import { progressesTable, setsTable } from "@/drizzle/schema"
 import { isLogged } from "@/features/authentication/utils"
 import { defaultAcl } from "@/features/authorization/acl"
 import { ProgressResult } from "@/features/flashcard/types"
@@ -9,7 +9,6 @@ import { createServerAction } from "@/lib/serverAction/createServerAction/create
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
 import { eq } from "drizzle-orm"
 import { Session } from "next-auth"
-import { progressesTable } from "../drizzle/schema"
 
 interface Request {
     params: [newProgresses: ProgressResult[], setid: string],

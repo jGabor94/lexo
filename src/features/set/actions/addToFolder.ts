@@ -1,6 +1,7 @@
 "use server"
 
 import { db } from "@/drizzle/db"
+import { setToFolderTable } from "@/drizzle/schema"
 import { isLogged } from "@/features/authentication/utils"
 import { getFolderAcl } from "@/features/authorization/aclCallbacks"
 import { aclMiddleware } from "@/features/authorization/utils"
@@ -8,7 +9,6 @@ import { createServerAction } from "@/lib/serverAction/createServerAction/create
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
 import { Session } from "next-auth"
 import { revalidatePath } from "next/cache"
-import { setToFolderTable } from "../drizzle/schema"
 
 interface Request {
     session: Session,

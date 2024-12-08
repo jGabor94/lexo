@@ -1,4 +1,4 @@
-import { setsTable } from "./drizzle/schema";
+import { setsTable } from "@/drizzle/schema";
 import getSet from "./queries/getSet";
 import getSets from "./queries/getSets";
 
