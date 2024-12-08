@@ -1,13 +1,13 @@
 "use server"
 
 import { db } from "@/drizzle/db"
-import { users } from "@/drizzle/schema"
+import { usersTable } from "@/drizzle/schema"
 import { eq, getTableColumns } from "drizzle-orm"
 
 
 const getUserData = async (userid: string) => {
-    const { password, ...userColumns } = getTableColumns(users)
-    const [user] = await db.select(userColumns).from(users).where(eq(users.id, userid))
+    const { password, ...userColumns } = getTableColumns(usersTable)
+    const [user] = await db.select(userColumns).from(usersTable).where(eq(usersTable.id, userid))
     return user
 }
 

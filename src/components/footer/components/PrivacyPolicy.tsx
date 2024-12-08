@@ -64,7 +64,7 @@ const PrivacyPolicy: FC<{}> = () => {
                                     4. Data Sharing
                                 </Typography>
                                 <Typography>
-                                    We do not share your personal information with third parties unless necessary for the operation of Lexo or required by law. Your vocabulary collections may be viewed by other users, as per platform functionality.
+                                    We do not share your personal information with third parties unless necessary for the operation of Lexo or required by law. Your vocabulary collections may be viewed by other usersTable, as per platform functionality.
                                 </Typography>
                             </Stack>
 

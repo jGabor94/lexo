@@ -1,11 +1,11 @@
 {
-  "id": "527e1573-c7ec-4f85-a098-93d97a07d8f9",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "76836103-0615-4283-ba7a-af6e2b92d886",
+  "prevId": "322aea45-86b7-4928-b117-b2378e160678",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.changelog": {
-      "name": "changelog",
+    "public.changelogs": {
+      "name": "changelogs",
       "schema": "",
       "columns": {
         "id": {
@@ -51,8 +51,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.folder": {
-      "name": "folder",
+    "public.folders": {
+      "name": "folders",
       "schema": "",
       "columns": {
         "id": {
@@ -97,10 +97,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "folder_userid_user_id_fk": {
-          "name": "folder_userid_user_id_fk",
-          "tableFrom": "folder",
-          "tableTo": "user",
+        "folders_userid_users_id_fk": {
+          "name": "folders_userid_users_id_fk",
+          "tableFrom": "folders",
+          "tableTo": "users",
           "columnsFrom": [
             "userid"
           ],
@@ -113,8 +113,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "folder_id_unique": {
-          "name": "folder_id_unique",
+        "folders_id_unique": {
+          "name": "folders_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "id"
@@ -125,8 +125,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.favorite_set": {
-      "name": "favorite_set",
+    "public.favorite_sets": {
+      "name": "favorite_sets",
       "schema": "",
       "columns": {
         "userid": {
@@ -144,10 +144,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "favorite_set_userid_user_id_fk": {
-          "name": "favorite_set_userid_user_id_fk",
-          "tableFrom": "favorite_set",
-          "tableTo": "user",
+        "favorite_sets_userid_users_id_fk": {
+          "name": "favorite_sets_userid_users_id_fk",
+          "tableFrom": "favorite_sets",
+          "tableTo": "users",
           "columnsFrom": [
             "userid"
           ],
@@ -157,10 +157,10 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "favorite_set_setid_set_id_fk": {
-          "name": "favorite_set_setid_set_id_fk",
-          "tableFrom": "favorite_set",
-          "tableTo": "set",
+        "favorite_sets_setid_sets_id_fk": {
+          "name": "favorite_sets_setid_sets_id_fk",
+          "tableFrom": "favorite_sets",
+          "tableTo": "sets",
           "columnsFrom": [
             "setid"
           ],
@@ -172,8 +172,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "favorite_set_userid_setid_pk": {
-          "name": "favorite_set_userid_setid_pk",
+        "favorite_sets_userid_setid_pk": {
+          "name": "favorite_sets_userid_setid_pk",
           "columns": [
             "userid",
             "setid"
@@ -185,8 +185,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.set_to_folder": {
-      "name": "set_to_folder",
+    "public.set_to_folders": {
+      "name": "set_to_folders",
       "schema": "",
       "columns": {
         "folderid": {
@@ -204,10 +204,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "set_to_folder_folderid_folder_id_fk": {
-          "name": "set_to_folder_folderid_folder_id_fk",
-          "tableFrom": "set_to_folder",
-          "tableTo": "folder",
+        "set_to_folders_folderid_folders_id_fk": {
+          "name": "set_to_folders_folderid_folders_id_fk",
+          "tableFrom": "set_to_folders",
+          "tableTo": "folders",
           "columnsFrom": [
             "folderid"
           ],
@@ -217,10 +217,10 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "set_to_folder_setid_set_id_fk": {
-          "name": "set_to_folder_setid_set_id_fk",
-          "tableFrom": "set_to_folder",
-          "tableTo": "set",
+        "set_to_folders_setid_sets_id_fk": {
+          "name": "set_to_folders_setid_sets_id_fk",
+          "tableFrom": "set_to_folders",
+          "tableTo": "sets",
           "columnsFrom": [
             "setid"
           ],
@@ -232,8 +232,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "set_to_folder_folderid_setid_pk": {
-          "name": "set_to_folder_folderid_setid_pk",
+        "set_to_folders_folderid_setid_pk": {
+          "name": "set_to_folders_folderid_setid_pk",
           "columns": [
             "folderid",
             "setid"
@@ -245,8 +245,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.set": {
-      "name": "set",
+    "public.sets": {
+      "name": "sets",
       "schema": "",
       "columns": {
         "id": {
@@ -303,10 +303,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "set_userid_user_id_fk": {
-          "name": "set_userid_user_id_fk",
-          "tableFrom": "set",
-          "tableTo": "user",
+        "sets_userid_users_id_fk": {
+          "name": "sets_userid_users_id_fk",
+          "tableFrom": "sets",
+          "tableTo": "users",
           "columnsFrom": [
             "userid"
           ],
@@ -319,8 +319,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "set_id_unique": {
-          "name": "set_id_unique",
+        "sets_id_unique": {
+          "name": "sets_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "id"
@@ -331,8 +331,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.progresse": {
-      "name": "progresse",
+    "public.progresses": {
+      "name": "progresses",
       "schema": "",
       "columns": {
         "id": {
@@ -384,10 +384,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "progresse_termid_term_id_fk": {
-          "name": "progresse_termid_term_id_fk",
-          "tableFrom": "progresse",
-          "tableTo": "term",
+        "progresses_termid_terms_id_fk": {
+          "name": "progresses_termid_terms_id_fk",
+          "tableFrom": "progresses",
+          "tableTo": "terms",
           "columnsFrom": [
             "termid"
           ],
@@ -397,10 +397,10 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "progresse_userid_user_id_fk": {
-          "name": "progresse_userid_user_id_fk",
-          "tableFrom": "progresse",
-          "tableTo": "user",
+        "progresses_userid_users_id_fk": {
+          "name": "progresses_userid_users_id_fk",
+          "tableFrom": "progresses",
+          "tableTo": "users",
           "columnsFrom": [
             "userid"
           ],
@@ -413,8 +413,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "progresse_id_unique": {
-          "name": "progresse_id_unique",
+        "progresses_id_unique": {
+          "name": "progresses_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "id"
@@ -425,8 +425,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.term": {
-      "name": "term",
+    "public.terms": {
+      "name": "terms",
       "schema": "",
       "columns": {
         "id": {
@@ -477,10 +477,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "term_setid_set_id_fk": {
-          "name": "term_setid_set_id_fk",
-          "tableFrom": "term",
-          "tableTo": "set",
+        "terms_setid_sets_id_fk": {
+          "name": "terms_setid_sets_id_fk",
+          "tableFrom": "terms",
+          "tableTo": "sets",
           "columnsFrom": [
             "setid"
           ],
@@ -493,8 +493,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "term_id_unique": {
-          "name": "term_id_unique",
+        "terms_id_unique": {
+          "name": "terms_id_unique",
           "nullsNotDistinct": false,
           "columns": [
             "id"
@@ -578,10 +578,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "account_userId_user_id_fk": {
-          "name": "account_userId_user_id_fk",
+        "account_userId_users_id_fk": {
+          "name": "account_userId_users_id_fk",
           "tableFrom": "account",
-          "tableTo": "user",
+          "tableTo": "users",
           "columnsFrom": [
             "userId"
           ],
@@ -606,8 +606,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.user": {
-      "name": "user",
+    "public.users": {
+      "name": "users",
       "schema": "",
       "columns": {
         "id": {
@@ -688,8 +688,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "user_email_unique": {
-          "name": "user_email_unique",
+        "users_email_unique": {
+          "name": "users_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"
