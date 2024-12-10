@@ -39,7 +39,6 @@ export const customAdapter: Adapter = {
     async getUserByAccount({ providerAccountId, provider }) {
 
         const [account] = await db.select().from(accountsTable).where(and(eq(accountsTable.provider, provider), eq(accountsTable.providerAccountId, providerAccountId)))
-        console.log({ account })
         if (!account) return null;
 
         const { password, ...userColumns } = getTableColumns(usersTable)

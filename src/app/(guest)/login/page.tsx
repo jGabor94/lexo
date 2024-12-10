@@ -7,6 +7,8 @@ import { FC, Fragment } from "react";
 
 export const dynamic = "force-static"
 
+console.log("vercel environment: " + process.env.VERCEL_ENV)
+
 const Page: FC<{}> = async () => {
 
     return (
@@ -16,6 +18,7 @@ const Page: FC<{}> = async () => {
                 Create your own collections and practice them through different tasks.
             </Typography>
             <Stack sx={{ width: 300, maxWidth: "100%", gap: 3 }}>
+                {env.VERCEL_ENV}
                 <GoogleSignInButton />
                 {env.NODE_ENV === "development" && (
                     <Fragment>

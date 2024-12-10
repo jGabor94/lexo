@@ -1,10 +1,9 @@
-import { Box, rgbToHex, Stack, useTheme } from '@mui/material'
+import { Box, Stack, useTheme } from '@mui/material'
 import { FC } from 'react'
 
 const ProgressBar: FC<{ percentage: string }> = ({ percentage }) => {
 
     const { palette: { background, error, warning, primary, secondary, text } } = useTheme()
-    console.log(rgbToHex(text.primary))
     return (
         <Stack direction="row" sx={{
             width: "100%",

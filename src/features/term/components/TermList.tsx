@@ -1,13 +1,13 @@
 'use client'
 
 import Sort from "@/components/Sort";
-import { ToggleGroup } from "@/components/toggleButton";
+import { ToggleButton, ToggleGroup } from "@/components/toggleButton";
 import TextLine from "@/components/ui/TextLine";
 import useSet from "@/features/set/hooks/useSet";
 import useSort from "@/hooks/useSort";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
-import { Paper, Stack, ToggleButton, Typography } from "@mui/material";
+import { Paper, Stack, Typography } from "@mui/material";
 import { FC, MouseEvent, useState } from "react";
 import { HiddenMode, Term as TermType } from "../types";
 import Term from "./Term";
