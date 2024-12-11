@@ -7,9 +7,6 @@ import { FC, Fragment } from "react";
 
 export const dynamic = "force-static"
 
-console.log(env.NODE_ENV)
-console.log(env.VERCEL_ENV)
-
 const Page: FC<{}> = async () => {
     return (
         <Stack sx={{ width: "100%", height: "80vh", position: "relative" }} alignItems="center" justifyContent="center" gap={3} p={2}>
