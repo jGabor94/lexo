@@ -1,6 +1,6 @@
 "use client"
 
-import useAlert from "@/lib/hooks/useAlert";
+import useAlert from "@/hooks/useAlert";
 import { Alert, Snackbar } from "@mui/material";
 import { FC } from "react";
 

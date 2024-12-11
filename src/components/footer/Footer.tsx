@@ -1,7 +1,7 @@
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { Divider, Link, Stack, Typography } from "@mui/material";
 import { FC, Fragment } from "react";
-import ChangeLog from "./components/changeLog/ChangeLog";
+import ChangeLog from "../../features/changelog/components/ChangeLog";
 import PrivacyPolicy from "./components/PrivacyPolicy";
 
 const Footer: FC<{}> = () => {

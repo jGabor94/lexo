@@ -2,12 +2,12 @@
 
 import LinearLoading from '@/components/LinearLoading'
 import SubmitButton from '@/components/SubmitButton'
-import TermForm from '@/components/Term/TermForm'
-import SA_CreateTerms from '@/lib/actions/term/createTerms'
-import useAction from '@/lib/assets/serverAction/useAction'
-import { ITerm } from '@/lib/database/types'
-import useAlert from '@/lib/hooks/useAlert'
-import useSet from '@/lib/hooks/useSet'
+import useSet from '@/features/set/hooks/useSet'
+import SA_CreateTerms from '@/features/term/actions/createTerms'
+import TermForm from '@/features/term/components/TermForm'
+import { TermInput } from '@/features/term/types'
+import useAlert from '@/hooks/useAlert'
+import useAction from '@/lib/serverAction/useAction'
 import AddIcon from '@mui/icons-material/Add'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -19,7 +19,7 @@ import { FC, Fragment, useEffect, useRef } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 
 export type Inputs = {
-    terms: Array<ITerm>
+    terms: Array<TermInput>
 }
 
 const scrollToBottom = () => {
@@ -35,7 +35,7 @@ const Page: FC<{}> = () => {
     const router = useRouter()
     const { setAlert } = useAlert()
 
-    const initRow: ITerm = {
+    const initRow: TermInput = {
         term: {
             content: "",
             lang: set.preferredTermLang
@@ -59,16 +59,16 @@ const Page: FC<{}> = () => {
 
     const submit: SubmitHandler<Inputs> = async ({ terms }) => {
 
-        const res = await createTerms(terms, set?._id as string)
+        const res = await createTerms(terms, set?.id)
 
         if (res.statusCode === 200) {
             mutate()
-            router.push(`/sets/${set._id}`)
+            router.push(`/sets/${set.id}`)
         }
     }
 
     const watched = form.watch("terms")
-    const prevFieldArray = useRef<ITerm[]>([initRow])
+    const prevFieldArray = useRef<TermInput[]>([initRow])
 
     useEffect(() => {
         if (watched.length > prevFieldArray.current.length) {
@@ -97,7 +97,7 @@ const Page: FC<{}> = () => {
 
                         <Stack direction="row" gap={1} alignItems="center">
                             <Stack direction="row" gap={1} alignItems="center" >
-                                <IconButton onClick={() => router.push(`/sets/${set._id}`)} >
+                                <IconButton onClick={() => router.push(`/sets/${set.id}`)} >
                                     <ArrowBackIcon />
                                 </IconButton>
                                 <Divider orientation="vertical" flexItem />

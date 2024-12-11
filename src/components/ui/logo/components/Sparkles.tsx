@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/assets/general";
+import { cn } from "@/utils";
 import type { Container, SingleOrMultiple } from "@tsparticles/engine";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";

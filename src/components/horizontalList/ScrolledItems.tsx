@@ -1,7 +1,7 @@
 "use client"
 
-import SetCard from '@/components/ui/card/SetCard'
-import { SetListItem } from '@/lib/database/queries/getSets'
+import SetCard from '@/features/set/components/ui/SetCard'
+import { SetListItem } from '@/features/set/types'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { Box, IconButton, Stack } from '@mui/material'
@@ -97,7 +97,7 @@ const ScrolledItems: FC<{ sets: SetListItem[] }> = ({ sets }) => {
                     scrollSnapType: 'x mandatory',
                 }} ref={scrollContainerRef} gap={3}>
                     {sets.map((set) => (
-                        <SetCard key={set._id} {...{ set, href: `/sets/${set._id}` }} />
+                        <SetCard key={set.id} {...{ set, href: `/sets/${set.id}` }} />
                     ))}
 
                 </Stack>

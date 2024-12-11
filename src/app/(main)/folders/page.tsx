@@ -1,18 +1,17 @@
 
-import CreateFolder from "@/components/folder/CreateFolder";
-import FolderCard from "@/components/ui/card/FolderCard";
 import TextLine from "@/components/ui/TextLine";
-import { createObjectId } from "@/lib/assets/general";
-import { getFolders } from "@/lib/database/queries";
-import { auth } from "@/lib/services/authentication/auth";
+import { auth } from "@/features/authentication/lib/auth";
+import CreateFolder from "@/features/folder/components/CreateFolder";
+import FolderCard from "@/features/folder/components/ui/FolderCard";
+import getFolders from "@/features/folder/queries/getFolders";
 import FolderOffOutlinedIcon from '@mui/icons-material/FolderOffOutlined';
 import { Paper, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 
 const Page: FC<{}> = async () => {
 
-    const user = await auth()
-    const folders = await getFolders(createObjectId(user?.user._id as string))
+    const session = await auth()
+    const folders = await getFolders(session?.user.id as string)
 
     return (
         <Stack gap={1}>
@@ -26,7 +25,7 @@ const Page: FC<{}> = async () => {
             </Stack>
             <Stack gap={3} mt={4}>
                 {folders.length > 0 ? folders.map(folder => (
-                    <FolderCard key={folder._id} {...{ folder }} />
+                    <FolderCard key={folder.id} {...{ folder }} />
                 )) : (
                     <Paper component={Stack} gap={1} sx={{ p: 3, width: "100%", alignItems: "center" }}>
                         <FolderOffOutlinedIcon sx={{ width: 50, height: 50 }} />
@@ -37,6 +36,5 @@ const Page: FC<{}> = async () => {
         </Stack >
     );
 }
-
 
 export default Page
