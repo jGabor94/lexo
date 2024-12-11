@@ -28,6 +28,7 @@ export const { handlers: { GET, POST }, auth, signIn, signOut, unstable_update }
             },
             authorize: async (credentials) => {
                 const [user] = await db.select().from(usersTable).where(eq(usersTable.email, credentials.email as string))
+
                 if (!user || !bcrypt.compareSync(credentials.password as string, user.password)) {
                     throw new Error("Invalid credential data")
                 } else if (!user.emailVerified) {
