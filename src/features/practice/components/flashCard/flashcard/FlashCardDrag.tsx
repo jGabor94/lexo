@@ -1,11 +1,11 @@
 "use client"
 
-import useFlashCard from '@/features/flashcard/hooks/useFlashCard';
+import useFlashCard from '@/features/practice/hooks/useFlashCard';
 import { Typography, useTheme } from '@mui/material';
 import { animate, motion, PanInfo, useAnimationControls, useMotionValue, useTransform } from 'framer-motion';
 import { FC, useState } from 'react';
-import useKeyFrames from '../../hooks/useKeyFrames';
-import { isTouchDevice } from '../../utils';
+import useKeyFrames from '../../../hooks/useKeyFrames';
+import { isTouchDevice } from '../../../utils';
 
 const changeThreshold = 120
 const opacityThreshold = 50

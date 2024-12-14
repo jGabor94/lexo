@@ -1,6 +1,6 @@
 "use client";
 
-import FlashCardMain from "@/features/practice/components/flashCard/FlashCardMain";
+import QuizMain from "@/features/practice/components/quiz/QuizMain";
 import { PracticeMode } from "@/features/practice/types";
 import useSet from "@/features/set/hooks/useSet";
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
@@ -23,7 +23,7 @@ const Page: FC<{ params: { mode: PracticeMode, setid: string } }> = ({ params: {
                     </Link>
                 </Tooltip>
             </Paper>
-            <FlashCardMain mode={mode} />
+            <QuizMain mode={mode} />
         </Stack>
     )
 

@@ -1,4 +1,4 @@
-import useFlashCard from '@/features/flashcard/hooks/useFlashCard'
+import useFlashCard from '@/features/practice/hooks/useFlashCard'
 import { Box } from '@mui/material'
 import { FC } from 'react'
 import AnimatedFlashCards from './components/AnimatedFlashCards'

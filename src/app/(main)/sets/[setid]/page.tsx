@@ -6,6 +6,7 @@ import useSet from '@/features/set/hooks/useSet'
 import TermList from '@/features/term/components/TermList'
 import { getDate } from '@/utils'
 import AddIcon from '@mui/icons-material/Add'
+import QuizIcon from '@mui/icons-material/Quiz'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import { Avatar, Button, Divider, Paper, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
@@ -58,16 +59,27 @@ const Page: FC<{}> = () => {
                     <Typography>Term number: {set.terms.length}</Typography>
                 </Stack>
             </Stack>
-            <Link href={`/sets/${set.id}/flashcards`} legacyBehavior>
-                <Paper sx={{ width: "fit-content", p: 3, cursor: "pointer" }} >
-                    <Stack direction="row" gap={1} alignItems="center">
-                        <StyleOutlinedIcon sx={{ width: 40, height: 40 }} />
-                        <Typography fontWeight={500} fontSize={18}>Flashcards</Typography>
+            <Stack direction="row" gap={2}>
+                <Link href={`/sets/${set.id}/flashcards`} legacyBehavior>
+                    <Paper sx={{ width: "fit-content", p: 3, cursor: "pointer" }} >
+                        <Stack direction="row" gap={1} alignItems="center">
+                            <StyleOutlinedIcon sx={{ width: 40, height: 40 }} />
+                            <Typography fontWeight={500} fontSize={18}>Flashcards</Typography>
+                        </Stack>
+                    </Paper>
+                </Link>
+                <Link href={`/sets/${set.id}/quiz`} legacyBehavior>
 
-                    </Stack>
+                    <Paper sx={{ width: "fit-content", p: 3, cursor: "pointer" }} >
+                        <Stack direction="row" gap={1} alignItems="center">
+                            <QuizIcon sx={{ width: 40, height: 40 }} />
+                            <Typography fontWeight={500} fontSize={18}>Quiz</Typography>
+                        </Stack>
+                    </Paper>
+                </Link>
+            </Stack>
 
-                </Paper>
-            </Link>
+
             <TermList />
         </Stack>
     )

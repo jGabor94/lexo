@@ -1,9 +1,9 @@
-import useFlashCard from "@/features/flashcard/hooks/useFlashCard";
+import useFlashCard from "@/features/practice/hooks/useFlashCard";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import { IconButton, SvgIconProps, Tooltip } from "@mui/material";
 import { animate } from "framer-motion";
 import { FC } from 'react';
-import useKeyFrames from "../../hooks/useKeyFrames";
+import useKeyFrames from "../../../hooks/useKeyFrames";
 
 
 const SuccessButton: FC<SvgIconProps> = (props) => {

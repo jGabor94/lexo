@@ -1,6 +1,6 @@
 "use client"
 
-import useFlashCard from "@/features/flashcard/hooks/useFlashCard";
+import useFlashCard from "@/features/practice/hooks/useFlashCard";
 import { Box, BoxProps, Paper, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import LangCodeLabel from "./components/LangCodeLabel";

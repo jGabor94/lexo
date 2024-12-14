@@ -1,10 +1,10 @@
 "use client"
 
-import useFlashCard from "@/features/flashcard/hooks/useFlashCard";
+import useFlashCard from "@/features/practice/hooks/useFlashCard";
 import { Chip, Stack, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
 import { FC } from "react";
-import { FlashCardMode } from "../types";
+import { PracticeMode } from "../../types";
 import SuccessButton from "./components/SuccessButton";
 import UndoButton from "./components/UndoButton";
 import WrongButton from "./components/WrongButton";
@@ -13,7 +13,7 @@ import FlashCard from "./flashcard";
 const FlashCardLayout: FC<{}> = () => {
 
     const { terms, index, successItems, wrongItems } = useFlashCard()
-    const { mode } = useParams<{ mode: FlashCardMode }>()
+    const { mode } = useParams<{ mode: PracticeMode }>()
     return (
         <Stack gap={2} sx={{
             width: 700, maxWidth: "100%"

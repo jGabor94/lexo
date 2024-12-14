@@ -8,15 +8,6 @@ import { unstable_serialize } from 'swr'
 
 const layout: FC<{ params: { setid: string }, children: ReactNode }> = async ({ params, children }) => {
 
-    /*
-    await db.update(termsTable).set({
-        definition: {
-            content: ["sor"],
-            lang: "hu",
-        }
-    })*/
-
-
     const session = await auth()
     const set = await getSet(params.setid, session?.user.id as string)
     const favorite = await getIsFavorite(session?.user.id as string, params.setid)

@@ -1,19 +1,20 @@
 "use client";
 
+import { PracticeMode, ProgressResult } from "@/features/practice/types";
 import useSet from "@/features/set/hooks/useSet";
 import SA_UpdateProgress from "@/features/term/actions/updateProgress";
 import { Term } from "@/features/term/types";
-import { shuffle } from "@/utils";
 import { Button, CircularProgress, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
-import FlashCardProvider from "../providers/FlashCardProvider";
-import { FlashCardMode, ProgressResult } from "../types";
-import Completed from "./complete";
-import FlashCardLayout from "./FlashCardLayout";
+import QuizProvider from "../../providers/QuizProvider";
+import Completed from "../complete";
+import QuizLayout from "./QuizLayout";
+import { shuffle } from "../../utils";
 
 
-const FlashCardMain: FC<{ mode: FlashCardMode }> = ({ mode }) => {
+
+const QuizMain: FC<{ mode: PracticeMode }> = ({ mode }) => {
 
     const prepareArray = (array: Term[]) =>
         shuffle(mode === "progress" ? array.filter((term) => !term.progress || term.progress?.status < 5) : array);
@@ -63,9 +64,9 @@ const FlashCardMain: FC<{ mode: FlashCardMode }> = ({ mode }) => {
     return (
         <Stack alignItems="center">
             {filteredTerms ? (
-                <FlashCardProvider terms={filteredTerms} onCompleted={handleCompleted}>
-                    <FlashCardLayout />
-                </FlashCardProvider>
+                <QuizProvider terms={filteredTerms} onCompleted={handleCompleted}>
+                    <QuizLayout />
+                </QuizProvider>
             ) : (
                 <CircularProgress />
             )}
@@ -73,4 +74,4 @@ const FlashCardMain: FC<{ mode: FlashCardMode }> = ({ mode }) => {
     )
 };
 
-export default FlashCardMain;
+export default QuizMain;
