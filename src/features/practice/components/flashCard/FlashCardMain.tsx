@@ -7,26 +7,26 @@ import { Button, CircularProgress, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import FlashCardProvider from "../../providers/FlashCardProvider";
-import { PracticeMode, ProgressResult } from "../../types";
+import { PracticeMode } from "../../types";
+import { shuffle } from "../../utils";
 import Completed from "../complete";
 import FlashCardLayout from "./FlashCardLayout";
-import { shuffle } from "../../utils";
 
 
 const FlashCardMain: FC<{ mode: PracticeMode }> = ({ mode }) => {
 
     const prepareArray = (array: Term[]) =>
-        shuffle(mode === "progress" ? array.filter((term) => !term.progress || term.progress?.status < 5) : array);
+        shuffle(mode === "progress" ? array.filter((term) => term.status < 5) : array);
 
     const [loading, setLoading] = useState(false)
     const { set, mutate } = useSet()
     const [filteredTerms, setFilteredTerms] = useState<null | Term[]>(null);
-    const [completed, setCompleted] = useState<null | { successItems: ProgressResult[], wrongItems: ProgressResult[] }>(null)
+    const [completed, setCompleted] = useState<null | { successItems: string[], wrongItems: string[] }>(null)
 
-    const handleCompleted = async (successItems: ProgressResult[], wrongItems: ProgressResult[]) => {
+    const handleCompleted = async (successItems: string[], wrongItems: string[]) => {
         setLoading(true)
         if (mode === "progress") {
-            await SA_UpdateProgress([...successItems, ...wrongItems], set.id)
+            await SA_UpdateProgress(successItems, wrongItems, set.id)
             await mutate()
         }
         setCompleted({ successItems, wrongItems })

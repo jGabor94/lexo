@@ -6,11 +6,18 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import QuizIcon from '@mui/icons-material/Quiz'
 import { Paper, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { FC } from 'react'
 
 const Page: FC<{}> = () => {
 
-    const { set } = useSet()
+    const { set, isOwner } = useSet()
+
+    const router = useRouter()
+
+    if (isOwner) {
+        router.push(`/sets/${set.id}/quiz/free`)
+    }
 
     return (
 

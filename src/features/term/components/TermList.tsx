@@ -8,13 +8,13 @@ import useSort from "@/hooks/useSort";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import { Paper, Stack, Typography } from "@mui/material";
-import { FC, MouseEvent, useState } from "react";
+import { FC, Fragment, MouseEvent, useState } from "react";
 import { HiddenMode, Term as TermType } from "../types";
 import Term from "./Term";
 
 const TermList: FC<{}> = () => {
 
-    const { set } = useSet()
+    const { set, isOwner } = useSet()
 
     const sortState = useSort([
         {
@@ -23,7 +23,7 @@ const TermList: FC<{}> = () => {
         },
         {
             label: "Progress",
-            sort: (a: TermType, b: TermType) => a.progress.status - b.progress.status
+            sort: (a: TermType, b: TermType) => a.status - b.status
         },
         {
             label: "Term",
@@ -40,55 +40,61 @@ const TermList: FC<{}> = () => {
         setHiddenMode(newValue);
     };
 
-    const stillLearningTerms = sortState.sort(set.terms.filter(term => term.progress?.status < 5))
-    const learnedTerms = sortState.sort(set.terms.filter(term => term.progress?.status === 5))
-    const withoutProgessTerms = sortState.sort(set.terms.filter(term => !term.progress))
+    const stillLearningTerms = sortState.sort(set.terms.filter(term => term.status < 5))
+    const learnedTerms = sortState.sort(set.terms.filter(term => term.status === 5))
 
 
     return (
         <Stack gap={3} justifyContent="center" alignItems="center" mt={4}>
-            <Stack gap={1} width="100%">
-                {withoutProgessTerms.map(term => (
-                    <Term key={term.id}{...{ term, hiddenMode }} />
-                ))}
-            </Stack>
-
-            {stillLearningTerms.length > 0 && (
-                <Stack width="100%" gap={1}>
-                    <Stack direction="row" alignItems="center" gap={1}>
-                        <TextLine>
-                            <Stack direction="row" gap={1}>
-                                <PendingActionsIcon sx={{ color: "warning.dark" }} />
-                                <Typography color="warning.dark" fontSize={17} fontWeight={500} >Still learning</Typography>
-                            </Stack>
-
-                        </TextLine>
-                        <Sort sortState={sortState} />
-
-                    </Stack>
-
-
-                    {stillLearningTerms.map(term => (
+            {!isOwner ? (
+                <Stack gap={1} width="100%">
+                    {set.terms.map(term => (
                         <Term key={term.id}{...{ term, hiddenMode }} />
                     ))}
                 </Stack>
-            )
-            }
-            {
-                learnedTerms.length > 0 && (
-                    <Stack width="100%" gap={1}>
-                        <TextLine>
-                            <Stack direction="row" gap={1}>
-                                <CheckCircleOutlineIcon sx={{ color: "primary.main" }} />
-                                <Typography color="primary.main" fontSize={17} fontWeight={500} >Learned</Typography>
+            ) : (
+                <Fragment>
+                    {stillLearningTerms.length > 0 && (
+                        <Stack width="100%" gap={1}>
+                            <Stack direction="row" alignItems="center" gap={1}>
+                                <TextLine>
+                                    <Stack direction="row" gap={1}>
+                                        <PendingActionsIcon sx={{ color: "warning.dark" }} />
+                                        <Typography color="warning.dark" fontSize={17} fontWeight={500} >Still learning</Typography>
+                                    </Stack>
+
+                                </TextLine>
+                                <Sort sortState={sortState} />
+
                             </Stack>
-                        </TextLine>
-                        {learnedTerms.map(term => (
-                            <Term key={term.id}{...{ term, hiddenMode }} />
-                        ))}
-                    </Stack>
-                )
-            }
+
+
+                            {stillLearningTerms.map(term => (
+                                <Term key={term.id}{...{ term, hiddenMode }} />
+                            ))}
+                        </Stack>
+                    )
+                    }
+                    {
+                        learnedTerms.length > 0 && (
+                            <Stack width="100%" gap={1}>
+                                <TextLine>
+                                    <Stack direction="row" gap={1}>
+                                        <CheckCircleOutlineIcon sx={{ color: "primary.main" }} />
+                                        <Typography color="primary.main" fontSize={17} fontWeight={500} >Learned</Typography>
+                                    </Stack>
+                                </TextLine>
+                                {learnedTerms.map(term => (
+                                    <Term key={term.id}{...{ term, hiddenMode }} />
+                                ))}
+                            </Stack>
+                        )
+                    }
+                </Fragment>
+            )}
+
+
+
             {
                 set.terms.length > 0 && (
                     <Stack

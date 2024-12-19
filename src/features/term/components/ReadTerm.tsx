@@ -71,8 +71,8 @@ const ReadTerm: FC<{
                         </IconButton >
                     </Tooltip>
                 )}
-                {term.progress && (
-                    <ProgressStatus score={term.progress.status} />
+                {isOwner && (
+                    <ProgressStatus score={term.status} />
                 )}
             </Stack>
 

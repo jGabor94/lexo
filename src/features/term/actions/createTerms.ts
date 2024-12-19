@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/drizzle/db";
+import { termsTable } from "@/drizzle/schema";
 import { isLogged } from "@/features/authentication/utils";
 import { createAcl, defaultAcl } from "@/features/authorization/acl";
 import { aclMiddleware } from "@/features/authorization/utils";
@@ -9,7 +10,6 @@ import { createServerActionResponse } from "@/lib/serverAction/response/response
 import { Session } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { TermInput } from "../types";
-import { termsTable, progressesTable } from "@/drizzle/schema";
 
 interface Request {
   params: [terms: Array<TermInput>, setid: string];
@@ -23,16 +23,9 @@ const SA_CreateTerms = createServerAction(isLogged, aclMiddleware(createAcl, "cr
     term: term.term,
     definition: term.definition,
     setid: setid,
-    acl: { ...defaultAcl, [session.user.username]: true },
-  }))).returning()
-
-  await db.insert(progressesTable).values(createdTerms.map((term) => ({
-    termid: term.id,
-    userid: session.user.id as string,
     status: 0,
     acl: { ...defaultAcl, [session.user.username]: true },
-  })))
-
+  }))).returning()
 
   revalidatePath(`sets/${setid}`, "page");
   return createServerActionResponse();

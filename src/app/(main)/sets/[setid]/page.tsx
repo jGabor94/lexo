@@ -1,20 +1,31 @@
 "use client"
 
+import SA_CreateDraft from '@/features/set/actions/createDraft'
 import FavoriteButton from '@/features/set/components/FavoriteButton'
 import SetMenu from '@/features/set/components/SetMenu'
 import useSet from '@/features/set/hooks/useSet'
 import TermList from '@/features/term/components/TermList'
+import useAction from '@/lib/serverAction/useAction'
 import { getDate } from '@/utils'
 import AddIcon from '@mui/icons-material/Add'
+import MoveUpIcon from '@mui/icons-material/MoveUp'
 import QuizIcon from '@mui/icons-material/Quiz'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
 import { Avatar, Button, Divider, Paper, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, Fragment } from 'react'
 
 const Page: FC<{}> = () => {
 
     const { set, isOwner } = useSet()
+
+    const { action: createDraft } = useAction(SA_CreateDraft, {
+        200: { severity: "success", content: "Draft successfully created 🙂. You can find it in your library." }
+    })
+
+    const handleDraft = async () => {
+        await createDraft(set.id)
+    }
 
     return (
         <Stack gap={3} >
@@ -38,14 +49,23 @@ const Page: FC<{}> = () => {
                         <FavoriteButton />
                     </Stack>
 
-                    {isOwner && (
-                        <Stack direction="row" gap={2} sx={{ width: "fit-content" }}>
-                            <SetMenu />
-                            <Button component={Link} href={`/sets/${set.id}/terms/create`} variant="contained" startIcon={<AddIcon sx={{ color: "primary.contrastText" }} />}>
-                                Create Terms
+
+                    <Stack direction="row" gap={2} sx={{ width: "fit-content" }}>
+                        {!isOwner ? (
+                            <Button startIcon={<MoveUpIcon />} onClick={handleDraft} variant="outlined">
+                                Draft
                             </Button>
-                        </Stack>
-                    )}
+                        ) : (
+                            <Fragment>
+                                <SetMenu />
+                                <Button component={Link} href={`/sets/${set.id}/terms/create`} variant="contained" startIcon={<AddIcon sx={{ color: "primary.contrastText" }} />}>
+                                    Create Terms
+                                </Button>
+                            </Fragment>
+
+                        )}
+                    </Stack>
+
                 </Stack>
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
                     <Stack direction="row" gap={1} >

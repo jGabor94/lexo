@@ -17,7 +17,7 @@ const SA_GetSet = createServerAction(isLogged, async ({ params, session }: Reque
 
     const [setid] = params
 
-    const set = await getSet(setid, session.user.id)
+    const set = await getSet(setid)
     const favorite = await getIsFavorite(session.user.id, setid)
 
     return createServerActionResponse({ payload: { set, favorite } })

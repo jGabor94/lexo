@@ -1,6 +1,6 @@
+import { termsTable } from "@/drizzle/schema";
 import { LanguageCode } from "@/lib/language_tools/types";
 import { Set } from "../set/types";
-import { termsTable, progressesTable } from "@/drizzle/schema";
 
 export type TermInput = {
     term: {
@@ -18,6 +18,3 @@ export type Term = NonNullable<Set>["terms"][number];
 
 export type InsertTerm = typeof termsTable.$inferInsert;
 export type SelectTerm = typeof termsTable.$inferSelect;
-
-export type InsertProgress = typeof progressesTable.$inferInsert;
-export type SelectProgress = typeof progressesTable.$inferSelect;

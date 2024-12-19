@@ -5,30 +5,29 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import RestartAltIcon from '@mui/icons-material/RestartAlt'
 import { Box, Paper, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
-import { Dispatch, FC, SetStateAction } from 'react'
-import { ProgressResult } from '../../types'
+import { Dispatch, FC, Fragment, SetStateAction } from 'react'
 import ProgressGauge from './components/ProgressGauge'
 
 interface props {
-    successItems: ProgressResult[],
-    wrongItems: ProgressResult[],
+    successItems: string[],
+    wrongItems: string[],
     setCompleted: Dispatch<SetStateAction<{
-        successItems: ProgressResult[];
-        wrongItems: ProgressResult[];
+        successItems: string[];
+        wrongItems: string[];
     } | null>>
 }
 
 const Completed: FC<props> = ({ successItems, wrongItems, setCompleted }) => {
 
-    const { set } = useSet()
+    const { set, isOwner } = useSet()
 
     const learnedNum = set.terms.reduce((acc, curr) => {
-        return curr.progress?.status === 5 ? acc + 1 : acc
+        return curr.status === 5 ? acc + 1 : acc
     }, 0)
 
 
     const sum = set.terms.reduce((acc, curr) => {
-        return acc + (curr.progress.status || 0)
+        return acc + (curr.status || 0)
     }, 0)
 
     const percentage = Math.round(sum / (set.terms.length * 5 * 0.01))
@@ -60,18 +59,23 @@ const Completed: FC<props> = ({ successItems, wrongItems, setCompleted }) => {
                     <Typography>{successItems.length}</Typography>
                 </Paper>
             </Stack>
-            <Stack gap={1}>
-                <Stack direction="row" justifyContent="space-between">
-                    <Typography>Learned:</Typography>
-                    <Typography>{learnedNum}</Typography>
-                </Stack>
-                <Stack direction="row" justifyContent="space-between">
-                    <Typography>Still learning:</Typography>
-                    <Typography>{set.terms.length - learnedNum}</Typography>
-                </Stack>
-            </Stack>
+            {isOwner && (
+                <Fragment>
+                    <Stack gap={1}>
+                        <Stack direction="row" justifyContent="space-between">
+                            <Typography>Learned:</Typography>
+                            <Typography>{learnedNum}</Typography>
+                        </Stack>
+                        <Stack direction="row" justifyContent="space-between">
+                            <Typography>Still learning:</Typography>
+                            <Typography>{set.terms.length - learnedNum}</Typography>
+                        </Stack>
+                    </Stack>
 
-            <ProgressGauge percentage={percentage} />
+                    <ProgressGauge percentage={percentage} />
+                </Fragment>
+            )}
+
 
             <Stack direction="row" justifyContent="space-between" gap={2} alignItems="flex-end">
                 <Stack direction="row" gap={0.5} component={Link} href={`/sets/${set.id}`} sx={{ textWrap: "nowrap", color: "text.primary", textDecoration: "none" }}>

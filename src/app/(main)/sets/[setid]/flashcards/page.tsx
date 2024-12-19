@@ -4,16 +4,31 @@ import TextLine from '@/components/ui/TextLine'
 import useSet from '@/features/set/hooks/useSet'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
-import { Paper, Stack, Typography } from '@mui/material'
+import { CircularProgress, Paper, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
-import { FC } from 'react'
+import { useRouter } from 'next/navigation'
+import { FC, useEffect } from 'react'
 
 const Page: FC<{}> = () => {
 
-    const { set } = useSet()
+    const { set, isOwner } = useSet()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!isOwner) {
+            router.push(`/sets/${set.id}/flashcards/free`)
+        }
+    }, [])
+
+    if (!isOwner) {
+        return (
+            <Stack alignItems="center" justifyContent="center">
+                <CircularProgress />
+            </Stack>
+        )
+    }
 
     return (
-
         <Stack gap={3}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" gap={2} >
                 <TextLine>

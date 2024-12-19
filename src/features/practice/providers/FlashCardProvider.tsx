@@ -1,6 +1,5 @@
 import { Term } from '@/features/term/types';
 import { createContext, Dispatch, FC, ReactNode, SetStateAction, useEffect, useState } from 'react';
-import { ProgressResult } from '../types';
 
 interface IFlashCardContext {
     index: number,
@@ -10,23 +9,23 @@ interface IFlashCardContext {
     isFlipped: boolean,
     setIsFlipped: Dispatch<SetStateAction<boolean>>
     terms: Term[],
-    successItems: ProgressResult[],
-    wrongItems: ProgressResult[],
+    successItems: string[],
+    wrongItems: string[],
 }
 
 export const FlashCardContext = createContext<IFlashCardContext>({} as IFlashCardContext);
 
 interface props {
     terms: Term[];
-    onCompleted: (successItems: ProgressResult[], wrongItems: ProgressResult[]) => void;
+    onCompleted: (successItems: string[], wrongItems: string[]) => void;
     children: ReactNode
 }
 
 const FlashCardProvider: FC<props> = ({ terms, onCompleted, children }) => {
 
     const [index, setIndex] = useState(0);
-    const [successItems, setSuccessItems] = useState<ProgressResult[]>([]);
-    const [wrongItems, setWrongItems] = useState<ProgressResult[]>([]);
+    const [successItems, setSuccessItems] = useState<string[]>([]);
+    const [wrongItems, setWrongItems] = useState<string[]>([]);
     const [isFlipped, setIsFlipped] = useState(false);
 
     const reset = () => {
@@ -36,37 +35,22 @@ const FlashCardProvider: FC<props> = ({ terms, onCompleted, children }) => {
         setIsFlipped(false)
     }
 
+
     const handleSuccess = () => {
-
-        setSuccessItems([...successItems, {
-            progressid: terms[index].progress?.id ? terms[index].progress.id : null,
-            termid: terms[index].id,
-            status: terms[index].progress?.status ? terms[index].progress.status < 5 ? terms[index].progress.status + 1 : 5 : 1
-        }]);
-
+        setSuccessItems([...successItems, terms[index].id]);
         if (index !== terms.length - 1) setIndex(index + 1);
-
     }
 
     const handleWrong = () => {
-
-        setWrongItems([...wrongItems, {
-            progressid: terms[index].progress?.id ? terms[index].progress.id : null,
-            termid: terms[index].id,
-            status: terms[index].progress?.status && (terms[index].progress.status > 0) ? terms[index].progress.status - 1 : 0
-        }]);
-
+        setWrongItems([...wrongItems, terms[index].id]);
         if (index !== terms.length - 1) setIndex(index + 1);
-
     }
 
     const handleUndo = () => {
-
         const prevTermId = terms[index - 1].id;
-        setSuccessItems((prev) => prev.filter((result) => result.termid !== prevTermId));
-        setWrongItems((prev) => prev.filter((result) => result.termid !== prevTermId));
+        setSuccessItems((prev) => prev.filter((termid) => termid !== prevTermId));
+        setWrongItems((prev) => prev.filter((termid) => termid !== prevTermId));
         setIndex(index - 1);
-
     };
 
     useEffect(() => {

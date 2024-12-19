@@ -1,8 +1,8 @@
 import { db } from "@/drizzle/db"
-import { progressesTable, setsTable, termsTable } from "@/drizzle/schema"
+import { setsTable, termsTable } from "@/drizzle/schema"
 import { asc, eq } from "drizzle-orm"
 
-const getSet = async (setid: string, userid: string) => {
+const getSet = async (setid: string) => {
 
     const res = await db.query.setsTable.findFirst({
         where: eq(setsTable.id, setid),
@@ -11,14 +11,6 @@ const getSet = async (setid: string, userid: string) => {
         },
         with: {
             terms: {
-                with: {
-                    progresses: {
-                        where: eq(progressesTable.userid, userid),
-                        columns: {
-                            userid: false
-                        }
-                    }
-                },
                 orderBy: asc(termsTable.createdAt)
             },
             user: {
@@ -32,7 +24,7 @@ const getSet = async (setid: string, userid: string) => {
     })
 
 
-    return res && { ...res, terms: [...res.terms.map(({ progresses, ...rest }) => ({ ...rest, progress: progresses[0] }))] }
+    return res
 
 }
 
