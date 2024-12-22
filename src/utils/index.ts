@@ -1,5 +1,4 @@
 import { ClassValue, clsx } from "clsx";
-import mongoose from "mongoose";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -14,14 +13,6 @@ export type NumFormatter = (input: number | string) => string
 */
 export const toSerializableObject = <R>(data: any): R => JSON.parse(JSON.stringify(data))
 
-export const createObjectId = (raw: string) => {
-    try {
-        const objectId = new mongoose.mongo.ObjectId(raw)
-        return objectId
-    } catch (err) {
-        return new mongoose.mongo.ObjectId()
-    }
-}
 
 export const getUnixTimestamp = (date: Date) => {
     if (date) {
