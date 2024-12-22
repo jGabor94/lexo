@@ -18,7 +18,7 @@ const Page: FC<{ params: { mode: PracticeMode, setid: string } }> = ({ params: {
             <Paper variant="elevation" component={Stack} p={1} pl={2} pr={2} mt={-2} direction="row" alignItems="center" justifyContent="space-between">
                 <Typography>{set.name}</Typography>
                 <Tooltip title="close" >
-                    <Link href={`/sets/${set.id}/flashcards`} legacyBehavior>
+                    <Link href={`/sets/${set.id}`} legacyBehavior>
                         <CloseOutlinedIcon sx={{ cursor: "pointer" }} />
                     </Link>
                 </Tooltip>
