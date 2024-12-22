@@ -16,7 +16,7 @@ const SwapTerms: FC<{}> = () => {
     })
 
     const handleClick = async () => {
-        await swapTerms(set.id)
+        await swapTerms(set.id, set.preferredTermLang, set.preferredDefinitionLang)
         mutate()
     }
 
