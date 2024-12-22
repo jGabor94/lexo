@@ -26,7 +26,8 @@ const FlashCardMain: FC<{ mode: PracticeMode }> = ({ mode }) => {
     const handleCompleted = async (successItems: string[], wrongItems: string[]) => {
         setLoading(true)
         if (mode === "progress") {
-            await SA_UpdateProgress(successItems, wrongItems, set.id)
+            console.log({ successItems, wrongItems })
+            await SA_UpdateProgress(set.id, successItems, wrongItems)
             await mutate()
         }
         setCompleted({ successItems, wrongItems })

@@ -59,12 +59,15 @@ const Page: FC<{}> = () => {
 
     const submit: SubmitHandler<Inputs> = async ({ terms }) => {
 
+
         const res = await createTerms(terms, set?.id)
 
         if (res.statusCode === 200) {
             mutate()
             router.push(`/sets/${set.id}`)
         }
+
+
     }
 
     const watched = form.watch("terms")

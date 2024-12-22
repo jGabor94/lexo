@@ -32,12 +32,7 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
         const lang = await langDetector(value);
         setValue(`${prefix}${section}.lang`, lang)
 
-        state[section].lang = lang
-        state[section].content = [value]
-
-        wrappedTtranslate({ ...state, [section]: { ...state[section], content: value } })
-
-
+        wrappedTtranslate({ ...state, [section]: { lang: lang, content: section === "term" ? value : [value] } })
     }
 
     const debounceChange = useCallback(

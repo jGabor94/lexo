@@ -46,11 +46,7 @@ const SA_CreateDraft = createServerAction(isLogged, async ({ params, session }: 
 
         return createServerActionResponse({ payload: res })
 
-
-
     }
-
-
 
     return createServerActionResponse({ status: 400 })
 

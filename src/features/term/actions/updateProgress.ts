@@ -1,23 +1,22 @@
 "use server"
 
 import { db } from "@/drizzle/db"
-import { setsTable, termsTable } from "@/drizzle/schema"
+import { setsTable } from "@/drizzle/schema"
 import { isLogged } from "@/features/authentication/utils"
-import { getTermAcl } from "@/features/authorization/aclCallbacks"
+import { getSetAcl } from "@/features/authorization/aclCallbacks"
 import { aclMiddleware } from "@/features/authorization/utils"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
 import { eq, sql } from "drizzle-orm"
-import { Session } from "next-auth"
+import { termsTable } from "../drizzle/schema"
 
 interface Request {
-    params: [successTermsId: string[], wrongTermsId: string[], setid: string],
-    session: Session
+    params: [setid: string, successTermsId: string[], wrongTermsId: string[]],
 }
 
-const SA_UpdateProgress = createServerAction(isLogged, aclMiddleware(getTermAcl, "update"), async ({ params, session }: Request) => {
+const SA_UpdateProgress = createServerAction(isLogged, aclMiddleware(getSetAcl, "update"), async ({ params }: Request) => {
 
-    const [successTermsId, wrongTermsId, setid] = params
+    const [setid, successTermsId, wrongTermsId] = params
 
     const promises1 = wrongTermsId.map(termid => db.update(termsTable)
         .set({ status: sql`GREATEST(${termsTable}.status - 1, 0)` })

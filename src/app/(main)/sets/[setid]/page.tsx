@@ -4,6 +4,7 @@ import SA_CreateDraft from '@/features/set/actions/createDraft'
 import FavoriteButton from '@/features/set/components/FavoriteButton'
 import SetMenu from '@/features/set/components/SetMenu'
 import useSet from '@/features/set/hooks/useSet'
+import SwapTerms from '@/features/term/components/SwapTerms'
 import TermList from '@/features/term/components/TermList'
 import useAction from '@/lib/serverAction/useAction'
 import { getDate } from '@/utils'
@@ -11,7 +12,7 @@ import AddIcon from '@mui/icons-material/Add'
 import MoveUpIcon from '@mui/icons-material/MoveUp'
 import QuizIcon from '@mui/icons-material/Quiz'
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
-import { Avatar, Button, Divider, Paper, Stack, Typography } from '@mui/material'
+import { Avatar, Button, Divider, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material'
 import Link from 'next/link'
 import { FC, Fragment } from 'react'
 
@@ -50,17 +51,20 @@ const Page: FC<{}> = () => {
                     </Stack>
 
 
-                    <Stack direction="row" gap={2} sx={{ width: "fit-content" }}>
+                    <Stack direction="row" sx={{ width: "fit-content" }}>
                         {!isOwner ? (
-                            <Button startIcon={<MoveUpIcon />} onClick={handleDraft} variant="outlined">
+                            <Button startIcon={<MoveUpIcon sx={{ color: "primary.main" }} />} onClick={handleDraft} variant="outlined">
                                 Draft
                             </Button>
                         ) : (
                             <Fragment>
                                 <SetMenu />
-                                <Button component={Link} href={`/sets/${set.id}/terms/create`} variant="contained" startIcon={<AddIcon sx={{ color: "primary.contrastText" }} />}>
-                                    Create Terms
-                                </Button>
+                                <SwapTerms />
+                                <Tooltip title="Add term">
+                                    <IconButton component={Link} href={`/sets/${set.id}/terms/create`}>
+                                        <AddIcon />
+                                    </IconButton>
+                                </Tooltip>
                             </Fragment>
 
                         )}

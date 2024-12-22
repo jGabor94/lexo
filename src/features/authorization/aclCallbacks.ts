@@ -12,7 +12,7 @@ export const getFolderAcl: AclCB = async ({ params: [folderid] }: { params: [fol
 }
 
 export const getSetAcl: AclCB = async ({ params: [setid], session }: { params: [setid: string], session: Session },) => {
-    const res = await getSet(setid, session.user.id)
+    const res = await getSet(setid)
     return res?.acl ? res.acl : null
 }
 
