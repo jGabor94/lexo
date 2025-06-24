@@ -22,8 +22,8 @@ const ConfirmDialog: FC<{
             <LinearLoading {...{ loading }} />
             <DialogTitle>{dialogText}</DialogTitle>
             <DialogActions>
-                <Button variant="outlined" onClick={promise?.reject}>No</Button>
-                <Button variant="contained" onClick={promise?.resolve} disabled={loading}>Yes</Button>
+                <Button variant="outlined" onClick={promise?.reject}>Nem</Button>
+                <Button variant="contained" onClick={promise?.resolve} disabled={loading}>Igen</Button>
             </DialogActions>
         </Dialog>
     )

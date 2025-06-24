@@ -4,8 +4,8 @@ import ConfirmDialog from '@/components/ConfirmDialog'
 import SA_DeleteSet from '@/features/set/actions/deleteSet'
 import useConfirmControll from '@/hooks/useConfirmControll'
 import useAction from '@/lib/serverAction/useAction'
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import { ListItemIcon, ListItemText, MenuItem } from '@mui/material'
+import { Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { FC, Fragment } from 'react'
 import useSet from '../hooks/useSet'
@@ -16,7 +16,7 @@ const DeleteSet: FC<{}> = () => {
     const { set } = useSet()
 
     const { action: deleteSet } = useAction(SA_DeleteSet, {
-        200: { severity: "success", content: "Set successfully deleted 🙂" },
+        200: { severity: "success", content: "Szógyűjtemény sikeresen törölve 🙂" },
     })
 
     const { controll, trigger: triggerDelete } = useConfirmControll(async () => {
@@ -26,12 +26,12 @@ const DeleteSet: FC<{}> = () => {
 
     return (
         <Fragment>
-            <ConfirmDialog {...{ controll, dialogText: `Are you sure you want to delete the following set: ${set.name}?` }} />
+            <ConfirmDialog {...{ controll, dialogText: `Biztosan törölni szretnéd a következő szógyűjteményt: ${set.name}?` }} />
             <MenuItem onClick={triggerDelete}>
                 <ListItemIcon>
-                    <DeleteOutlineOutlinedIcon fontSize="small" />
+                    <Trash size={20} />
                 </ListItemIcon>
-                <ListItemText>Delete</ListItemText>
+                <ListItemText>Törlés</ListItemText>
             </MenuItem>
         </Fragment>
 

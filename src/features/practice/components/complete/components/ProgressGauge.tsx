@@ -37,7 +37,7 @@ const ProgressGauge: FC<{ percentage: number }> = ({ percentage }) => {
                     },
                 })}
             />
-            <Typography sx={{ fontSize: 12 }}>Set progress</Typography>
+            <Typography sx={{ fontSize: 12 }}>Előrehaladás</Typography>
         </Stack>
     )
 }

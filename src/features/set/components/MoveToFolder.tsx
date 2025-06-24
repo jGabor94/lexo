@@ -6,9 +6,8 @@ import SA_AddToFolder from '@/features/set/actions/addToFolder';
 import { MenuControl } from '@/hooks/useMenuControl';
 import useModalControl from '@/hooks/useModalControl';
 import useAction from '@/lib/serverAction/useAction';
-import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
-import FolderIcon from '@mui/icons-material/Folder';
 import { Button, FormControl, InputLabel, ListItemIcon, ListItemText, MenuItem, Modal, OutlinedInput, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
+import { Folder, PackageMinus } from 'lucide-react';
 import { FC, Fragment, useEffect, useMemo, useState } from 'react';
 import useSet from '../hooks/useSet';
 
@@ -30,7 +29,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
     const modalControl = useModalControl()
 
     const { action: addToFolder } = useAction(SA_AddToFolder, {
-        200: { severity: "success", content: "Set successfully added to the folder 🙂" }
+        200: { severity: "success", content: "Szógyűjtemény sikeresen hozzáadva a mappához 🙂" }
     })
 
     const closeModal = () => {
@@ -64,9 +63,9 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
             <LinearLoading {...{ loading }} />
             <MenuItem onClick={() => modalControl.handleOpen()}>
                 <ListItemIcon>
-                    <DriveFileMoveIcon fontSize="small" />
+                    <PackageMinus size={20} />
                 </ListItemIcon>
-                <ListItemText>Move to folder</ListItemText>
+                <ListItemText>Áthelyezés mappába</ListItemText>
             </MenuItem>
             <Modal
                 open={modalControl.open}
@@ -76,7 +75,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
                     {folders && (
                         <Stack gap={2}>
                             <FormControl sx={{ width: "100%" }}>
-                                <InputLabel id="multiple-folder-label">Folders</InputLabel>
+                                <InputLabel id="multiple-folder-label">Mappák</InputLabel>
                                 <Select
                                     labelId="multiple-folder-label"
                                     id="multiple-folder"
@@ -85,7 +84,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
                                     input={<OutlinedInput id="select-multiple-folder" label="Folders" />}
                                     renderValue={() => (
                                         <Stack direction="row" gap={1}>
-                                            <FolderIcon fontSize="small" />
+                                            <Folder size={20} />
                                             <Typography>{selectedFolder?.name}</Typography>
                                         </Stack>
                                     )}
@@ -96,7 +95,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
                                             value={folder.id}
                                         >
                                             <ListItemIcon>
-                                                <FolderIcon fontSize="small" />
+                                                <Folder size={20} />
                                             </ListItemIcon>
                                             <ListItemText>
                                                 {folder.name}
@@ -105,7 +104,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
                                     ))}
                                 </Select>
                             </FormControl>
-                            <Button variant='contained' onClick={handleAdd}>Add</Button>
+                            <Button variant='contained' onClick={handleAdd}>Hozzáadás</Button>
                         </Stack>
 
 

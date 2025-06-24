@@ -19,7 +19,7 @@ export const authConfig = {
             }
 
 
-            if (request.nextUrl.pathname === "/") {
+            if (auth && request.nextUrl.pathname === "/") {
                 return NextResponse.redirect(new URL('/home', request.url))
             }
 

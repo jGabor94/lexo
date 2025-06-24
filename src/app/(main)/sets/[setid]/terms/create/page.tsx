@@ -1,19 +1,16 @@
 "use client"
 
 import LinearLoading from '@/components/LinearLoading'
-import SubmitButton from '@/components/SubmitButton'
 import useSet from '@/features/set/hooks/useSet'
 import SA_CreateTerms from '@/features/term/actions/createTerms'
+import ImportForm from '@/features/term/components/ImportForm'
 import TermForm from '@/features/term/components/TermForm'
 import { TermInput } from '@/features/term/types'
 import useAlert from '@/hooks/useAlert'
+import { IconButtonGrey } from '@/lib/mui/styled'
 import useAction from '@/lib/serverAction/useAction'
-import AddIcon from '@mui/icons-material/Add'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined'
-import SaveIcon from '@mui/icons-material/Save'
-import { Button, Divider, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material'
+import { Box, Divider, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material'
+import { ArrowLeft, CircleMinus, Plus, PlusIcon, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { FC, Fragment, useEffect, useRef } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
@@ -22,18 +19,15 @@ export type Inputs = {
     terms: Array<TermInput>
 }
 
-const scrollToBottom = () => {
-    window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'smooth',
-    });
-};
 
 const Page: FC<{}> = () => {
 
     const { set, mutate } = useSet()
     const router = useRouter()
     const { setAlert } = useAlert()
+
+    const bottomRef = useRef<HTMLDivElement | null>(null);
+
 
     const initRow: TermInput = {
         term: {
@@ -54,7 +48,7 @@ const Page: FC<{}> = () => {
     });
 
     const { action: createTerms } = useAction(SA_CreateTerms, {
-        200: { severity: "success", content: "Terms successfully added 🙂" }
+        200: { severity: "success", content: "Kifejezések sikeresen hozzáadva 🙂" }
     })
 
     const submit: SubmitHandler<Inputs> = async ({ terms }) => {
@@ -75,7 +69,9 @@ const Page: FC<{}> = () => {
 
     useEffect(() => {
         if (watched.length > prevFieldArray.current.length) {
-            scrollToBottom();
+            requestAnimationFrame(() => {
+                bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+            })
         }
         prevFieldArray.current = watched
     }, [watched]);
@@ -94,57 +90,66 @@ const Page: FC<{}> = () => {
         <Fragment>
             <LinearLoading loading={form.formState.isSubmitting} />
             <form onSubmit={form.handleSubmit(submit)}>
-                <Stack >
-                    <Stack direction="row" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1}
-                        sx={{ position: "sticky", top: 60, zIndex: 1000, backgroundColor: "background.paper", p: 2, }}>
+                <Stack gap={8} position={"relative"}>
+                    <Stack gap={3} sx={{ position: "sticky", top: 0, zIndex: 1000, py: 2, backgroundColor: "background.default" }}>
 
-                        <Stack direction="row" gap={1} alignItems="center">
+                        <Stack component={Paper} p={2} direction="row" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={1} >
+
                             <Stack direction="row" gap={1} alignItems="center" >
                                 <IconButton onClick={() => router.push(`/sets/${set.id}`)} >
-                                    <ArrowBackIcon />
+                                    <ArrowLeft />
                                 </IconButton>
                                 <Divider orientation="vertical" flexItem />
                                 <Typography sx={{ textWrap: "nowrap" }}>
-                                    Add new term to the: <b>{set.name}</b>
+                                    Új kifejezés hozzáadása ide: <b>{set.name}</b>
                                 </Typography>
                             </Stack>
 
 
+                            <Stack direction="row" gap={1} >
+                                <Tooltip title="Hozzáadás">
+                                    <IconButtonGrey onClick={() => append(initRow)}>
+                                        <PlusIcon />
+                                    </IconButtonGrey>
+                                </Tooltip>
+                                <ImportForm append={append} />
 
-                        </Stack>
-                        <Stack direction="row" gap={2} >
-                            <Button variant="outlined" onClick={() => append(initRow)} startIcon={<AddIcon sx={{ color: "primary.main" }} />}>
-                                Add term
-                            </Button>
-                            <SubmitButton
-                                variant="contained"
-                                formState={form.formState}
-                                startIcon={<SaveIcon sx={{ color: "primary.contrastText" }} />}
-                            >
-                                Save
-                            </SubmitButton>
+                                <Tooltip title="Mentés">
+                                    <IconButtonGrey type="submit" disabled={form.formState.isSubmitting || !form.formState.isValid}>
+                                        <Save />
+                                    </IconButtonGrey>
+                                </Tooltip>
 
+
+                            </Stack>
                         </Stack>
+
+
                     </Stack>
 
 
                     <Stack p={1}>
                         <Stack gap={2} alignItems="center" mt={1} >
                             {fields.map((field, index) => (
-                                <Paper variant='elevation' elevation={1} key={field.id} sx={{ p: 2, pt: 4, position: "relative", width: "100%" }}>
+                                <Box key={field.id} sx={{ p: 2, pt: 4, position: "relative", width: "100%", border: "none" }}>
                                     <Stack direction="row" gap={2} alignItems="center" >
                                         <TermForm key={index} {...{ form, prefix: `terms.${index}.` }} />
-                                        <Tooltip title="Remove" sx={{ height: "fit-content", position: "absolute", top: -6, right: -6 }}>
+                                        <Tooltip title="Törlés" sx={{ height: "fit-content", position: "absolute", top: -6, right: -6 }}>
                                             <IconButton onClick={() => remove(index)}>
-                                                <RemoveCircleOutlineOutlinedIcon />
+                                                <CircleMinus />
+
                                             </IconButton>
                                         </Tooltip>
                                     </Stack>
-                                </Paper>
+                                </Box>
                             ))}
-                            <Tooltip title="Add">
-                                <IconButton onClick={() => append(initRow)} sx={{ width: "fit-content", }}>
-                                    <AddCircleIcon sx={{ color: "primary.main", width: 40, height: 40 }} />
+                            <Tooltip title="Hozzáadás" ref={bottomRef}>
+                                <IconButton onClick={() => append(initRow)} sx={{
+                                    width: "fit-content", backgroundColor: "primary.main", "&:hover": {
+                                        backgroundColor: "primary.dark"
+                                    }
+                                }}>
+                                    <Plus color="#ffffff" size={30} />
                                 </IconButton>
                             </Tooltip>
 
@@ -153,7 +158,8 @@ const Page: FC<{}> = () => {
                     </Stack >
                 </Stack >
             </form >
-        </Fragment>
+
+        </Fragment >
 
 
 

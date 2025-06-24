@@ -3,7 +3,7 @@ import { FC, ReactNode } from 'react'
 
 const layout: FC<{ children: ReactNode }> = ({ children }) => {
     return (
-        <Box sx={{ mt: -4 }}>
+        <Box >
             {children}
         </Box>
     )

@@ -1,11 +1,13 @@
 "use client"
 
 import useMenuControl from "@/hooks/useMenuControl"
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { IconButton, Menu, Tooltip } from "@mui/material"
+import { IconButtonGrey } from "@/lib/mui/styled"
+import { Menu, Tooltip } from "@mui/material"
+import { EllipsisVertical } from "lucide-react"
 import { FC, Fragment } from "react"
 import DeleteSet from "./DeleteSet"
 import EditSet from "./EditSet"
+import ExportTerms from "./ExportTerms"
 import MoveToFolder from "./MoveToFolder"
 
 const SetMenu: FC<{}> = () => {
@@ -14,10 +16,10 @@ const SetMenu: FC<{}> = () => {
 
     return (
         <Fragment>
-            <Tooltip title="Menu">
-                <IconButton onClick={menuControl.handleOpen}>
-                    <MoreVertIcon />
-                </IconButton>
+            <Tooltip title="Menü">
+                <IconButtonGrey onClick={menuControl.handleOpen}>
+                    <EllipsisVertical />
+                </IconButtonGrey>
             </Tooltip>
             <Menu
                 id="menu"
@@ -28,6 +30,7 @@ const SetMenu: FC<{}> = () => {
             >
                 <MoveToFolder  {...{ menuControl }} />
                 <EditSet {...{ menuControl }} />
+                <ExportTerms {...{ menuControl }} />
                 <DeleteSet />
             </Menu>
         </Fragment>

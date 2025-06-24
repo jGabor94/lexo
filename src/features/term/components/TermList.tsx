@@ -2,12 +2,10 @@
 
 import Sort from "@/components/Sort";
 import { ToggleButton, ToggleGroup } from "@/components/toggleButton";
-import TextLine from "@/components/ui/TextLine";
 import useSet from "@/features/set/hooks/useSet";
 import useSort from "@/hooks/useSort";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import PendingActionsIcon from '@mui/icons-material/PendingActions';
-import { Paper, Stack, Typography } from "@mui/material";
+import { Divider, Paper, Stack, Typography, useTheme } from "@mui/material";
+import { CircleCheckBig, ListTodo } from "lucide-react";
 import { FC, Fragment, MouseEvent, useState } from "react";
 import { HiddenMode, Term as TermType } from "../types";
 import Term from "./Term";
@@ -16,21 +14,23 @@ const TermList: FC<{}> = () => {
 
     const { set, isOwner } = useSet()
 
+    const theme = useTheme()
+
     const sortState = useSort([
         {
-            label: "Orginial",
+            label: "Eredeti",
             sort: (a: TermType, b: TermType) => 0
         },
         {
-            label: "Progress",
+            label: "Előrehaladás",
             sort: (a: TermType, b: TermType) => a.status - b.status
         },
         {
-            label: "Term",
+            label: "Kifjezeés",
             sort: (a: TermType, b: TermType) => a.term.content.localeCompare(b.term.content)
         },
         {
-            label: "Definiton",
+            label: "Definíció",
             sort: (a: TermType, b: TermType) => a.definition.content[0].localeCompare(b.definition.content[0])
         },
     ])
@@ -44,6 +44,7 @@ const TermList: FC<{}> = () => {
     const learnedTerms = sortState.sort(set.terms.filter(term => term.status === 5))
 
 
+
     return (
         <Stack gap={3} justifyContent="center" alignItems="center" mt={4}>
             {!isOwner ? (
@@ -53,44 +54,51 @@ const TermList: FC<{}> = () => {
                     ))}
                 </Stack>
             ) : (
-                <Fragment>
+                <Stack gap={8} width="100%">
                     {stillLearningTerms.length > 0 && (
-                        <Stack width="100%" gap={1}>
-                            <Stack direction="row" alignItems="center" gap={1}>
-                                <TextLine>
-                                    <Stack direction="row" gap={1}>
-                                        <PendingActionsIcon sx={{ color: "warning.dark" }} />
-                                        <Typography color="warning.dark" fontSize={17} fontWeight={500} >Still learning</Typography>
-                                    </Stack>
+                        <Stack width="100%" gap={1} >
+                            <Stack direction="row" justifyContent="space-between" alignItems="center" gap={1} >
+                                <Stack direction="row" gap={1}>
+                                    <ListTodo color={theme.vars.palette.warning.dark} />
+                                    <Typography color="warning.dark" fontSize={17} fontWeight={500} >Tanulás alatt</Typography>
+                                </Stack>
 
-                                </TextLine>
                                 <Sort sortState={sortState} />
 
                             </Stack>
 
+                            <Divider flexItem />
 
                             {stillLearningTerms.map(term => (
-                                <Term key={term.id}{...{ term, hiddenMode }} />
+                                <Fragment key={term.id}>
+                                    <Term key={term.id}{...{ term, hiddenMode }} />
+                                    <Divider flexItem />
+                                </Fragment>
                             ))}
                         </Stack>
                     )
                     }
                     {
                         learnedTerms.length > 0 && (
-                            <Stack width="100%" gap={1}>
-                                <TextLine>
-                                    <Stack direction="row" gap={1}>
-                                        <CheckCircleOutlineIcon sx={{ color: "primary.main" }} />
-                                        <Typography color="primary.main" fontSize={17} fontWeight={500} >Learned</Typography>
-                                    </Stack>
-                                </TextLine>
+                            <Stack width="100%" gap={1} >
+                                <Stack direction="row" gap={1} >
+                                    <CircleCheckBig color={theme.vars.palette.primary.main} />
+                                    <Typography color="primary.main" fontSize={17} fontWeight={500} >Megtanult</Typography>
+                                </Stack>
+                                <Divider flexItem />
                                 {learnedTerms.map(term => (
-                                    <Term key={term.id}{...{ term, hiddenMode }} />
+                                    <Fragment key={term.id}>
+                                        <Term key={term.id}{...{ term, hiddenMode }} />
+                                        <Divider flexItem />
+
+                                    </Fragment>
+
+
                                 ))}
                             </Stack>
                         )
                     }
-                </Fragment>
+                </Stack>
             )}
 
 
@@ -110,10 +118,10 @@ const TermList: FC<{}> = () => {
                         <ToggleGroup onChange={handleAlignment}>
                             <Stack direction="row" gap={1}>
                                 <ToggleButton value="terms" sx={{ textTransform: "none" }} >
-                                    Hide terms
+                                    Kifejezések elrejtése
                                 </ToggleButton>
                                 <ToggleButton value="definitions" sx={{ textTransform: "none" }}>
-                                    Hide definitions
+                                    Definíciók elrejtése
                                 </ToggleButton>
                             </Stack>
 

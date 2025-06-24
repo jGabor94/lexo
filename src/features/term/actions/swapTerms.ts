@@ -5,10 +5,10 @@ import { setsTable, termsTable } from "@/drizzle/schema"
 import { isLogged } from "@/features/authentication/utils"
 import { getSetAcl } from "@/features/authorization/aclCallbacks"
 import { aclMiddleware } from "@/features/authorization/utils"
-import { LanguageCode } from "@/lib/language_tools/types"
 import { createServerAction } from "@/lib/serverAction/createServerAction/createServerAction"
 import { createServerActionResponse } from "@/lib/serverAction/response/response"
 import { eq } from "drizzle-orm"
+import { LanguageCode } from "../types"
 
 interface Request {
     params: [setid: string, preferredTermLang: LanguageCode, preferredDefinitionLang: LanguageCode],

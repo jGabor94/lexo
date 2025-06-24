@@ -1,5 +1,5 @@
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Box, BoxProps, IconButton, Paper } from '@mui/material';
+import { X } from 'lucide-react';
 import { forwardRef, ReactNode, Ref } from 'react';
 
 interface Props extends BoxProps {
@@ -22,7 +22,7 @@ const ModalOverlay = forwardRef<Ref<HTMLDivElement>, Props>(({ children, onClose
         ...boxProps.sx
     }} >
         <IconButton sx={{ position: "absolute", top: 2, right: 2 }} onClick={onClose}>
-            <HighlightOffIcon />
+            <X />
         </IconButton>
         {children}
     </Box>

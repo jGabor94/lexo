@@ -1,10 +1,11 @@
 "use client"
 
 import { Term } from "@/features/term/types";
-import { Button, Chip, Grid2 as Grid, Paper, Stack, Typography } from "@mui/material";
+import { Button, Chip, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import useQuiz from "../../hooks/useQuiz";
+import { modeMap } from "../../lib/contants";
 import { PracticeMode } from "../../types";
 import { shuffle } from "../../utils";
 
@@ -18,9 +19,16 @@ const getOptions = (terms: Term[], currentIndex: number) => {
 const getMarking = (selected: null | string, option: Term, terms: Term[], currentIndex: number) => {
     if (selected) {
         if (selected === option.id) {
-            return selected === terms[currentIndex].id ? "1px solid green" : "1px solid red"
+            if (selected === terms[currentIndex].id) return {
+                border: "none",
+                backgroundColor: "#3adb27"
+            }
+            return {
+                border: "none",
+                backgroundColor: "#ed3939"
+            }
         } else if (option.id === terms[currentIndex].id) {
-            return "1px dashed green"
+            return { border: "2px solid #3adb27" }
         }
     }
 }
@@ -29,6 +37,9 @@ const QuizLayout: FC<{}> = () => {
 
     const { terms, index, successItems, wrongItems, handleSuccess, handleWrong } = useQuiz()
     const { mode } = useParams<{ mode: PracticeMode }>()
+
+    const nextButtonRef = useRef<HTMLButtonElement>(null);
+
 
     const [currentIndex, setCurrentIndex] = useState(index)
     const [options, setOptions] = useState(getOptions(terms, index))
@@ -42,12 +53,20 @@ const QuizLayout: FC<{}> = () => {
 
     const handleClick = (selectedOption: Term) => {
         !selected && setSelected(selectedOption.id)
+
     }
+
 
     const handleNext = () => {
         selected === terms[index].id ? handleSuccess() : handleWrong()
         setSelected(null)
     }
+
+    useEffect(() => {
+        if (selected && nextButtonRef.current) {
+            nextButtonRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+        }
+    }, [selected])
 
     return (
         <Stack gap={2} sx={{
@@ -65,16 +84,17 @@ const QuizLayout: FC<{}> = () => {
                         {index < terms.length ? index + 1 : terms.length}/{terms.length}
                     </Typography>
                     <Typography fontSize={12}>
-                        {mode}
+                        {modeMap[mode]}
                     </Typography>
                 </Stack>
 
                 <Chip color="primary" label={successItems.length} sx={{ pr: 2, pl: 2, fontWeight: 700 }} />
             </Stack>
-            <Stack>
+            <Stack gap={2}>
                 <Typography fontSize={20} sx={{ color: "grey" }}>
-                    Choose the correct meaning
+                    Válaszd ki a megfelelő jelentést
                 </Typography>
+                <Divider flexItem />
                 <Typography fontSize={20} sx={{ alignSelf: "center" }}>
                     {terms[index].term.content}
                 </Typography>
@@ -83,14 +103,15 @@ const QuizLayout: FC<{}> = () => {
             <Grid container spacing={2} width="100%">
                 {options.map((option, index) => (
                     <Grid key={index} size={{ xs: 12, md: 6 }} onClick={() => handleClick(option)}>
-                        <Paper component={Stack} justifyContent="center" alignItems="center" sx={{ height: 70, width: "100%", cursor: "pointer", border: getMarking(selected, option, terms, currentIndex) }}>
+                        <Paper component={Stack} justifyContent="center" alignItems="center" sx={{ height: 70, width: "100%", cursor: "pointer", ...getMarking(selected, option, terms, currentIndex) }}>
                             {option.definition.content.map((word, index) => word + (index < option.definition.content.length - 1 ? ", " : ""))}
                         </Paper>
                     </Grid>
                 ))}
             </Grid>
             {selected && (
-                <Button onClick={handleNext} variant="contained" sx={{ alignSelf: "flex-end" }}>Tovább</Button>
+                <Button onClick={handleNext} variant="contained" sx={{ alignSelf: "flex-end" }} ref={nextButtonRef}
+                >Tovább</Button>
             )}
         </Stack >
     );

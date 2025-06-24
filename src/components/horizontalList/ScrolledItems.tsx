@@ -2,10 +2,9 @@
 
 import SetCard from '@/features/set/components/ui/SetCard'
 import { SetListItem } from '@/features/set/types'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { Box, IconButton, Stack } from '@mui/material'
 import type { } from '@mui/material/themeCssVarsAugmentation'
+import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
 import { FC, useEffect, useRef, useState } from 'react'
 
 const ScrolledItems: FC<{ sets: SetListItem[] }> = ({ sets }) => {
@@ -84,11 +83,11 @@ const ScrolledItems: FC<{ sets: SetListItem[] }> = ({ sets }) => {
                             zIndex: 100,
 
                         }}>
-                        <ArrowBackIosIcon />
+                        <ArrowBigLeft strokeWidth={1} size={50} />
                     </IconButton>
                 )}
 
-                <Stack direction="row" flexWrap="nowrap" sx={{
+                <Stack direction="row" flexWrap="nowrap" py={1} sx={{
                     overflowX: "scroll",
                     "::-webkit-scrollbar": {
                         display: "none"
@@ -109,7 +108,7 @@ const ScrolledItems: FC<{ sets: SetListItem[] }> = ({ sets }) => {
                             zIndex: 100,
 
                         }}>
-                        <ArrowForwardIosIcon />
+                        <ArrowBigRight strokeWidth={1} size={50} />
                     </IconButton>
                 )}
 

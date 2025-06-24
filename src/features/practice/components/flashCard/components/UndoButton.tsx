@@ -1,7 +1,7 @@
 import useFlashCard from '@/features/practice/hooks/useFlashCard';
-import SettingsBackupRestoreOutlinedIcon from "@mui/icons-material/SettingsBackupRestoreOutlined";
 import { Stack, Typography } from '@mui/material';
 import { animate } from 'framer-motion';
+import { RotateCcw } from 'lucide-react';
 import { FC } from 'react';
 import useKeyFrames from '../../../hooks/useKeyFrames';
 
@@ -22,8 +22,8 @@ const UndoButton: FC<{}> = () => {
 
     return (
         <Stack direction="row" gap={0.5} onClick={handleUndoClick} alignItems="center" sx={{ cursor: "pointer" }}>
-            <SettingsBackupRestoreOutlinedIcon sx={{ width: 30, height: 30 }} />
-            <Typography>Undo</Typography>
+            <RotateCcw size={25} />
+            <Typography>Visszavonás</Typography>
         </Stack>
     )
 }

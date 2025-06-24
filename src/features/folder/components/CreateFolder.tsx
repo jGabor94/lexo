@@ -2,9 +2,10 @@
 
 import { SetInput } from "@/features/set/components/SetForm";
 import useModalControl from "@/hooks/useModalControl";
+import { IconButtonGrey } from "@/lib/mui/styled";
 import useAction from "@/lib/serverAction/useAction";
-import AddIcon from '@mui/icons-material/Add';
-import { Button, ButtonProps } from "@mui/material";
+import { ButtonProps, Tooltip } from "@mui/material";
+import { PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
@@ -18,7 +19,7 @@ const CreateFolder: FC<ButtonProps> = (props) => {
     const modalControl = useModalControl()
 
     const { action: createFolder } = useAction(SA_CreateFolder, {
-        200: { severity: "success", content: "Folder successfully created 🙂" }
+        200: { severity: "success", content: "Mappa sikeresen létrehozva 🙂" }
     })
 
     const submit: SubmitHandler<SetInput> = async ({ name }) => {
@@ -30,19 +31,17 @@ const CreateFolder: FC<ButtonProps> = (props) => {
 
     return (
         <Fragment>
-            <Button variant="contained" onClick={modalControl.handleOpen} startIcon={<AddIcon sx={{
-                color: "primary.contrastText"
-            }} />}
-                {...props}
-            >
-                New Folder
-            </Button>
+            <Tooltip title="Új mappa">
+                <IconButtonGrey onClick={modalControl.handleOpen} >
+                    <PlusIcon />
+                </IconButtonGrey>
+            </Tooltip>
             <FolderForm
                 modalControl={modalControl}
                 onSubmit={submit}
                 initValues={{ name: "" }}
-                submitLabel="Create"
-                label="Create folder" />
+                submitLabel="Létrehozás"
+                label="Mappa létrehozása" />
         </Fragment>
     )
 }

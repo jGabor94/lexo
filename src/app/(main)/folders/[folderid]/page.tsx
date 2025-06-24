@@ -1,17 +1,18 @@
-import TextLine from "@/components/ui/TextLine";
-import FolderMenu from "@/features/folder/components/FolderMenu";
+import DeleteFolder from "@/features/folder/components/DeleteFolder";
+import EditFolder from "@/features/folder/components/EditFolder";
 import RemoveFromFolder from "@/features/folder/components/RemoveFromFolder";
 import getFolder from "@/features/folder/queries/getFolder";
 import CreateSet from "@/features/set/components/CreateSet";
-import { RowSetCardContent, RowSetCardLayout, RowSetCardMenu } from "@/features/set/components/ui/rowSetCard";
-import FolderIcon from '@mui/icons-material/Folder';
+import { RowSetCardLayout } from "@/features/set/components/ui/rowSetCard";
 import { Paper, Stack, Typography } from "@mui/material";
+import { Folder } from "lucide-react";
 import { notFound } from "next/navigation";
 import { FC } from "react";
 
 export const revalidate = 0
 
-const Page: FC<{ params: { folderid: string } }> = async ({ params }) => {
+const Page: FC<{ params: Promise<{ folderid: string }> }> = async props => {
+    const params = await props.params;
 
     const folder = await getFolder(params.folderid)
     if (!folder) notFound()
@@ -19,29 +20,30 @@ const Page: FC<{ params: { folderid: string } }> = async ({ params }) => {
     return (
         <Stack gap={1}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" gap={2} >
-                <TextLine>
-                    <Stack direction="row" gap={1} sx={{ flexShrink: 1, minWidth: 0, }}>
-                        <FolderIcon />
-                        <Typography sx={{ overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", maxWidth: "100%" }}>/{folder.name}</Typography>
-                    </Stack>
-                </TextLine>
+                <Stack direction="row" gap={1} sx={{ alignItems: "center" }}>
+                    <Folder size={30} />
+                    <Typography sx={{ overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", maxWidth: "100%", fontWeight: 600, fontSize: 20 }}>/{folder.name}</Typography>
+                </Stack>
+                <Stack direction="row" gap={1}>
+                    <EditFolder folder={folder} />
+                    <DeleteFolder folder={folder} />
 
-                <FolderMenu {...{ folder }} />
-                <CreateSet />
+                    <CreateSet variant="toolbar" />
+
+
+                </Stack>
             </Stack>
             <Stack mt={4} gap={3}>
                 {folder.sets.length > 0 ? folder.sets.map((set) => (
-                    <RowSetCardLayout key={set.id}>
-                        <RowSetCardContent {...{ set, href: `/sets/${set.id}` }} />
-                        <RowSetCardMenu sx={{ mr: -1, }}>
-                            <RemoveFromFolder set={set} />
-                        </RowSetCardMenu>
-
+                    <RowSetCardLayout key={set.id} {...{ set, href: `/sets/${set.id}` }} >
+                        <RemoveFromFolder set={set} />
                     </RowSetCardLayout>
+
+
 
                 )) : (
                     <Paper component={Stack} sx={{ p: 3, width: "100%", alignItems: "center" }}>
-                        <Typography>This folder has no sets yet</Typography>
+                        <Typography>Üres mappa</Typography>
                     </Paper>
                 )}
             </Stack>

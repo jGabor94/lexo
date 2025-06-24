@@ -11,7 +11,7 @@ const ChangeLogModal: FC<{ children: ReactNode }> = ({ children }) => {
 
     return (
         <Fragment>
-            <Link onClick={handleOpen} sx={{ cursor: "pointer", width: "fit-content", textDecoration: "none" }}>Change log</Link>
+            <Link onClick={handleOpen} sx={{ cursor: "pointer", width: "fit-content", textDecoration: "none", fontWeight: 500 }}>Verziótörténet</Link>
             <Modal
                 open={open}
                 onClose={handleClose}

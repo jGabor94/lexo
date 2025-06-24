@@ -1,10 +1,10 @@
 "use client"
 
-import { MenuControl } from "@/hooks/useMenuControl";
 import useModalControl from "@/hooks/useModalControl";
+import { IconButtonGrey } from "@/lib/mui/styled";
 import useAction from "@/lib/serverAction/useAction";
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import { Tooltip } from "@mui/material";
+import { Edit2Icon } from "lucide-react";
 import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { SetInput } from "../../set/components/SetForm";
@@ -13,36 +13,32 @@ import { Folder } from "../types";
 import FolderForm from "./FolderForm";
 
 
-const EditFolder: FC<{ folder: Folder, menuControl: MenuControl }> = ({ folder, menuControl }) => {
+const EditFolder: FC<{ folder: Folder }> = ({ folder }) => {
 
     const { action: editFolder } = useAction(SA_UpdateFolder, {
-        200: { severity: "success", content: "Folder successfully edited 🙂" }
+        200: { severity: "success", content: "Mappa sikeresen szerkesztve 🙂" }
     })
 
     const modalControl = useModalControl()
 
     const submit: SubmitHandler<SetInput> = async (data) => {
-        const res = await editFolder(folder.id, data)
-        if (res.statusCode === 200) {
-            modalControl.handleClose()
-            menuControl.handleClose()
-        }
+        await editFolder(folder.id, data)
     }
 
     return (
         <Fragment>
-            <MenuItem onClick={modalControl.handleOpen}>
-                <ListItemIcon>
-                    <EditOutlinedIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Edit</ListItemText>
-            </MenuItem>
+            <Tooltip title="Szerkesztés">
+                <IconButtonGrey onClick={modalControl.handleOpen}>
+                    <Edit2Icon />
+                </IconButtonGrey>
+            </Tooltip>
+
             <FolderForm
                 modalControl={modalControl}
                 onSubmit={submit}
                 initValues={{ name: folder.name }}
-                submitLabel="Edit"
-                label="Edit folder"
+                submitLabel="Szerkesztés"
+                label="Mappa szerkesztése"
             />
         </Fragment>
 

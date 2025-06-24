@@ -12,78 +12,77 @@ const PrivacyPolicy: FC<{}> = () => {
 
     return (
         <Fragment>
-            <Link onClick={handleOpen} sx={{ cursor: "pointer", width: "fit-content", textDecoration: "none", }}>
-                Privacy Policy
+            <Link onClick={handleOpen} sx={{ cursor: "pointer", width: "fit-content", textDecoration: "none", fontWeight: 500 }}>
+                Adatvédelmi szabályzat
             </Link>
             <Modal open={open} onClose={handleClose}>
                 <ModalOverlay width={700} onClose={handleClose}>
                     <Stack gap={2} sx={{ p: 1 }}>
                         <Typography fontWeight={600} fontSize={25}>
-                            Privacy Policy
+                            Adatvédelmi szabályzat
                         </Typography>
                         <Divider flexItem />
                         <Stack gap={2} sx={{ height: 600, overflowY: "scroll" }}>
                             <Stack>
                                 <Typography fontWeight={600} fontSize={20}>
-                                    Welcome to Lexo!
+                                    Üdvözlünk a Lexo-n!
                                 </Typography>
                                 <Typography>
-                                    This privacy policy outlines how we collect, use, and protect your personal data when using our language learning platform.
+                                    Ez az adatvédelmi szabályzat bemutatja, hogyan gyűjtjük, használjuk fel és védjük személyes adataidat nyelvtanuló platformunk használata során.
+                                </Typography>
+                            </Stack>
+                            <Stack>
+                                <Typography fontWeight={600} fontSize={20}>
+                                    1. Gyűjtött adatok
+                                </Typography>
+                                <Typography>
+                                    Amikor Google-fiókkal regisztrálsz a Lexo-ra, begyűjtjük a nevedet, e-mail címedet és profilképedet. Ezen kívül elmentjük az általad létrehozott szógyűjteményeket és a gyakorlások során elért előrehaladásodat is.
                                 </Typography>
                             </Stack>
 
                             <Stack>
                                 <Typography fontWeight={600} fontSize={20}>
-                                    1. Collected Information
+                                    2. Adatkezelés és biztonság
                                 </Typography>
                                 <Typography>
-                                    When you register on Lexo using your Google account, we collect your name, email address, and profile picture. Additionally, we store the vocabulary collections you create and any progress you make in practice exercises.
+                                    Személyes adataid biztonságosan tároljuk, és csak az arra jogosult munkatársak férhetnek hozzá a platform működtetése érdekében. Harmadik fél számára nem adjuk át adataidat, kivéve, ha jogszabály írja elő, vagy működési okból szükséges.
                                 </Typography>
                             </Stack>
 
                             <Stack>
                                 <Typography fontWeight={600} fontSize={20}>
-                                    2. Data Management and Security
+                                    3. Sütik és követési technológiák
                                 </Typography>
                                 <Typography>
-                                    Your personal data is securely stored, and access is limited to authorized personnel who manage the platform. We do not share your data with third parties unless required by law or for operational purposes.
+                                    A Lexo sütiket (cookie-kat) és más követési technológiákat használ a felhasználói élmény fokozására, munkameneted kezelésére és a gyakorlási előrehaladásod nyomon követésére.
                                 </Typography>
                             </Stack>
 
                             <Stack>
                                 <Typography fontWeight={600} fontSize={20}>
-                                    3. Cookies and Tracking Technologies
+                                    4. Adatmegosztás
                                 </Typography>
                                 <Typography>
-                                    Lexo uses cookies and other tracking technologies to enhance your experience, manage your session, and track your progress in exercises.
+                                    Személyes adataidat nem osztjuk meg harmadik féllel, kivéve ha ez a Lexo működéséhez szükséges vagy jogszabály írja elő. Az általad létrehozott szógyűjtemények más felhasználók számára is láthatók lehetnek, a platform működésének megfelelően.
                                 </Typography>
                             </Stack>
 
                             <Stack>
                                 <Typography fontWeight={600} fontSize={20}>
-                                    4. Data Sharing
+                                    5. Felhasználói jogok
                                 </Typography>
                                 <Typography>
-                                    We do not share your personal information with third parties unless necessary for the operation of Lexo or required by law. Your vocabulary collections may be viewed by other usersTable, as per platform functionality.
-                                </Typography>
-                            </Stack>
-
-                            <Stack>
-                                <Typography fontWeight={600} fontSize={20}>
-                                    5. User Rights
-                                </Typography>
-                                <Typography>
-                                    You have the right to access, modify, or delete your personal data, including the information provided through Google login. You can adjust your settings or contact us directly for data-related requests.
+                                    Jogod van hozzáférni a személyes adataidhoz, módosítani vagy törölni azokat, beleértve a Google-fiókkal megadott információkat is. A beállításaidban vagy közvetlen kapcsolatfelvétellel kérheted adataid módosítását vagy törlését.
                                 </Typography>
                             </Stack>
 
                             <Stack gap={1}>
                                 <Stack>
                                     <Typography fontWeight={600} fontSize={20}>
-                                        6. Contact
+                                        6. Kapcsolat
                                     </Typography>
                                     <Typography>
-                                        If you have any questions or concerns about privacy, please contact us at one of the following:
+                                        Ha bármilyen kérdésed vagy aggályod merül fel az adatvédelemmel kapcsolatban, lépj kapcsolatba velünk az alábbi elérhetőségek egyikén:
                                     </Typography>
                                 </Stack>
                                 <Contact />
@@ -91,14 +90,15 @@ const PrivacyPolicy: FC<{}> = () => {
 
                             <Stack>
                                 <Typography fontWeight={600} fontSize={20}>
-                                    7. Updates
+                                    7. Frissítések
                                 </Typography>
                                 <Typography>
-                                    This privacy policy may be updated periodically to reflect changes in our practices or legal requirements. Please revisit this page regularly to stay informed.
+                                    Az adatvédelmi szabályzatot időről időre frissíthetjük a gyakorlataink vagy jogszabályi követelmények változásai miatt. Kérjük, rendszeresen nézd meg ezt az oldalt, hogy naprakész maradj.
                                 </Typography>
                             </Stack>
                         </Stack>
                     </Stack>
+
                 </ModalOverlay>
             </Modal>
         </Fragment>

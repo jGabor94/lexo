@@ -4,8 +4,8 @@ import SA_UpdateSet from '@/features/set/actions/updateSet';
 import { MenuControl } from '@/hooks/useMenuControl';
 import useModalControl from '@/hooks/useModalControl';
 import useAction from '@/lib/serverAction/useAction';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import { Edit2Icon } from 'lucide-react';
 import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
 import useSet from '../hooks/useSet';
@@ -18,7 +18,7 @@ const EditSet: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
     const { mutate, set } = useSet()
 
     const { action: updateSet } = useAction(SA_UpdateSet, {
-        200: { severity: "success", content: "Set successfully edited 🙂" }
+        200: { severity: "success", content: "Szógyújtemény sikeresen szerkesztve 🙂" }
     })
 
     const submit: SubmitHandler<SetInput> = async (data) => {
@@ -36,9 +36,9 @@ const EditSet: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
         <Fragment>
             <MenuItem onClick={modalControl.handleOpen}>
                 <ListItemIcon>
-                    <EditOutlinedIcon fontSize="small" />
+                    <Edit2Icon size={20} />
                 </ListItemIcon>
-                <ListItemText>Edit</ListItemText>
+                <ListItemText>Szerkesztés</ListItemText>
             </MenuItem>
             <SetForm
                 modalControl={modalControl}

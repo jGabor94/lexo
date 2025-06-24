@@ -6,10 +6,10 @@ import { FC } from "react";
 
 const GoogleSignInButton: FC<ButtonProps> = (props) => {
     return (
-        <Button variant="outlined" {...props} onClick={async () => await SA_googleSignIn()} >
+        <Button variant="outlined" color="button" {...props} onClick={async () => await SA_googleSignIn()} >
             <Stack direction="row" alignItems="center" gap={1}>
                 <Box component="img" src="/googleButtonLogo.svg" sx={{ width: 25 }} />
-                Google Sign In
+                Google Bejelentkezés
             </Stack>
         </Button>
     )

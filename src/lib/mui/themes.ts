@@ -6,12 +6,12 @@ import { NotoSans } from "./fonts";
 
 export const RootTheme = createTheme({
     cssVariables: {
-        colorSchemeSelector: 'class'
+        colorSchemeSelector: 'class',
     },
     typography: {
         allVariants: {
             fontFamily: 'Geist Variable',
-            fontWeight: 300
+            fontWeight: 500
         },
         fontFamily: 'Geist Variable',
     },
@@ -27,17 +27,22 @@ export const RootTheme = createTheme({
                 },
                 secondary: {
                     main: "#3CC8F4",
+                    contrastText: "#fff",
+                },
+                button: {
+                    main: "rgba(0, 0, 0, 0.54)",
+                    contrastText: "#fff",
                 },
                 background: {
-                    default: "#fafafa",
-                    paper: "#fafafa",
+                    default: "rgb(248, 248, 248)",
+                    paper: "rgb(248, 248, 248)",
                 },
                 action: {
                     hover: "white",
                 },
                 text: {
-                    primary: "rgba(0, 0, 0, 0.6)",
-                    secondary: "rgba(0, 0, 0, 0.87)"
+                    primary: "rgba(0, 0, 0, 0.8)",
+                    secondary: "rgba(0, 0, 0, 0.59)",
                 }
             },
         },
@@ -52,16 +57,21 @@ export const RootTheme = createTheme({
                 secondary: {
                     main: "#3CC8F4",
                 },
+                button: {
+                    main: "#fff",
+                    contrastText: "rgba(0, 0, 0, 0.87)",
+                },
                 background: {
                     default: "#151515",
-                    paper: "#151515",
+                    paper: "#1f1f1f",
                 },
                 action: {
                     hover: "black",
                 },
                 text: {
                     primary: "rgba(255, 255, 255, 0.8)",
-                    secondary: "#fff"
+                    secondary: "#fff",
+
                 }
 
 
@@ -71,12 +81,17 @@ export const RootTheme = createTheme({
     components: {
         MuiPaper: {
             defaultProps: {
-                variant: "outlined",
+                elevation: 0,
             },
             styleOverrides: {
-                root: () => ({
-                    borderRadius: 10,
-                }),
+
+                root: ({ theme }) => {
+                    return {
+                        border: `2px solid ${theme.vars.palette.text.disabled}`,
+                        backgroundColor: theme.vars.palette.background.default,
+                        borderRadius: 10,
+                    }
+                },
             },
         },
         MuiLink: {
@@ -86,17 +101,27 @@ export const RootTheme = createTheme({
             },
         },
         MuiButton: {
+            defaultProps: {
+                color: "button",
+            },
             styleOverrides: {
-                root: ({ theme }) => ({
-                    textTransform: "none",
-                    borderRadius: theme.spacing(1),
-                    fontSize: 12,
-                    fontFamily: NotoSans.style.fontFamily,
-                    fontWeight: 600,
-                    boxShadow: "none",
-                    flex: "none",
-                    "&:hover": { boxShadow: "none" }
-                })
+
+                root: ({ theme, ownerState }) => {
+
+                    return {
+                        textTransform: "none",
+                        borderRadius: theme.spacing(1),
+                        fontFamily: NotoSans.style.fontFamily,
+                        fontWeight: 600,
+                        boxShadow: "none",
+                        //border: ownerState.variant !== "text" ? `2px solid ${ownerState.color && ownerState.color !== "inherit" && theme.vars.palette[ownerState.color].main} ` : "",
+                        flex: "none",
+                        "&:hover": { boxShadow: "none" },
+                        "&.Mui-disabled": {
+                            border: "none"
+                        }
+                    }
+                }
             },
 
         },

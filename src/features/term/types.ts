@@ -1,6 +1,8 @@
 import { termsTable } from "@/drizzle/schema";
-import { LanguageCode } from "@/lib/language_tools/types";
 import { Set } from "../set/types";
+import { languageCodes } from "./lib/constants";
+
+export type LanguageCode = typeof languageCodes[number]
 
 export type TermInput = {
     term: {

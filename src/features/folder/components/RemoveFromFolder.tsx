@@ -1,12 +1,11 @@
 "use client"
 
-import LinearLoading from '@/components/LinearLoading';
 import { SetListItem } from '@/features/set/types';
 import useAction from '@/lib/serverAction/useAction';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { ListItemIcon, ListItemText, MenuItem, } from '@mui/material';
+import { Tooltip } from '@mui/material';
+import { CircleMinus } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { FC, Fragment, useState } from 'react';
+import { FC, useState } from 'react';
 import SA_RemoveFromFolder from '../actions/removeFromFolder';
 
 const RemoveFromFolder: FC<{ set: SetListItem }> = ({ set }) => {
@@ -17,7 +16,8 @@ const RemoveFromFolder: FC<{ set: SetListItem }> = ({ set }) => {
 
     const { action: removeFromFolder } = useAction(SA_RemoveFromFolder)
 
-    const handleCLick = async () => {
+    const handleCLick: React.MouseEventHandler<SVGSVGElement> = async (e) => {
+        e.stopPropagation()
         setLoading(true)
         await removeFromFolder(folderid, set.id)
         setLoading(false)
@@ -25,15 +25,10 @@ const RemoveFromFolder: FC<{ set: SetListItem }> = ({ set }) => {
 
 
     return (
-        <Fragment>
-            <LinearLoading {...{ loading }} />
-            <MenuItem onClick={handleCLick}>
-                <ListItemIcon>
-                    <RemoveIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Remove</ListItemText>
-            </MenuItem>
-        </Fragment>
+
+        <Tooltip title="Eltávolítás a mappából">
+            <CircleMinus onClick={handleCLick} style={{ cursor: "pointer" }} />
+        </Tooltip>
 
     )
 }

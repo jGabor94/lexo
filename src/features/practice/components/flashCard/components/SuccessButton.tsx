@@ -1,12 +1,12 @@
 import useFlashCard from "@/features/practice/hooks/useFlashCard";
-import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-import { IconButton, SvgIconProps, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import { animate } from "framer-motion";
+import { CircleCheckBig, LucideProps } from "lucide-react";
 import { FC } from 'react';
 import useKeyFrames from "../../../hooks/useKeyFrames";
 
 
-const SuccessButton: FC<SvgIconProps> = (props) => {
+const SuccessButton: FC<LucideProps> = (props) => {
 
     const { handleSuccess } = useFlashCard()
     const { successClick: keyFrames } = useKeyFrames()
@@ -20,9 +20,9 @@ const SuccessButton: FC<SvgIconProps> = (props) => {
     };
 
     return (
-        <Tooltip title="Know">
+        <Tooltip title="Tudom">
             <IconButton onClick={handleSuccessClick} >
-                <CheckCircleOutlineOutlinedIcon {...props} sx={{ width: 40, height: 40, zIndex: -10000, ...props.sx }} />
+                <CircleCheckBig {...props} size={40} style={{ zIndex: -10000, ...props.style }} />
             </IconButton>
         </Tooltip>
 

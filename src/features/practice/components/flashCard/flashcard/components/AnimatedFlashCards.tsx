@@ -21,7 +21,8 @@ const AnimatedFlashCard: FC<props> = ({ children, id }) => (
             height: "100%",
             opacity: 0,
             border: "3px solid",
-            borderColor: theme.palette.divider
+            borderColor: theme.palette.divider,
+            scale: 1,
         })}
     >
         <Typography fontSize={30} fontWeight={500}>{children}</Typography>
@@ -33,13 +34,13 @@ const AnimatedFlashCards: FC<{}> = () => {
     return (
         <Fragment>
             <AnimatedFlashCard id="successCard">
-                Know
+                Tudom
             </AnimatedFlashCard>
             <AnimatedFlashCard id="wrongCard">
-                Still Learning
+                Nem tudom
             </AnimatedFlashCard>
             <AnimatedFlashCard id="undoCard">
-                Undo
+                Visszavonás
             </AnimatedFlashCard>
         </Fragment>
     );

@@ -14,7 +14,7 @@ import { ChangeLogInput } from "../types";
 const ChangeLogForm: FC<{}> = () => {
 
     const { action: createChangeLog } = useAction(SA_CreateChangeLog, {
-        200: { severity: "success", content: "ChangeLog updated 🙂" }
+        200: { severity: "success", content: "Változásnapló sikeresen frissítve 🙂" }
     })
 
     const { handleSubmit, formState, reset, register, setValue, getValues } = useForm<ChangeLogInput>({ defaultValues: { description: "", date: dayjs() } });

@@ -1,18 +1,15 @@
 "use client"
 
-import SA_CreateDraft from '@/features/set/actions/createDraft'
+import CreateCopy from '@/features/set/components/CreateCopy'
 import FavoriteButton from '@/features/set/components/FavoriteButton'
 import SetMenu from '@/features/set/components/SetMenu'
 import useSet from '@/features/set/hooks/useSet'
 import SwapTerms from '@/features/term/components/SwapTerms'
 import TermList from '@/features/term/components/TermList'
-import useAction from '@/lib/serverAction/useAction'
+import { IconButtonGrey } from '@/lib/mui/styled'
 import { getDate } from '@/utils'
-import AddIcon from '@mui/icons-material/Add'
-import MoveUpIcon from '@mui/icons-material/MoveUp'
-import QuizIcon from '@mui/icons-material/Quiz'
-import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined'
-import { Avatar, Button, Divider, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material'
+import { Avatar, Box, Divider, Paper, Stack, Tooltip, Typography } from '@mui/material'
+import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { FC, Fragment } from 'react'
 
@@ -20,17 +17,9 @@ const Page: FC<{}> = () => {
 
     const { set, isOwner } = useSet()
 
-    const { action: createDraft } = useAction(SA_CreateDraft, {
-        200: { severity: "success", content: "Draft successfully created 🙂. You can find it in your library." }
-    })
-
-    const handleDraft = async () => {
-        await createDraft(set.id)
-    }
-
     return (
         <Stack gap={3} >
-            <Stack gap={3} component={Paper} variant="elevation" p={2}>
+            <Stack gap={3} >
                 <Stack sx={{
                     gap: 2,
                     flexDirection: { sm: "column", md: "row" },
@@ -51,19 +40,17 @@ const Page: FC<{}> = () => {
                     </Stack>
 
 
-                    <Stack direction="row" sx={{ width: "fit-content" }}>
+                    <Stack direction="row" gap={1} sx={{ width: "fit-content" }}>
                         {!isOwner ? (
-                            <Button startIcon={<MoveUpIcon sx={{ color: "primary.main" }} />} onClick={handleDraft} variant="outlined">
-                                Draft
-                            </Button>
+                            <CreateCopy setid={set.id} />
                         ) : (
                             <Fragment>
                                 <SetMenu />
                                 <SwapTerms />
-                                <Tooltip title="Add term">
-                                    <IconButton component={Link} href={`/sets/${set.id}/terms/create`}>
-                                        <AddIcon />
-                                    </IconButton>
+                                <Tooltip title="Szópárok hozzáadása">
+                                    <IconButtonGrey component={Link} href={`/sets/${set.id}/terms/create`}>
+                                        <PlusIcon />
+                                    </IconButtonGrey>
                                 </Tooltip>
                             </Fragment>
 
@@ -75,29 +62,29 @@ const Page: FC<{}> = () => {
                     <Stack direction="row" gap={1} >
                         <Avatar src={set.user.image} sx={{ width: 40, height: 40 }} />
                         <Stack>
-                            <Typography fontSize={12}>Created by</Typography>
+                            <Typography fontSize={12}>Létrehozta</Typography>
                             <Typography fontSize={15} fontWeight={500}>{set.user.name}</Typography>
                             <Typography fontSize={12}>{getDate(set.createdAt)}</Typography>
                         </Stack>
                     </Stack>
-                    <Typography>Term number: {set.terms.length}</Typography>
+                    <Typography>Kifejezések száma: {set.terms.length}</Typography>
                 </Stack>
             </Stack>
             <Stack direction="row" gap={2}>
-                <Link href={`/sets/${set.id}/flashcards`} legacyBehavior>
+                <Link href={`/sets/${set.id}/flashcards`} style={{ textDecoration: "none" }} >
                     <Paper sx={{ width: "fit-content", p: 3, cursor: "pointer" }} >
                         <Stack direction="row" gap={1} alignItems="center">
-                            <StyleOutlinedIcon sx={{ width: 40, height: 40 }} />
-                            <Typography fontWeight={500} fontSize={18}>Flashcards</Typography>
+                            <Box component="img" src="/flashcards.png" width={40} />
+                            <Typography fontWeight={500} fontSize={18}>Szókártyák</Typography>
                         </Stack>
                     </Paper>
                 </Link>
-                <Link href={`/sets/${set.id}/quiz`} legacyBehavior>
+                <Link href={`/sets/${set.id}/quiz`} style={{ textDecoration: "none" }}  >
 
                     <Paper sx={{ width: "fit-content", p: 3, cursor: "pointer" }} >
                         <Stack direction="row" gap={1} alignItems="center">
-                            <QuizIcon sx={{ width: 40, height: 40 }} />
-                            <Typography fontWeight={500} fontSize={18}>Quiz</Typography>
+                            <Box component="img" src="/quiz.png" width={40} />
+                            <Typography fontWeight={500} fontSize={18}>Kvíz</Typography>
                         </Stack>
                     </Paper>
                 </Link>

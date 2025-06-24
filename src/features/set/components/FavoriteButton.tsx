@@ -1,9 +1,7 @@
 "use client"
 
 import SA_ChangeFavorite from '@/features/set/actions/changeFavorite';
-import GradeIcon from '@mui/icons-material/Grade';
-import GradeOutlinedIcon from '@mui/icons-material/GradeOutlined';
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Tooltip } from '@mui/material';
 import { FC, useState } from 'react';
 import useSet from '../hooks/useSet';
 
@@ -19,13 +17,18 @@ const FavoriteButton: FC<{}> = () => {
     }
 
     return (
-        <Stack direction="row" gap={1} onClick={handleClick} sx={{ cursor: "pointer" }}>
-            <Typography sx={{ textWrap: "nowrap" }}>Rate it</Typography>
+        <Stack direction="row" gap={1} onClick={handleClick} sx={{ cursor: "pointer", alignItems: "center" }}>
             {
                 isFavorite ? (
-                    <GradeIcon sx={{ color: "#fbc02d", width: 20, height: 20 }} />
+                    <Tooltip title="Eltávolítás a kedvencek közül">
+                        <Box component="img" src="/star.png" sx={{ width: 30 }} />
+                    </Tooltip>
                 ) : (
-                    <GradeOutlinedIcon sx={{ width: 20, height: 20 }} />
+                    <Tooltip title="Hozzáadás a kedvencekhez">
+                        <Box component="img" src="/star_outline.png" sx={{ width: 30 }} />
+
+                    </Tooltip>
+
                 )
             }
         </Stack>)

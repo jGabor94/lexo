@@ -2,10 +2,11 @@
 
 import useAlert from "@/hooks/useAlert";
 import { Alert, Snackbar } from "@mui/material";
+import { CheckIcon, X } from "lucide-react";
 import { FC } from "react";
 
 export interface SnackbarAlertData {
-    severity: "error" | "info" | "success" | "warning",
+    severity: "error" | "success",
     content: string
 }
 
@@ -22,15 +23,25 @@ const SnackbarAlert: FC<{ autoHideDuration?: number }> = ({ autoHideDuration }) 
 
     return (
         <Snackbar
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             open={alert ? true : false}
-            autoHideDuration={autoHideDuration || 6000}
+            autoHideDuration={autoHideDuration || 40000}
             onClose={handleClose}
+
         >
             <Alert
                 onClose={handleClose}
                 severity={alert?.severity}
-                variant="standard"
-                sx={{ width: '100%' }}
+                variant="filled"
+                components={{
+                    CloseIcon: () => <X color="white" size={20} style={{ cursor: "pointer", }} />
+                }}
+
+
+                iconMapping={{
+                    success: <CheckIcon color="white" />
+                }}
+                sx={{ width: '100%', border: "none", }}
             >
                 {alert?.content}
             </Alert>

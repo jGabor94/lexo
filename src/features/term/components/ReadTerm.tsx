@@ -2,10 +2,11 @@
 
 import ProgressStatus from '@/components/ui/ProgressStatus';
 import useSet from '@/features/set/hooks/useSet';
-import EditIcon from '@mui/icons-material/Edit';
 import { Divider, IconButton, Stack, Tooltip, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Edit2Icon, Volume2 } from 'lucide-react';
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import { HiddenMode, Term } from '../types';
+import speak from '../utils/speak';
 
 
 const ReadTerm: FC<{
@@ -29,9 +30,11 @@ const ReadTerm: FC<{
 
     const hiddenSx = {
         color: "transparent",
-        textShadow: `0 0 15px ${theme.palette.text.primary}`,
+        textShadow: `0 0 15px ${theme.vars.palette.text.primary}`,
         userSelect: "none"
     }
+
+
 
     return (
         <Stack direction="row" gap={2} alignItems="center">
@@ -41,43 +44,67 @@ const ReadTerm: FC<{
                 gap: { xs: 1, sm: 2 },
                 alignItems: { xs: "flex-start", sm: "center" }
             }}>
-                <Typography sx={{
-                    flex: 0.6,
-                    ...hidden.terms && hiddenSx,
-                    cursor: hiddenMode === "terms" ? "pointer" : "auto"
-                }}
-                    onClick={() => hiddenMode && setHiddenTerm(!hiddenTerm)}
-                >
-                    {term.term.content}
-                </Typography>
+                <Stack direction="row" gap={1} alignItems="center" sx={{ flex: 0.6, ...hidden.terms && hiddenSx, }}>
+                    <Typography sx={{
+                        cursor: hiddenMode === "terms" ? "pointer" : "auto"
+                    }}
+                        onClick={() => hiddenMode && setHiddenTerm(!hiddenTerm)}
+                    >
+                        {term.term.content}
+                    </Typography>
+                    {!hidden.terms && (
+                        <IconButton onClick={() => speak(term.term.content, term.term.lang)} sx={{ height: "fit-content" }}>
+                            <Volume2 />
+                        </IconButton>
+                    )}
+
+                </Stack>
+
                 <Divider flexItem orientation={!isMobile ? "vertical" : "horizontal"} />
-                <Typography sx={{
-                    flex: 1,
-                    ...hidden.definitions && hiddenSx,
-                    cursor: hiddenMode === "definitions" ? "pointer" : "auto"
-                }}
-                    onClick={() => hiddenMode && setHiddenDefinition(!hiddenDefinition)}
-                >
-                    {term.definition.content.map((word, index) => word + (index < term.definition.content.length - 1 ? ", " : ""))}
-                </Typography>
+                <Stack direction="row" gap={1} alignItems="center" sx={{ flex: 1, ...hidden.definitions && hiddenSx, }}>
+
+                    <Typography sx={{
+
+                        cursor: hiddenMode === "definitions" ? "pointer" : "auto"
+                    }}
+                        onClick={() => hiddenMode && setHiddenDefinition(!hiddenDefinition)}
+                    >
+                        {term.definition.content.map((word, index) => word + (index < term.definition.content.length - 1 ? ", " : ""))}
+                    </Typography>
+                    {!hidden.definitions && (
+                        <IconButton onClick={() => speak(term.definition.content.join(), term.definition.lang)} sx={{ height: "fit-content" }}>
+                            <Volume2 />
+                        </IconButton>
+                    )}
+
+                </Stack>
 
 
             </Stack >
             <Stack direction="row" gap={1} alignItems="center" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
                 {isOwner && (
-                    <Tooltip title="Edit">
+                    <Tooltip title="Szerkesztés">
                         <IconButton onClick={() => setMode("edit")} sx={{ height: "fit-content" }}>
-                            <EditIcon />
+                            <Edit2Icon />
                         </IconButton >
                     </Tooltip>
+
                 )}
+
                 {isOwner && (
                     <ProgressStatus score={term.status} />
                 )}
+
+
+
+
+
+
+
             </Stack>
 
 
-        </Stack>
+        </Stack >
 
     )
 }

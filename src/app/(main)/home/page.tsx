@@ -3,11 +3,10 @@ import { setsTable } from "@/drizzle/schema";
 import { auth } from "@/features/authentication/lib/auth";
 import getFavorites from "@/features/set/queries/getFavorites";
 import { default as getSets } from "@/features/set/queries/getSets";
-import GradeIcon from '@mui/icons-material/Grade';
-import NewReleasesIcon from '@mui/icons-material/NewReleases';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+
 import { Stack } from "@mui/material";
 import { desc, eq, ne, sql } from "drizzle-orm";
+import { History, Star, Users } from "lucide-react";
 import { FC, Suspense } from "react";
 
 const Page: FC<{}> = async () => {
@@ -60,15 +59,15 @@ const Page: FC<{}> = async () => {
     }
 
     return (
-        <Stack gap={5}>
+        <Stack gap={5} width="100%" >
             <Suspense fallback={<HorizontalListSkeleton />}>
-                <HorizontalList promise={promises.userRecentSets} label="Recent sets" icon={<NewReleasesIcon />} />
+                <HorizontalList promise={promises.userRecentSets} label="Legutóbbi" icon={<History />} />
             </Suspense>
             <Suspense fallback={<HorizontalListSkeleton />}>
-                <HorizontalList promise={promises.favorites} label="My favorites" icon={<GradeIcon />} />
+                <HorizontalList promise={promises.favorites} label="Kdevencek" icon={<Star />} />
             </Suspense>
             <Suspense fallback={<HorizontalListSkeleton />}>
-                <HorizontalList promise={promises.otherNEwSets} label={"Other new sets"} icon={<PeopleAltIcon />} />
+                <HorizontalList promise={promises.otherNEwSets} label={"Közösség"} icon={<Users />} />
             </Suspense>
         </Stack >
     );

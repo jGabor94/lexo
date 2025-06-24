@@ -1,9 +1,8 @@
 "use client"
 
 import { SortState } from '@/hooks/useSort';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { FormControl, MenuItem, Select, Stack } from '@mui/material';
+import { MoveDown, MoveUp } from 'lucide-react';
 import { FC } from 'react';
 
 const Sort: FC<{ sortState: SortState<any> }> = ({ sortState: { reverse, setReverse, sorts, setSelectedSort } }) => {
@@ -11,9 +10,9 @@ const Sort: FC<{ sortState: SortState<any> }> = ({ sortState: { reverse, setReve
     return (
         <Stack direction="row" alignItems="center" gap={1}>
             {reverse ? (
-                <ArrowUpwardIcon sx={{ cursor: "pointer" }} onClick={() => setReverse(state => !state)} />
+                <MoveUp style={{ cursor: "pointer" }} onClick={() => setReverse(state => !state)} />
             ) : (
-                <ArrowDownwardIcon sx={{ cursor: "pointer" }} onClick={() => setReverse(state => !state)} />
+                <MoveDown style={{ cursor: "pointer" }} onClick={() => setReverse(state => !state)} />
             )}
             <FormControl>
                 <Select

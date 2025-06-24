@@ -1,6 +1,6 @@
 "use client"
 
-import { Stack, styled, Typography } from "@mui/material";
+import { IconButton, Stack, styled, Typography } from "@mui/material";
 import { JuraFont } from "./fonts";
 
 
@@ -11,11 +11,10 @@ export const LogoText = styled(Typography)({
     cursor: "pointer",
     fontWeight: 700,
     fontSize: 30,
-    background: "linear-gradient(90deg, #3CC8AF 0%, #3CC8F4 100%)",
-    backgroundClip: "text",
-    textFillColor: "transparent",
     textDecoration: "none",
 }) as typeof Typography
+
+
 
 export const LangCodeLabel = styled(Stack)(({ theme }) => ({
     alignItems: "center",
@@ -28,4 +27,13 @@ export const LangCodeLabel = styled(Stack)(({ theme }) => ({
     borderStyle: "solid",
     borderRadius: "100%",
 })) as typeof Stack
+
+
+export const IconButtonGrey = styled(IconButton)(({ theme, ...rest }) => {
+    return ({
+        borderRadius: "100%",
+        border: rest.disabled ? `2px solid ${theme.vars.palette.action.disabled}` : `2px solid ${theme.vars.palette.action.active}}`,
+    })
+}) as typeof IconButton
+
 

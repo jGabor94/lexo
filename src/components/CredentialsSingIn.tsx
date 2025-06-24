@@ -29,8 +29,8 @@ const CredentialsSingIn: FC<{}> = () => {
                     </Alert>
                 )}
                 <TextField size="small" label="E-mail" {...register("email", { required: true, minLength: 3 })} />
-                <TextField size="small" type='password' label="Password" {...register("password", { required: true, minLength: 3 })} />
-                <Button disabled={!formState.isValid || formState.isSubmitting} variant='contained' type="submit" >SignIn</Button>
+                <TextField size="small" type='password' label="Jelszó" {...register("password", { required: true, minLength: 3 })} />
+                <Button disabled={!formState.isValid || formState.isSubmitting} color="button" variant='contained' type="submit" >Belépés</Button>
 
             </Stack>
         </form>

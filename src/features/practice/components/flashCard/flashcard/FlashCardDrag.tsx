@@ -49,6 +49,7 @@ const FlashCardDrag: FC<{}> = () => {
         if (newLabel !== label) setLabel(newLabel)
     }
 
+
     return isTouchDevice() && (
         <motion.div
             animate={animationControls}
@@ -69,6 +70,7 @@ const FlashCardDrag: FC<{}> = () => {
                 width: "100%",
                 height: "100%",
                 willChange: "transform",
+
             }}
         >
             <Typography fontSize={25} fontWeight={500}>{label}</Typography>

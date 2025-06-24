@@ -3,17 +3,18 @@
 import { SetListItem } from '@/features/set/types'
 import { getDate } from '@/utils'
 import { Avatar, Chip, Divider, Stack, Typography } from '@mui/material'
-import Link, { LinkProps } from 'next/link'
+import { useRouter } from 'next/navigation'
 import { FC } from 'react'
 import LangPair from '../LangPair'
 
-interface props extends LinkProps {
-    set: SetListItem
-}
 
-const RowSetCardContent: FC<props> = ({ set, ...linkProps }) => (
-    <Link {...linkProps} legacyBehavior>
-        <Stack sx={{ gap: 2, flexGrow: 1, minWidth: 0, cursor: "pointer" }}>
+
+const RowSetCardContent: FC<{ set: SetListItem, href: string }> = ({ set, href }) => {
+
+    const router = useRouter()
+
+    return (
+        <Stack sx={{ gap: 2, flexGrow: 1, minWidth: 0, cursor: "pointer" }} onClick={() => router.push(href)}>
             <Stack
                 direction="row"
                 sx={{
@@ -65,13 +66,9 @@ const RowSetCardContent: FC<props> = ({ set, ...linkProps }) => (
             </Stack>
 
         </Stack>
-    </Link >
 
-
-
-
-
-)
+    )
+}
 
 
 export default RowSetCardContent

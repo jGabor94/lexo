@@ -1,9 +1,9 @@
 import { setsTable } from "@/drizzle/schema";
 import { createdAt, updatedAt } from "@/drizzle/schemaTypes";
 import { Acl } from "@/features/authorization/types";
-import { LanguageCode } from "@/lib/language_tools/types";
 import { relations } from "drizzle-orm";
 import { integer, json, pgTable, uuid } from "drizzle-orm/pg-core";
+import { LanguageCode } from "../types";
 
 export const termsTable = pgTable("terms", {
     id: uuid("id").primaryKey().defaultRandom().unique(),

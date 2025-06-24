@@ -1,7 +1,7 @@
-import { languageCodes } from "@/constants/languages";
 import { foldersTable, termsTable, usersTable } from "@/drizzle/schema";
 import { createdAt, updatedAt } from "@/drizzle/schemaTypes";
 import { Acl } from "@/features/authorization/types";
+import { languageCodes } from "@/features/term/lib/constants";
 import { relations } from "drizzle-orm";
 import { json, pgTable, primaryKey, text, uuid, varchar } from "drizzle-orm/pg-core";
 

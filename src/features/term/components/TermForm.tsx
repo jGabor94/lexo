@@ -1,20 +1,20 @@
 "use client"
 
-import { languages } from "@/constants/languages";
-import langDetector from "@/lib/language_tools/langDetector";
-import translate from "@/lib/language_tools/translate";
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Autocomplete, AutocompleteChangeReason, Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, debounce } from "@mui/material";
+import { Autocomplete, AutocompleteChangeReason, Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography, debounce, useTheme } from "@mui/material";
+import { ChevronDown, ChevronUp, CircleAlert } from 'lucide-react';
 import { ChangeEvent, FC, useCallback, useState } from "react";
 import { Controller, UseFieldArrayRemove, UseFormReturn } from "react-hook-form";
+import { languages } from '../lib/constants';
 import { TermInput } from "../types";
+import langDetector from "../utils/langDetector";
+import translate from "../utils/translate";
 
 
 const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseFieldArrayRemove, prefix: string }> = ({ form: { control, getValues, setValue, }, prefix }) => {
 
     const prefixRaw = prefix.substring(0, prefix.length - 1)
+
+    const theme = useTheme();
 
     const [options, setOptions] = useState<Array<string>>([]);
     const [definitionInputValue, setDefinitionInputValue] = useState("")
@@ -70,10 +70,10 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                 <Controller control={control} rules={{ required: true }} name={`${prefix}term.content`} render={
                     ({ field }) => (
                         <TextField
-                            size="small"
                             {...field}
+                            size="small"
                             onChange={(e) => handleTextFieldChange(e, field.onChange)}
-                            label="Term"
+                            label="Kifejezés"
                         />
 
                     )
@@ -85,7 +85,6 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                             <Select
                                 disableUnderline
                                 variant="standard"
-                                size="small"
                                 value={value}
                                 onChange={onChange}
                                 inputProps={{
@@ -122,14 +121,14 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                                 {...params}
                                 onBlur={() => setDropDownOpen(false)}
                                 onClick={() => setDropDownOpen(!dropDownOpen)}
-                                label="Definition"
+                                label="Definíció"
                                 value={value}
                                 InputProps={{
                                     ...params.InputProps,
                                     endAdornment: dropDownOpen ? (
-                                        <KeyboardArrowUpIcon sx={{ position: "absolute", right: 0, m: 1, cursor: "pointer" }} onClick={() => setDropDownOpen(false)} />
+                                        <ChevronUp style={{ position: "absolute", right: 0, margin: 8, cursor: "pointer" }} onClick={() => setDropDownOpen(false)} />
                                     ) : (
-                                        <KeyboardArrowDownIcon sx={{ position: "absolute", right: 0, m: 1, cursor: "pointer" }} onClick={() => setDropDownOpen(true)} />
+                                        <ChevronDown style={{ position: "absolute", right: 0, margin: 8, cursor: "pointer" }} onClick={() => setDropDownOpen(true)} />
                                     )
                                 }} fullWidth />
                             )
@@ -181,8 +180,8 @@ const TermForm: FC<{ form: UseFormReturn<any, any, undefined>, remove?: UseField
                         )} />
                     {definitionInputValue && (
                         <Stack direction="row" gap={0.5} alignItems="center">
-                            <ErrorOutlineOutlinedIcon sx={{ color: "warning.main", width: 20, height: 20 }} />
-                            <Typography color="warning.main" sx={{ fontSize: 12 }}>Press enter or type a comma to add.</Typography>
+                            <CircleAlert size={20} style={{ color: theme.vars.palette.warning.main }} />
+                            <Typography color="warning.main" sx={{ fontSize: 12 }}>Nyomj entert vagy gépelj vesszőt a hozzáadáshoz.</Typography>
                         </Stack>
                     )}
 

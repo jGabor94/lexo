@@ -4,7 +4,7 @@ import { FC } from 'react'
 const ProgressStatus: FC<{ score: number }> = ({ score }) => {
 
     return (
-        <Tooltip title={`Learning score: ${score}`}>
+        <Tooltip title={`Tudásszint: ${score}`}>
             <Box
                 sx={{
                     width: 30,

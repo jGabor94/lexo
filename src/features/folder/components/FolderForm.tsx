@@ -44,7 +44,7 @@ const FolderForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel
                             <Typography fontSize={23}>{label}</Typography>
                             <Controller control={control} rules={{ required: true }} name={`name`} render={
                                 ({ field }) => (
-                                    <TextField {...field} label="Folder name" />
+                                    <TextField {...field} label="Mappa neve" />
                                 )} />
                             <SubmitButton variant="contained" formState={formState}>
                                 {submitLabel}

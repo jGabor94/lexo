@@ -1,9 +1,10 @@
 "use client"
 
 import useSet from '@/features/set/hooks/useSet'
+import { IconButtonGrey } from '@/lib/mui/styled'
 import useAction from '@/lib/serverAction/useAction'
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz'
-import { IconButton, Tooltip } from '@mui/material'
+import { Tooltip } from '@mui/material'
+import { ArrowLeftRight } from 'lucide-react'
 import { FC } from 'react'
 import SA_SwapTerms from '../actions/swapTerms'
 
@@ -12,7 +13,7 @@ const SwapTerms: FC<{}> = () => {
     const { set, mutate } = useSet()
 
     const { action: swapTerms } = useAction(SA_SwapTerms, {
-        200: { severity: "success", content: "Swap successfull 🙂" }
+        200: { severity: "success", content: "Szópárok sikeresen felcserélve 🙂" }
     })
 
     const handleClick = async () => {
@@ -21,10 +22,10 @@ const SwapTerms: FC<{}> = () => {
     }
 
     return (
-        <Tooltip title="Swap terms">
-            <IconButton onClick={handleClick}>
-                <SwapHorizIcon />
-            </IconButton>
+        <Tooltip title="Szópárok felcserélése">
+            <IconButtonGrey onClick={handleClick}>
+                <ArrowLeftRight />
+            </IconButtonGrey>
         </Tooltip>
     )
 }

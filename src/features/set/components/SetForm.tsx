@@ -3,9 +3,9 @@
 import LinearLoading from "@/components/LinearLoading"
 import SubmitButton from "@/components/SubmitButton"
 import ModalOverlay from "@/components/ui/ModalOverlay"
-import { languages } from "@/constants/languages"
+import { languages } from "@/features/term/lib/constants"
+import { LanguageCode } from "@/features/term/types"
 import { ModalControl } from "@/hooks/useModalControl"
-import { LanguageCode } from "@/lib/language_tools/types"
 import { FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
 import { FC, Fragment } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
@@ -51,13 +51,13 @@ const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, l
                         <Stack gap={2}>
                             <Typography fontSize={23}>{label}</Typography>
 
-                            <TextField {...register("name", { required: true })} label="Set name" />
+                            <TextField {...register("name", { required: true })} label="Szógűjtemény neve" />
 
                             <Stack direction="row" gap={3}>
                                 <Controller control={control} rules={{ required: true }} name={`preferredTermLang`} render={
                                     ({ field }) => (
                                         <FormControl sx={{ width: "50%" }}>
-                                            <InputLabel id="term-lang-label">Term lang</InputLabel>
+                                            <InputLabel id="term-lang-label">Kifejezés nyelve</InputLabel>
                                             <Select
                                                 {...field}
                                                 value={field.value || ""}
@@ -74,7 +74,7 @@ const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, l
                                 <Controller control={control} rules={{ required: true }} name={`preferredDefinitionLang`} render={
                                     ({ field }) => (
                                         <FormControl sx={{ width: "50%" }}>
-                                            <InputLabel id="term-lang-label">Definition lang</InputLabel>
+                                            <InputLabel id="term-lang-label">Definíció nyelve</InputLabel>
                                             <Select
                                                 {...field}
                                                 value={field.value || ""}

@@ -24,7 +24,7 @@ const FlashCardContent: FC<BoxProps> = (boxProps) => {
                 sx={{
                     width: "100%",
                     height: "100%",
-                    perspective: 3000,
+                    perspective: 5000,
                     cursor: "pointer",
                     position: "relative",
                 }}

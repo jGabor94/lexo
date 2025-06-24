@@ -1,9 +1,10 @@
 "use client"
 
 import useFlashCard from "@/features/practice/hooks/useFlashCard";
-import { Chip, Stack, Typography } from "@mui/material";
+import { Chip, Stack, Typography, useTheme } from "@mui/material";
 import { useParams } from "next/navigation";
 import { FC } from "react";
+import { modeMap } from "../../lib/contants";
 import { PracticeMode } from "../../types";
 import SuccessButton from "./components/SuccessButton";
 import UndoButton from "./components/UndoButton";
@@ -14,6 +15,9 @@ const FlashCardLayout: FC<{}> = () => {
 
     const { terms, index, successItems, wrongItems } = useFlashCard()
     const { mode } = useParams<{ mode: PracticeMode }>()
+
+    const theme = useTheme();
+
     return (
         <Stack gap={2} sx={{
             width: 700, maxWidth: "100%"
@@ -30,7 +34,7 @@ const FlashCardLayout: FC<{}> = () => {
                         {index < terms.length ? index + 1 : terms.length}/{terms.length}
                     </Typography>
                     <Typography fontSize={12}>
-                        {mode}
+                        {modeMap[mode]}
                     </Typography>
                 </Stack>
 
@@ -39,10 +43,10 @@ const FlashCardLayout: FC<{}> = () => {
             <FlashCard />
             <Stack direction="row" justifyContent="space-around" width="100%"
             >
-                <WrongButton sx={{ color: "warning.main" }} />
+                <WrongButton style={{ color: theme.vars.palette.warning.main }} />
 
                 <UndoButton />
-                <SuccessButton sx={{ color: "primary.main" }} />
+                <SuccessButton style={{ color: theme.vars.palette.primary.main }} />
 
             </Stack>
         </Stack >

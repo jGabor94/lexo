@@ -1,11 +1,11 @@
 import useFlashCard from '@/features/practice/hooks/useFlashCard';
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import { IconButton, SvgIconProps, Tooltip } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import { animate } from 'framer-motion';
+import { CircleX, LucideProps } from 'lucide-react';
 import { FC } from 'react';
 import useKeyFrames from '../../../hooks/useKeyFrames';
 
-const WrongButton: FC<SvgIconProps> = (props) => {
+const WrongButton: FC<LucideProps> = (props) => {
 
     const { handleWrong } = useFlashCard()
     const { wrongClick: keyFrames } = useKeyFrames()
@@ -20,9 +20,9 @@ const WrongButton: FC<SvgIconProps> = (props) => {
     };
 
     return (
-        <Tooltip title="Still learning">
+        <Tooltip title="Nem tudom">
             <IconButton onClick={handleWrongClick}>
-                <CancelOutlinedIcon {...props} sx={{ width: 40, height: 40, zIndex: -10000, ...props.sx }} />
+                <CircleX {...props} size={40} style={{ zIndex: -10000, ...props.style }} />
             </IconButton>
         </Tooltip>
 
