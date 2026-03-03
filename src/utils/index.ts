@@ -60,6 +60,26 @@ export const getDate = (ISO8601Time: number | string | Date, time: boolean = tru
     }
 }
 
+export const formatCount = (count: number): string => {
+    if (count < 100) return count.toString();
+
+    if (count < 1000) return count.toString();
+
+    if (count < 10_000) {
+        return (count / 1000).toFixed(1).replace('.0', '') + "K";
+    }
+
+    if (count < 1_000_000) {
+        return Math.floor(count / 1000) + "K";
+    }
+
+    if (count < 10_000_000) {
+        return (count / 1_000_000).toFixed(1).replace('.0', '') + "M";
+    }
+
+    return Math.floor(count / 1_000_000) + "M";
+};
+
 
 
 

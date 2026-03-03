@@ -1,25 +1,24 @@
 "use client"
 
-import { SetListItem } from '@/features/set/types';
-import useAction from '@/lib/serverAction/useAction';
+import useAction from '@/lib/dal/useDal';
 import { Tooltip } from '@mui/material';
 import { CircleMinus } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { FC, useState } from 'react';
-import SA_RemoveFromFolder from '../actions/removeFromFolder';
+import { removeFromFolder as removeFromFolderAction } from '../dal/mutations';
 
-const RemoveFromFolder: FC<{ set: SetListItem }> = ({ set }) => {
+const RemoveFromFolder: FC<{ setid: string }> = ({ setid }) => {
 
     const [loading, setLoading] = useState(false)
 
     const { folderid } = useParams<{ folderid: string }>()
 
-    const { action: removeFromFolder } = useAction(SA_RemoveFromFolder)
+    const { action: removeFromFolder } = useAction(removeFromFolderAction)
 
     const handleCLick: React.MouseEventHandler<SVGSVGElement> = async (e) => {
         e.stopPropagation()
         setLoading(true)
-        await removeFromFolder(folderid, set.id)
+        await removeFromFolder(folderid, setid)
         setLoading(false)
     }
 

@@ -1,28 +1,28 @@
 "use client"
 
+import { SetInput } from "@/features/set/types";
 import useModalControl from "@/hooks/useModalControl";
+import useAction from "@/lib/dal/useDal";
 import { IconButtonGrey } from "@/lib/mui/styled";
-import useAction from "@/lib/serverAction/useAction";
 import { Tooltip } from "@mui/material";
 import { Edit2Icon } from "lucide-react";
 import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
-import { SetInput } from "../../set/components/SetForm";
-import SA_UpdateFolder from "../actions/updateFolder";
+import { updateFolder as updateFolderAction } from "../dal/mutations";
 import { Folder } from "../types";
 import FolderForm from "./FolderForm";
 
 
 const EditFolder: FC<{ folder: Folder }> = ({ folder }) => {
 
-    const { action: editFolder } = useAction(SA_UpdateFolder, {
-        200: { severity: "success", content: "Mappa sikeresen szerkesztve 🙂" }
+    const { action: updateFolder } = useAction(updateFolderAction, {
+        success: { severity: "success", content: "Mappa sikeresen szerkesztve 🙂" },
     })
 
     const modalControl = useModalControl()
 
     const submit: SubmitHandler<SetInput> = async (data) => {
-        await editFolder(folder.id, data)
+        await updateFolder(folder.id, data)
     }
 
     return (

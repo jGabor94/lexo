@@ -12,7 +12,7 @@ export const customAdapter: Adapter = {
             username: username,
             email: user.email,
             name: user.name || "",
-            roles: ["user", username],
+            roles: ["user"],
             image: user.image || "",
             emailVerified: user.emailVerified
         }).returning();

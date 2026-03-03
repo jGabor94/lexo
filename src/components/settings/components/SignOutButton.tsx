@@ -1,7 +1,7 @@
 "use client"
 
-import SA_signOut from "@/features/authentication/actions/signOut"
 import { Button, ButtonProps } from "@mui/material"
+import { signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { FC } from "react"
 
@@ -10,8 +10,8 @@ const SignOutButton: FC<ButtonProps> = ({ onClick, ...rest }) => {
     const router = useRouter()
 
     const handleClick = async () => {
-        await SA_signOut()
-        router.refresh()
+        await signOut()
+        router.push("/")
     }
 
     return (

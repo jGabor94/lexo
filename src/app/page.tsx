@@ -4,7 +4,9 @@ import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { FC } from "react";
 
-const Page: FC<{}> = () => {
+
+const Page: FC<{}> = async () => {
+
 
     return (
         <Stack>
@@ -22,7 +24,6 @@ const Page: FC<{}> = () => {
 
 
             </Stack>
-
 
             <Stack gap={12}>
                 <Stack gap={4} sx={{

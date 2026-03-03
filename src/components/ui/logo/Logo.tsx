@@ -27,20 +27,21 @@ const Logo: FC<TypographyProps> = (props) => (
 )
 
 
-export const LogoWhite: FC<TypographyProps> = (props) => (
+export const LogoWhite: FC<TypographyProps> = ({ sx, ...props }) => (
     <LogoText
         component={Link}
         href="/"
-        {...props}
+
         sx={{
             color: "white",
             fontFamily: LondrinaFont.style.fontFamily,
             cursor: "pointer",
             fontWeight: 400,
-            fontSize: 50,
+            fontSize: props.fontSize || 50,
             mt: -0.7,
-            ...props.sx
+            ...sx
         }}
+        {...props}
     >
         Lexo
     </LogoText>

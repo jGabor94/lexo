@@ -33,11 +33,14 @@ const SetList: FC<{ sets: SetListItem[] }> = ({ sets }) => {
             <Box sx={{ alignSelf: "flex-end" }}>
                 <Sort sortState={sortState} />
             </Box>
-            {
-                sortState.sort(sets).map(set => (
-                    <RowSetCardLayout key={set.id} {...{ set, href: `/sets/${set.id}` }} />
-                ))
-            }
+            <Box sx={{ display: "grid", gap: 3, gridTemplateColumns: { sm: "repeat(2, minmax(0, 1fr))" }, xl: "repeat(3, minmax(0, 1fr))" }}>
+                {
+                    sortState.sort(sets).map(set => (
+                        <RowSetCardLayout key={set.id} {...{ set, href: `/sets/${set.id}` }} />
+                    ))
+                }
+            </Box>
+
 
         </Stack>
 

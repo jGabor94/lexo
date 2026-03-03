@@ -10,7 +10,7 @@ import { Navigation } from "@toolpad/core/AppProvider";
 import { NextAppProvider } from '@toolpad/core/nextjs';
 import type { Metadata } from "next";
 import { SessionProvider, signIn, signOut } from 'next-auth/react';
-import { FC, ReactNode, Suspense } from "react";
+import { FC, ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Lexo",
@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.png',
   },
+  viewport: "viewport-fit=cover"
 };
 
 export const viewport = {
@@ -69,6 +70,7 @@ const AUTHENTICATION = {
   signOut,
 };
 
+
 const RootLayout: FC<{
   children: ReactNode,
 }> = async ({ children }) => {
@@ -89,23 +91,21 @@ const RootLayout: FC<{
                 <Box sx={{
                   overflowX: "hidden",
                 }}>
-                  <Suspense fallback={<div>Loading...</div>}>
 
-                    <NextAppProvider
-                      navigation={NAVIGATION}
-                      theme={RootTheme}
-                      authentication={AUTHENTICATION}
-                      session={session}
+                  <NextAppProvider
+                    navigation={NAVIGATION}
+                    theme={RootTheme}
+                    authentication={AUTHENTICATION}
+                    session={session}
 
-                    >
+                  >
 
-                      <InitColorSchemeScript attribute="class" />
-                      <SnackbarAlert />
-                      <CssBaseline />
+                    <InitColorSchemeScript attribute="class" />
+                    <SnackbarAlert />
+                    <CssBaseline />
 
-                      {children}
-                    </NextAppProvider>
-                  </Suspense>
+                    {children}
+                  </NextAppProvider>
                 </Box>
 
               </AppRouterCacheProvider>

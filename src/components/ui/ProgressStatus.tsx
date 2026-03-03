@@ -1,31 +1,35 @@
-import { Box, Tooltip } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import { FC } from 'react'
 
-const ProgressStatus: FC<{ score: number }> = ({ score }) => {
+const ProgressStatus: FC<{ score: number, color: string }> = ({ score, color }) => {
 
-    return (
-        <Tooltip title={`Tudásszint: ${score}`}>
-            <Box
-                sx={{
-                    width: 30,
-                    backgroundColor: "divider",
-                    height: "fit-content",
-                    borderRadius: 10,
-                }}
-            >
-                <Box sx={{ width: 30 * (score / 5), overflow: "hidden" }}>
-                    <Box
-                        sx={({ palette: { error, warning, primary, success } }) => ({
-                            width: 30,
-                            height: "4px",
-                            background: `linear-gradient(90deg, ${error.dark}, ${warning.light}, ${success.main}, ${primary.light},${primary.main})`,
-                            borderRadius: 10,
-                        })}
-                    />
-                </Box>
-            </Box>
-        </Tooltip>
-    )
+
+    return <Stack direction="row" gap={1} alignItems="center">
+        <Stack direction="row" gap={0.25} alignItems="center">
+            {[1, 2, 3, 4, 5].map(level => (
+                <Box
+                    key={Math.random()}
+                    sx={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        bgcolor: level <= score ? color : 'grey.300',
+                        transition: 'background-color 0.2s',
+                    }}
+                />
+            ))}
+        </Stack>
+        <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ ml: 0.5, fontSize: '0.7rem' }}>
+            {score}/5
+        </Typography>
+    </Stack>
+
+
+
+
 }
 
 export default ProgressStatus

@@ -1,7 +1,15 @@
 import { config } from "dotenv";
 import 'dotenv/config';
-import { defineConfig } from 'drizzle-kit';
+import { Config, defineConfig } from 'drizzle-kit';
+import { register } from "tsconfig-paths";
+import tsConfig from "./tsconfig.json";
 
+const baseUrl = "."
+
+register({
+    baseUrl,
+    paths: tsConfig.compilerOptions.paths
+})
 config({ path: ".env.local" })
 
 export default defineConfig({
@@ -13,4 +21,4 @@ export default defineConfig({
     dbCredentials: {
         url: process.env.DATABASE_URL!,
     },
-});
+}) satisfies Config

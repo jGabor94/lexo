@@ -1,7 +1,7 @@
 "use client"
 
-import SA_SignIn from '@/features/authentication/actions/signIn'
 import { Alert, Button, Stack, TextField } from '@mui/material'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -15,9 +15,16 @@ const CredentialsSingIn: FC<{}> = () => {
     const router = useRouter()
 
     const onSubmit = handleSubmit(async ({ email, password }) => {
-        const res = await SA_SignIn(email, password)
-        res.success ? router.push("/home") : setError(res.error)
-        reset()
+        const res = await signIn("credentials", { email, password, redirect: false })
+        if (res.error) {
+            if (res.code === "credentials") setError("Hibás bejentkezési adatok")
+            else if (res.code === "email-verified-error") setError("Email nincs megerősítve")
+            else setError("Váratlan hiba")
+        }
+        else {
+            router.refresh()
+            reset()
+        }
     })
 
     return (

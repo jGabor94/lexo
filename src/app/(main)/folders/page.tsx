@@ -1,16 +1,20 @@
 
-import { auth } from "@/features/authentication/lib/auth";
 import CreateFolder from "@/features/folder/components/CreateFolder";
 import FolderCard from "@/features/folder/components/ui/FolderCard";
-import getFolders from "@/features/folder/queries/getFolders";
+import { getOwnFolders } from "@/features/folder/dal/queries";
 import { Paper, Stack, Typography } from "@mui/material";
 import { FolderX } from "lucide-react";
 import { FC } from "react";
 
+
 const Page: FC<{}> = async () => {
 
-    const session = await auth()
-    const folders = await getFolders(session?.user.id as string)
+
+    const res = await getOwnFolders()
+
+    if (!res.success) return <>{res.error.type}</>
+
+    const folders = res.data
 
     return (
 

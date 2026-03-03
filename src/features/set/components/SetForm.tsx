@@ -4,18 +4,13 @@ import LinearLoading from "@/components/LinearLoading"
 import SubmitButton from "@/components/SubmitButton"
 import ModalOverlay from "@/components/ui/ModalOverlay"
 import { languages } from "@/features/term/lib/constants"
-import { LanguageCode } from "@/features/term/types"
 import { ModalControl } from "@/hooks/useModalControl"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { FormControl, InputLabel, MenuItem, Modal, Select, Stack, TextField, Typography } from "@mui/material"
 import { FC, Fragment } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
-
-
-export interface SetInput {
-    name: string,
-    preferredTermLang: LanguageCode,
-    preferredDefinitionLang: LanguageCode
-}
+import { SetInput } from "../types"
+import { setFormSchema } from "../zod/schema"
 
 interface props {
     modalControl: ModalControl,
@@ -27,10 +22,10 @@ interface props {
 
 const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, label }) => {
 
-
-
     const { handleSubmit, formState, reset, control, register } = useForm<SetInput>({
-        mode: "all", defaultValues: initValues
+        mode: "all",
+        defaultValues: initValues,
+        resolver: zodResolver(setFormSchema)
     });
 
     const closeModal = () => {
@@ -89,7 +84,7 @@ const SetForm: FC<props> = ({ modalControl, initValues, onSubmit, submitLabel, l
 
                                     )} />
                             </Stack>
-                            <SubmitButton variant="contained" formState={formState}>
+                            <SubmitButton variant="contained" formState={formState} disabled={!formState.isValid || formState.isSubmitting}>
                                 {submitLabel}
                             </SubmitButton>
                         </Stack>

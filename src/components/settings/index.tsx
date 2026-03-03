@@ -1,25 +1,53 @@
 "use client"
 
-import ModalOverlay from '@/components/ui/ModalOverlay';
-import useModalControl from '@/hooks/useModalControl';
-import { Avatar, Box, Divider, IconButton, Modal, Stack, Tooltip, Typography } from "@mui/material";
-import { useSession } from '@toolpad/core/useSession';
+import useMenuControl from '@/hooks/useMenuControl';
+import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
+import { EllipsisVertical, LogOutIcon, UserIcon } from 'lucide-react';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { FC, Fragment } from "react";
-import ThemeSwitch from "./components/DarkModeSwitch";
-import SignOutButton from './components/SignOutButton';
 
 const Settings: FC<{}> = () => {
 
-    const session = useSession()
-    const { open, handleOpen, handleClose } = useModalControl()
+    const router = useRouter()
+    const menuControl = useMenuControl()
+
+    const handleSignOutClick = async () => {
+        await signOut()
+        router.refresh()
+    }
+
 
     return (
         <Fragment>
-            <Tooltip title="Beállítások" sx={{ width: "fit-content" }}>
-                <IconButton onClick={handleOpen}>
-                    <Box component="img" src="/setting.png" width={25} />
-                </IconButton>
-            </Tooltip>
+
+            <IconButton
+                onClick={menuControl.handleOpen}>
+                <EllipsisVertical />
+            </IconButton>
+
+            <Menu
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                anchorPosition={{ top: 100, left: 100 }}
+                anchorEl={menuControl.anchorEl}
+                open={menuControl.open}
+                onClose={menuControl.handleClose}
+                disableScrollLock
+            >
+                <MenuItem onClick={() => router.push("/profile")}>
+                    <ListItemIcon>
+                        <UserIcon size={20} />
+                    </ListItemIcon>
+                    <ListItemText>Profil</ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleSignOutClick}>
+                    <ListItemIcon>
+                        <LogOutIcon size={20} />
+                    </ListItemIcon>
+                    <ListItemText>Kijelentkezés</ListItemText>
+                </MenuItem>
+            </Menu>
+            {/* 
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -48,6 +76,8 @@ const Settings: FC<{}> = () => {
                 </ModalOverlay>
 
             </Modal>
+            */}
+
         </Fragment>
 
     )

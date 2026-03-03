@@ -1,5 +1,5 @@
 import { auth } from "@/features/authentication/lib/auth";
-import { aclCheck } from "@/features/authorization/utils";
+import { hasPermission } from "@/features/authorization/utils";
 import { Divider, Stack, Typography } from "@mui/material";
 import { FC } from "react";
 import ChangeLogForm from "./ChangeLogForm";
@@ -9,7 +9,6 @@ import ChangeLogModal from "./ChangeLogModal";
 const ChangeLog: FC<{}> = async () => {
 
     const session = await auth()
-    const isAdmin = session && aclCheck({ admin: true }, "create", session.user.roles)
 
     return (
         <ChangeLogModal>
@@ -17,7 +16,7 @@ const ChangeLog: FC<{}> = async () => {
             <Stack gap={2} sx={{ p: 1 }}>
                 <Typography fontWeight={600} fontSize={25} >Verziótörténet</Typography>
                 <Divider flexItem />
-                {isAdmin && (<ChangeLogForm />)}
+                {session?.user && hasPermission(session.user, "changelog", "create") && (<ChangeLogForm />)}
                 <ChangeLogList />
             </Stack>
         </ChangeLogModal>

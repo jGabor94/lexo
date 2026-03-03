@@ -1,5 +1,5 @@
 import { auth } from "@/features/authentication/lib/auth"
-import { aclCheck } from "@/features/authorization/utils"
+import { hasPermission } from "@/features/authorization/utils"
 import getChangleLog from "@/features/changelog/queries/getChangleLog"
 import { Box, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material"
 import { FC } from "react"
@@ -11,7 +11,6 @@ const ChangeLogList: FC<{}> = async () => {
 
     const session = await auth()
     const changelog = await getChangleLog()
-    const isAdmin = session && aclCheck({ admin: true }, "create", session.user.roles)
 
     return (
         <Box sx={{
@@ -32,7 +31,7 @@ const ChangeLogList: FC<{}> = async () => {
                                             {log.description}
                                         </Typography>
                                     </Stack>
-                                    {isAdmin && (
+                                    {session?.user && hasPermission(session.user, "changelog", "delete") && (
                                         <DeleteChangeLog log={log} />
                                     )}
                                 </Stack>

@@ -4,7 +4,10 @@ import { NextResponse } from "next/server";
 const protectedRoutes = [
     "/home",
     "/library",
-    "/folders"
+    "/folders",
+    "/sets",
+    "/profile",
+    "/teach"
 ]
 
 export const authConfig = {
@@ -12,18 +15,13 @@ export const authConfig = {
     callbacks: {
         authorized({ auth, request }) {
 
-            if (protectedRoutes.some(path => request.nextUrl.pathname.startsWith(path))) {
-                if (!auth) {
-                    return NextResponse.redirect(new URL('/login', request.url))
-                }
+            if (!auth && protectedRoutes.some(path => request.nextUrl.pathname === path)) {
+                return NextResponse.redirect(new URL('/login', request.url))
             }
 
-
-            if (auth && request.nextUrl.pathname === "/") {
+            if (auth && request.nextUrl.pathname === "/login") {
                 return NextResponse.redirect(new URL('/home', request.url))
             }
-
-
             return true
         },
     }

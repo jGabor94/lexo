@@ -1,14 +1,15 @@
 import ScrolledItems from '@/components/horizontalList/ScrolledItems';
+import { DalErrorReturn, DalSuccessReturn } from '@/lib/dal/types';
 import { Stack, Typography } from '@mui/material';
 import { FC, type JSX } from 'react';
 
 export const revalidate = 0
 
-const HorizontalList: FC<{ promise: Promise<any[]>, label: string, icon: JSX.Element }> = async ({ promise, label, icon }) => {
+const HorizontalList: FC<{ promise: Promise<DalSuccessReturn<any[]> | DalErrorReturn>, label: string, icon: JSX.Element }> = async ({ promise, label, icon }) => {
 
-    const result = await promise
+    const res = await promise
 
-    return result.length > 0 && (
+    return res.success && (res.data.length > 0) && (
         <Stack gap={3}>
             <Stack direction="row" alignItems="center" gap={1}>
                 {icon}
@@ -16,7 +17,7 @@ const HorizontalList: FC<{ promise: Promise<any[]>, label: string, icon: JSX.Ele
                     {label}
                 </Typography>
             </Stack>
-            <ScrolledItems sets={result} />
+            <ScrolledItems sets={res.data} />
         </Stack>
     )
 }

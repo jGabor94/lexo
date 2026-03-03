@@ -1,7 +1,7 @@
 "use client";
 
 import useSet from "@/features/set/hooks/useSet";
-import SA_UpdateProgress from "@/features/term/actions/updateProgress";
+import { updateProgress as updateProgressAction } from "@/features/term/dal/mutations";
 import { Term } from "@/features/term/types";
 import { Button, CircularProgress, Stack, Typography } from "@mui/material";
 import Link from "next/link";
@@ -11,6 +11,7 @@ import { PracticeMode } from "../../types";
 import { shuffle } from "../../utils";
 import Completed from "../complete";
 import FlashCardLayout from "./FlashCardLayout";
+import useDal from "@/lib/dal/useDal";
 
 
 const FlashCardMain: FC<{ mode: PracticeMode }> = ({ mode }) => {
@@ -23,10 +24,12 @@ const FlashCardMain: FC<{ mode: PracticeMode }> = ({ mode }) => {
     const [filteredTerms, setFilteredTerms] = useState<null | Term[]>(null);
     const [completed, setCompleted] = useState<null | { successItems: string[], wrongItems: string[] }>(null)
 
+    const { action: updateProgress } = useDal(updateProgressAction)
+
     const handleCompleted = async (successItems: string[], wrongItems: string[]) => {
         setLoading(true)
         if (mode === "progress") {
-            await SA_UpdateProgress(set.id, successItems, wrongItems)
+            await updateProgress(set.id, successItems, wrongItems)
             await mutate()
         }
         setCompleted({ successItems, wrongItems })

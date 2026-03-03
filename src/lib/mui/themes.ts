@@ -3,6 +3,9 @@
 import { createTheme } from "@mui/material/styles";
 import 'non.geist';
 import { NotoSans } from "./fonts";
+import tailwindColors from "./tailwindColors";
+
+
 
 export const RootTheme = createTheme({
     cssVariables: {
@@ -11,11 +14,10 @@ export const RootTheme = createTheme({
     typography: {
         allVariants: {
             fontFamily: 'Geist Variable',
-            fontWeight: 500
         },
         fontFamily: 'Geist Variable',
     },
-    defaultColorScheme: "dark",
+    defaultColorScheme: "light",
     colorSchemes: {
         light: {
             palette: {
@@ -30,20 +32,26 @@ export const RootTheme = createTheme({
                     contrastText: "#fff",
                 },
                 button: {
-                    main: "rgba(0, 0, 0, 0.54)",
+                    main: "#1f2937",
                     contrastText: "#fff",
                 },
                 background: {
-                    default: "rgb(248, 248, 248)",
-                    paper: "rgb(248, 248, 248)",
+                    default: "#F3F2F8",
+                    paper: "#FFFFFF",
                 },
                 action: {
                     hover: "white",
                 },
                 text: {
-                    primary: "rgba(0, 0, 0, 0.8)",
-                    secondary: "rgba(0, 0, 0, 0.59)",
-                }
+                    primary: "#1f2937",
+                    secondary: "#6b7280",
+                },
+                muted: {
+                    main: "#d5d3de",
+                    contrastText: "#676284",
+                },
+                ...tailwindColors,
+
             },
         },
         dark: {
@@ -69,11 +77,14 @@ export const RootTheme = createTheme({
                     hover: "black",
                 },
                 text: {
-                    primary: "rgba(255, 255, 255, 0.8)",
-                    secondary: "#fff",
-
-                }
-
+                    primary: "#E5E7EB",
+                    secondary: "#a7a7a7ff",
+                },
+                muted: {
+                    main: "#d8d3ec",
+                    contrastText: "#cac7dd",
+                },
+                ...tailwindColors,
 
             },
         },
@@ -87,9 +98,16 @@ export const RootTheme = createTheme({
 
                 root: ({ theme }) => {
                     return {
-                        border: `2px solid ${theme.vars.palette.text.disabled}`,
-                        backgroundColor: theme.vars.palette.background.default,
-                        borderRadius: 10,
+                        variants: [
+                            {
+                                props: { elevation: 0 },
+                                style: {
+                                    boxShadow: "none",
+                                    border: "1px solid #DCDAE7",
+                                },
+                            },
+                        ],
+                        borderRadius: 12,
                     }
                 },
             },
@@ -99,6 +117,13 @@ export const RootTheme = createTheme({
                 target: "blank",
                 color: "inherit"
             },
+        },
+        MuiToggleButton: {
+            styleOverrides: {
+                root: {
+                    textTransform: "none"
+                }
+            }
         },
         MuiButton: {
             defaultProps: {
@@ -119,7 +144,10 @@ export const RootTheme = createTheme({
                         "&:hover": { boxShadow: "none" },
                         "&.Mui-disabled": {
                             border: "none"
-                        }
+                        },
+                        "& .MuiSvgIcon-root": {
+                            color: ownerState.variant === "contained" ? theme.vars.palette.button.contrastText : theme.vars.palette.button.main,
+                        },
                     }
                 }
             },
@@ -128,7 +156,7 @@ export const RootTheme = createTheme({
 
         MuiSvgIcon: {
             styleOverrides: {
-                root: ({ theme }) => ({
+                root: ({ theme, ownerState }) => ({
                     color: theme.vars.palette.text.primary,
                 })
             }
@@ -147,10 +175,12 @@ export const RootTheme = createTheme({
                     },
                     '& .MuiOutlinedInput-root': {
                         '&:hover fieldset': {
-                            borderColor: theme.vars.palette.text.primary,
+                            borderColor: "rgba(0 0 0 / 0.23)",
                         },
                         '&.Mui-focused fieldset': {
                             borderColor: theme.vars.palette.text.primary,
+                            borderWidth: 1,
+
                         },
                     }
                 })

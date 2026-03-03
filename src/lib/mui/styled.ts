@@ -1,8 +1,7 @@
 "use client"
 
-import { IconButton, Stack, styled, Typography } from "@mui/material";
+import { Chip, IconButton, Stack, styled, Typography } from "@mui/material";
 import { JuraFont } from "./fonts";
-
 
 
 export const LogoText = styled(Typography)({
@@ -36,4 +35,10 @@ export const IconButtonGrey = styled(IconButton)(({ theme, ...rest }) => {
     })
 }) as typeof IconButton
 
+export const TagLabel = styled(Chip)(({ theme, color }) => color && color !== "default" && (color === "emerald" || color === "cyan" || color === "amber") && ({
+    color: theme.palette[color][700],
+    backgroundColor: theme.palette[color][100],
+    fontWeight: 600
+}
+)) as typeof Chip
 

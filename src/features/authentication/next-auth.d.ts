@@ -2,12 +2,13 @@ import "next-auth";
 import { DefaultSession } from "next-auth";
 import "next-auth/jwt";
 import { DefaultJWT } from "next-auth/jwt";
+import { Role } from "../authorization/types";
 import { SelectUser } from "../user/types";
 
 interface TokenUserData {
     id: string,
     username: string,
-    roles: string[],
+    roles: Role[],
     email: string,
 }
 

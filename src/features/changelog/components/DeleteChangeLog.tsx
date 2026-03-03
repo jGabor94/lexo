@@ -1,29 +1,25 @@
 "use client"
 
-import SA_DeleteChangeLog from '@/features/changelog/actions/deleteChangeLog'
-import useAction from '@/lib/serverAction/useAction'
+import useDal from '@/lib/dal/useDal'
 import { IconButton, Tooltip } from '@mui/material'
 import { DeleteIcon } from 'lucide-react'
-import { FC, useState } from 'react'
+import { FC } from 'react'
+import { deleteChangeLog as deleteChangeLogAction } from '../dal/mutations'
 import { SelectChangeLog } from '../types'
 
 const DeleteChangeLog: FC<{ log: SelectChangeLog }> = ({ log }) => {
 
-    const [isDelete, setIsDelete] = useState(false)
-
-    const { action: deleteChangeLog } = useAction(SA_DeleteChangeLog, {
-        200: ({ severity: "success", content: "Törlés sikeres 🙂" })
+    const { action: deleteChangeLog, progress } = useDal(deleteChangeLogAction, {
+        success: ({ severity: "success", content: "Törlés sikeres 🙂" })
     })
 
     const handleDelete = async (id: string) => {
-        setIsDelete(true)
         await deleteChangeLog(id)
-        setIsDelete(false)
     }
 
     return (
         <Tooltip title="Delete">
-            <IconButton onClick={() => handleDelete(log.id)} disabled={isDelete}>
+            <IconButton onClick={() => handleDelete(log.id)} disabled={progress}>
                 <DeleteIcon />
             </IconButton>
         </Tooltip>

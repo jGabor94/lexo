@@ -1,6 +1,5 @@
-import { favoriteSetsTable, foldersTable, setsTable } from "@/drizzle/schema";
 import { createdAt, updatedAt } from "@/drizzle/schemaTypes";
-import { relations, sql } from "drizzle-orm";
+import { Role } from "@/features/authorization/types";
 import { integer, pgTable, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
 import { AdapterAccountType } from "next-auth/adapters";
 
@@ -13,12 +12,13 @@ export const usersTable = pgTable("users", {
     email: varchar('email', { length: 100 }).unique().notNull(),
     name: varchar('name', { length: 100 }).default(''),
     emailVerified: timestamp("emailVerified", { mode: "date" }),
-    roles: varchar('roles', { length: 100 }).array().notNull().default(sql`ARRAY[]::text[]`),
+    roles: varchar('roles', { length: 100 }).array().$type<Role>(),
     image: varchar('image', { length: 255 }).default('').notNull(),
     theme: varchar('theme', { enum: ["light", "dark"] }).default('light').notNull(),
     createdAt,
     updatedAt,
 });
+
 
 export const accountsTable = pgTable("account", {
     userId: text("userId")
@@ -43,8 +43,3 @@ export const accountsTable = pgTable("account", {
 )
 
 
-export const usersRelations = relations(usersTable, ({ many }) => ({
-    sets: many(setsTable),
-    folders: many(foldersTable),
-    favorites: many(favoriteSetsTable, { relationName: "favorite_sets_user" })
-}));

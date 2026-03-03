@@ -3,6 +3,7 @@
 import SidebarFooterAccount from '@/components/SidebarFooterAccount';
 import { Logo } from '@/components/ui/logo';
 import CreateSet from '@/features/set/components/CreateSet';
+import ScrollToTopFab from '@/features/term/components/ScrollToTopFab';
 import { Box, Button, Stack } from '@mui/material';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { FC, ReactNode } from 'react';
@@ -12,7 +13,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
 
     return (
         <DashboardLayout
-
             defaultSidebarCollapsed
             sx={{
                 border: "none",
@@ -83,10 +83,11 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
             }}
 
         >
-            <Box sx={{
-                width: 1100, maxWidth: "98%", margin: "0 auto", mt: 4, mb: 4,
+            <Box id="dashboard_container" sx={{
+                width: 1200, maxWidth: "95%", margin: "0 auto", mt: 4, mb: 4,
             }}>
                 {children}
+                <ScrollToTopFab sx={{ position: "fixed", bottom: 20, right: 30 }} />
 
             </Box>
         </DashboardLayout>

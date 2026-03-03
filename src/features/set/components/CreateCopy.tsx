@@ -1,16 +1,17 @@
 'use client'
 
+import useDal from '@/lib/dal/useDal'
 import { IconButtonGrey } from '@/lib/mui/styled'
-import useAction from '@/lib/serverAction/useAction'
 import { Tooltip } from '@mui/material'
 import { CopyCheck } from 'lucide-react'
 import { FC } from 'react'
-import SA_CreateCopy from '../actions/createCopy'
+import { createCopy as createCopyAction } from '../dal/mutations'
 
 const CreateCopy: FC<{ setid: string }> = ({ setid }) => {
 
-    const { action: createCopy } = useAction(SA_CreateCopy, {
-        200: { severity: "success", content: "Másolat elkészült 🙂. Megtalálod a könyvtáradban." }
+    const { action: createCopy } = useDal(createCopyAction, {
+        success: { severity: "success", content: "Másolat elkészült 🙂. Megtalálod a könyvtáradban." },
+        fallbackError: (e) => ({ severity: "error", content: e.error.type })
     })
 
     const handleCopy = async () => {

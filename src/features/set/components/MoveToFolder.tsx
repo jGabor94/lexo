@@ -1,14 +1,14 @@
 import LinearLoading from '@/components/LinearLoading';
 import ModalOverlay from '@/components/ui/ModalOverlay';
-import SA_GetFolders from '@/features/folder/actions/getFolders';
+import { getOwnFolders } from '@/features/folder/dal/queries';
 import { FolderListItem } from '@/features/folder/types';
-import SA_AddToFolder from '@/features/set/actions/addToFolder';
 import { MenuControl } from '@/hooks/useMenuControl';
 import useModalControl from '@/hooks/useModalControl';
-import useAction from '@/lib/serverAction/useAction';
+import useDal from '@/lib/dal/useDal';
 import { Button, FormControl, InputLabel, ListItemIcon, ListItemText, MenuItem, Modal, OutlinedInput, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
 import { Folder, PackageMinus } from 'lucide-react';
 import { FC, Fragment, useEffect, useMemo, useState } from 'react';
+import { addToFolder as addToFolderAction } from '../dal/mutations';
 import useSet from '../hooks/useSet';
 
 
@@ -28,8 +28,9 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
 
     const modalControl = useModalControl()
 
-    const { action: addToFolder } = useAction(SA_AddToFolder, {
-        200: { severity: "success", content: "Szógyűjtemény sikeresen hozzáadva a mappához 🙂" }
+    const { action: addToFolder } = useDal(addToFolderAction, {
+        "success": { severity: "success", content: "Szógyűjtemény sikeresen hozzáadva a mappához 🙂" },
+        fallbackError: (e) => ({ severity: "error", content: e.error.type })
     })
 
     const closeModal = () => {
@@ -50,9 +51,9 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
     }
 
     useEffect(() => {
-        SA_GetFolders().then((res) => {
-            if (res.statusCode === 200) {
-                setFolders(res.payload.filter(folder => !folder.sets.includes(set.id)))
+        getOwnFolders().then((res) => {
+            if (res.success) {
+                setFolders(res.data.filter(folder => !folder.sets.includes(set.id)))
             }
         })
     }, [])

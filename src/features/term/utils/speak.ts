@@ -1,5 +1,5 @@
 import * as SpeechSDK from "microsoft-cognitiveservices-speech-sdk";
-import SA_GetSpeakIssueToken from "../actions/getSpeakIssueToken";
+import { getSpeakIssueToken } from "../dal/queries";
 import { langToLocaleMap } from "../lib/constants";
 import { LanguageCode } from "../types";
 
@@ -18,21 +18,21 @@ const speak = async (text: string, lang?: LanguageCode) => {
 
         if (!region || !token || token.exp < new Date()) {
             console.log("Token expired or region not set, fetching new token...")
-            const res = await SA_GetSpeakIssueToken()
-            if (res.statusCode !== 200) throw new Error("Nem sikerült a token lekérése")
+            const res = await getSpeakIssueToken()
+            if (!res.success) throw new Error("Nem sikerült a token lekérése")
             token = {
-                data: res.payload.token,
-                exp: new Date(Date.now() + 9 * 60 * 1000) // 9 perc
+                data: res.data.token,
+                exp: new Date(Date.now() + 9 * 60 * 1000) // 9 min
 
             }
-            region = res.payload.region
+            region = res.data.region
         }
 
 
         const speechConfig = SpeechSDK.SpeechConfig.fromAuthorizationToken(token.data, region);
-        console.log(lang)
+
         if (lang) {
-            //speechConfig.speechSynthesisVoiceName = `${langToLocaleMap[lang]}-NoemiNeural`; // Magyar női hang
+            //speechConfig.speechSynthesisVoiceName = `${langToLocaleMap[lang]}-NoemiNeural`; // Hungarian woman sound
             speechConfig.speechSynthesisLanguage = langToLocaleMap[lang];
         }
 
@@ -42,6 +42,7 @@ const speak = async (text: string, lang?: LanguageCode) => {
             text,
             result => {
                 if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
+                    console.log({ result })
                 } else {
                     console.error("Hiba: ", result.errorDetails);
                 }

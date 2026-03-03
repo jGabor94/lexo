@@ -1,3 +1,12 @@
+import tailwindColors from "@/lib/mui/tailwindColors";
+
+export const termColor = {
+    "learned": tailwindColors.emerald["500"],
+    "learning": tailwindColors.amber["500"],
+    "review": tailwindColors.red["500"],
+    "new": tailwindColors.cyan["500"]
+}
+
 export const languages = [
     { langCode: "af", name: "Afrikaans" },
     { langCode: "ar", name: "Arabic" },

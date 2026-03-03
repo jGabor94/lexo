@@ -1,15 +1,16 @@
 "use client"
 
-import SA_UpdateSet from '@/features/set/actions/updateSet';
 import { MenuControl } from '@/hooks/useMenuControl';
 import useModalControl from '@/hooks/useModalControl';
-import useAction from '@/lib/serverAction/useAction';
+import useDal from '@/lib/dal/useDal';
 import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 import { Edit2Icon } from 'lucide-react';
 import { FC, Fragment } from "react";
 import { SubmitHandler } from "react-hook-form";
+import { updateSet as updateSetAction } from '../dal/mutations';
 import useSet from '../hooks/useSet';
-import SetForm, { SetInput } from "./SetForm";
+import { SetInput } from '../types';
+import SetForm from "./SetForm";
 
 
 const EditSet: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
@@ -17,15 +18,16 @@ const EditSet: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
     const modalControl = useModalControl()
     const { mutate, set } = useSet()
 
-    const { action: updateSet } = useAction(SA_UpdateSet, {
-        200: { severity: "success", content: "Szógyújtemény sikeresen szerkesztve 🙂" }
+    const { action: updateSet } = useDal(updateSetAction, {
+        "success": { severity: "success", content: "Szógyújtemény sikeresen szerkesztve 🙂" },
+        fallbackError: (e) => ({ severity: "error", content: e.error.type })
     })
 
     const submit: SubmitHandler<SetInput> = async (data) => {
 
-        const res = await updateSet(set.id, data)
+        const error = await updateSet(set.id, data)
 
-        if (res.statusCode === 200) {
+        if (!error) {
             mutate()
             modalControl.handleClose()
             menuControl.handleClose()

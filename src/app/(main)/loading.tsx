@@ -1,12 +1,23 @@
-import { CircularProgress, Stack } from '@mui/material'
+
+import LoadingLogo from '@/components/ui/LoadingLogo'
+import { Stack } from '@mui/material'
 import { FC } from 'react'
 
 const loading: FC<{}> = () => {
 
+
+
     return (
-        <Stack alignItems="center">
-            <CircularProgress sx={{ width: 100, height: 100 }} />
+        <Stack alignItems="center" sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: " translate(-50%, -50%)",
+        }}>
+            <LoadingLogo />
         </Stack>
+
+
     )
 }
 

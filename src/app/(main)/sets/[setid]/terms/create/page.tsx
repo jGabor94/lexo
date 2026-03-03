@@ -2,18 +2,21 @@
 
 import LinearLoading from '@/components/LinearLoading'
 import useSet from '@/features/set/hooks/useSet'
-import SA_CreateTerms from '@/features/term/actions/createTerms'
 import ImportForm from '@/features/term/components/ImportForm'
-import TermForm from '@/features/term/components/TermForm'
+import TermForm from '@/features/term/components/TermCard/TermForm'
+import { createTerms as createTermsAction } from '@/features/term/dal/mutations'
 import { TermInput } from '@/features/term/types'
+import { termFormSchema } from '@/features/term/zod/schema'
 import useAlert from '@/hooks/useAlert'
+import useAction from '@/lib/dal/useDal'
 import { IconButtonGrey } from '@/lib/mui/styled'
-import useAction from '@/lib/serverAction/useAction'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Box, Divider, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material'
 import { ArrowLeft, CircleMinus, Plus, PlusIcon, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { FC, Fragment, useEffect, useRef } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
+import z from 'zod'
 
 export type Inputs = {
     terms: Array<TermInput>
@@ -37,30 +40,33 @@ const Page: FC<{}> = () => {
         definition: {
             content: [],
             lang: set.preferredDefinitionLang
-        }
+        },
+        exampleSentence: null
     }
 
-    const form = useForm<Inputs>({ defaultValues: { terms: [initRow] } });
+    const form = useForm<Inputs>({
+        defaultValues: { terms: [initRow] },
+        resolver: zodResolver(z.object({ terms: z.array(termFormSchema) }))
+    });
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "terms",
-        rules: { required: true }
+        rules: { required: true },
+
     });
 
-    const { action: createTerms } = useAction(SA_CreateTerms, {
-        200: { severity: "success", content: "Kifejezések sikeresen hozzáadva 🙂" }
+    const { action: createTerms } = useAction(createTermsAction, {
+        "success": { severity: "success", content: "Kifejezések sikeresen hozzáadva 🙂" }
     })
 
     const submit: SubmitHandler<Inputs> = async ({ terms }) => {
 
+        const error = await createTerms(terms, set?.id)
 
-        const res = await createTerms(terms, set?.id)
-
-        if (res.statusCode === 200) {
+        if (!error) {
             mutate()
             router.push(`/sets/${set.id}`)
         }
-
 
     }
 

@@ -2,26 +2,26 @@
 
 import LinearLoading from '@/components/LinearLoading'
 import useConfirmControll from '@/hooks/useConfirmControll'
+import useAction from '@/lib/dal/useDal'
 import { IconButtonGrey } from '@/lib/mui/styled'
-import useAction from '@/lib/serverAction/useAction'
 import { Button, Dialog, DialogActions, DialogTitle, Tooltip, Typography } from '@mui/material'
 import { TrashIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { FC, Fragment } from 'react'
-import SA_DeleteFolder from '../actions/deleteFolder'
+import { deleteFolder as deleteFolderAction } from '../dal/mutations'
 import { Folder } from '../types'
 
 const DeleteFolder: FC<{ folder: Folder }> = ({ folder }) => {
 
     const router = useRouter()
 
-    const { action: deleteFolder } = useAction(SA_DeleteFolder, {
-        200: { severity: "success", content: "Mappa sikeresen törölve 🙂" },
+    const { action: deleteFolder } = useAction(deleteFolderAction, {
+        success: { severity: "success", content: "Mappa sikeresen törölve 🙂" },
     })
 
     const { controll: { open, promise, loading }, trigger: triggerDelete } = useConfirmControll(async () => {
-        const res = await deleteFolder(folder.id)
-        if (res.statusCode === 200) router.push("/folders")
+        const error = await deleteFolder(folder.id)
+        if (!error) router.push("/folders")
     })
 
     return (

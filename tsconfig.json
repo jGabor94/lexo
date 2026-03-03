@@ -35,7 +35,9 @@
     ".next/types/**/*.ts",
     "src/app/not-found.tsxxs",
     "src/app/not-foundstsx",
-    "src/app/(main)/teach/index.tsxű"
+    "src/app/(main)/teach/index.tsxű",
+    "src/middleware.tsfsdf",
+    "src/app/not-found.tsxsdfds"
   ],
   "exclude": [
     "node_modules"
