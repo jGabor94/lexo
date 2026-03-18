@@ -1,38 +1,59 @@
 "use client"
 
+import LinearLoading from '@/components/LinearLoading';
+import ModalOverlay from '@/components/ui/ModalOverlay';
 import { MenuControl } from '@/hooks/useMenuControl';
 import useModalControl from '@/hooks/useModalControl';
 import useDal from '@/lib/dal/useDal';
-import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, ListItemIcon, ListItemText, MenuItem, Modal, Stack } from "@mui/material";
 import { Edit2Icon } from 'lucide-react';
 import { FC, Fragment } from "react";
-import { SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { updateSet as updateSetAction } from '../dal/mutations';
 import useSet from '../hooks/useSet';
 import { SetInput } from '../types';
+import { setFormSchema } from '../zod/schema';
 import SetForm from "./SetForm";
 
 
 const EditSet: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
 
     const modalControl = useModalControl()
-    const { mutate, set } = useSet()
+    const { set, mutate } = useSet()
 
-    const { action: updateSet } = useDal(updateSetAction, {
-        "success": { severity: "success", content: "Szógyújtemény sikeresen szerkesztve 🙂" },
-        fallbackError: (e) => ({ severity: "error", content: e.error.type })
+    const form = useForm<SetInput>({
+        mode: "all",
+        defaultValues: {
+            name: set.name,
+            preferredTermLang: set.preferredTermLang,
+            preferredDefinitionLang: set.preferredDefinitionLang
+        },
+        resolver: zodResolver(setFormSchema)
+    });
+
+    const { action: updateSet, progress } = useDal(updateSetAction, {
+        alerts: {
+            success: { severity: "success", content: "Szógyújtemény sikeresen szerkesztve 🙂" }
+        },
     })
 
+
     const submit: SubmitHandler<SetInput> = async (data) => {
-
         const error = await updateSet(set.id, data)
-
         if (!error) {
-            mutate()
+            mutate({ ...set, ...data })
             modalControl.handleClose()
             menuControl.handleClose()
         }
     }
+
+    const closeModal = () => {
+        modalControl.handleClose()
+        form.reset()
+    };
+
+
 
     return (
         <Fragment>
@@ -42,17 +63,30 @@ const EditSet: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
                 </ListItemIcon>
                 <ListItemText>Szerkesztés</ListItemText>
             </MenuItem>
-            <SetForm
-                modalControl={modalControl}
-                onSubmit={submit}
-                initValues={{
-                    name: set.name,
-                    preferredTermLang: set.preferredTermLang,
-                    preferredDefinitionLang: set.preferredDefinitionLang
-                }}
-                submitLabel="Edit"
-                label="Edit set" />
-        </Fragment >
+            <LinearLoading {...{ loading: form.formState.isSubmitting }} />
+            <Modal
+                open={modalControl.open}
+                onClose={closeModal}
+                keepMounted={true}
+            >
+                <ModalOverlay width={500} onClose={closeModal}>
+                    <form onSubmit={form.handleSubmit(submit)}>
+
+                        <Stack gap={2}>
+
+                            <SetForm
+                                form={form}
+                                label="Edit set" />
+                            <Button type="submit" variant="contained" disabled={!form.formState.isValid || progress} >
+                                Szerkesztés
+                            </Button>
+                        </Stack>
+                    </form >
+
+                </ModalOverlay>
+            </Modal >
+        </Fragment>
+
     )
 }
 

@@ -1,13 +1,13 @@
 import LinearLoading from '@/components/LinearLoading';
 import ModalOverlay from '@/components/ui/ModalOverlay';
-import { getOwnFolders } from '@/features/folder/dal/queries';
 import { FolderListItem } from '@/features/folder/types';
 import { MenuControl } from '@/hooks/useMenuControl';
 import useModalControl from '@/hooks/useModalControl';
 import useDal from '@/lib/dal/useDal';
 import { Button, FormControl, InputLabel, ListItemIcon, ListItemText, MenuItem, Modal, OutlinedInput, Select, SelectChangeEvent, Stack, Typography } from '@mui/material';
 import { Folder, PackageMinus } from 'lucide-react';
-import { FC, Fragment, useEffect, useMemo, useState } from 'react';
+import { FC, Fragment, useMemo, useState } from 'react';
+import useSWR from 'swr';
 import { addToFolder as addToFolderAction } from '../dal/mutations';
 import useSet from '../hooks/useSet';
 
@@ -15,11 +15,29 @@ import useSet from '../hooks/useSet';
 
 const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
 
-    const [folders, setFolders] = useState<FolderListItem[] | null>(null)
     const [selectedFolderId, setSelectedFolderId] = useState<string>("");
-    const [loading, setLoading] = useState(false)
 
     const { set } = useSet()
+
+    const { data: folders, isLoading } = useSWR("/api/folder/own", async () => {
+        const res = await fetch("/api/folder/own");
+
+        if (!res.ok) {
+            const text = await res.text();
+            let errorMessage;
+            try {
+                const errorData = JSON.parse(text);
+                errorMessage = errorData.message || `Hiba: ${res.status}`;
+            } catch {
+                errorMessage = text || `Hiba történt: ${res.status}`;
+            }
+            throw new Error(errorMessage);
+        }
+
+        const data: FolderListItem[] = await res.json();
+        return data
+
+    })
 
     const selectedFolder = useMemo(
         () => folders?.find(folder => folder.id === selectedFolderId),
@@ -28,9 +46,10 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
 
     const modalControl = useModalControl()
 
-    const { action: addToFolder } = useDal(addToFolderAction, {
-        "success": { severity: "success", content: "Szógyűjtemény sikeresen hozzáadva a mappához 🙂" },
-        fallbackError: (e) => ({ severity: "error", content: e.error.type })
+    const { action: addToFolder, progress } = useDal(addToFolderAction, {
+        alerts: {
+            success: { severity: "success", content: "Szógyűjtemény sikeresen hozzáadva a mappához 🙂" },
+        }
     })
 
     const closeModal = () => {
@@ -44,24 +63,12 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
     };
 
     const handleAdd = async () => {
-        setLoading(true)
-        await addToFolder(selectedFolderId, set.id)
-        closeModal()
-        setLoading(false)
+        const error = await addToFolder(selectedFolderId, set.id)
+        if (!error) closeModal()
     }
-
-    useEffect(() => {
-        getOwnFolders().then((res) => {
-            if (res.success) {
-                setFolders(res.data.filter(folder => !folder.sets.includes(set.id)))
-            }
-        })
-    }, [])
-
 
     return (
         <Fragment>
-            <LinearLoading {...{ loading }} />
             <MenuItem onClick={() => modalControl.handleOpen()}>
                 <ListItemIcon>
                     <PackageMinus size={20} />
@@ -73,6 +80,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
                 onClose={closeModal}
             >
                 <ModalOverlay width={400} onClose={closeModal} sx={{ pt: 6 }}>
+                    <LinearLoading {...{ loading: progress || isLoading }} />
                     {folders && (
                         <Stack gap={2}>
                             <FormControl sx={{ width: "100%" }}>
@@ -90,7 +98,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
                                         </Stack>
                                     )}
                                 >
-                                    {folders.map((folder) => (
+                                    {folders.filter(folder => !folder.sets.includes(set.id)).map((folder) => (
                                         <MenuItem
                                             key={folder.id}
                                             value={folder.id}
@@ -105,7 +113,7 @@ const MoveToFolder: FC<{ menuControl: MenuControl }> = ({ menuControl }) => {
                                     ))}
                                 </Select>
                             </FormControl>
-                            <Button variant='contained' onClick={handleAdd}>Hozzáadás</Button>
+                            <Button variant='contained' onClick={handleAdd} disabled={progress}>Hozzáadás</Button>
                         </Stack>
 
 

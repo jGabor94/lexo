@@ -3,9 +3,8 @@
 import { db } from "@/drizzle/db"
 import { termsTable } from "@/drizzle/schema"
 import { eq } from "drizzle-orm"
-import { cache } from "react"
 
-export const getSetQuery = cache(async (setid: string) => db.query.setsTable.findFirst({
+export const getSetQuery = async (setid: string) => db.query.setsTable.findFirst({
     where: {
         id: setid
     },
@@ -15,7 +14,8 @@ export const getSetQuery = cache(async (setid: string) => db.query.setsTable.fin
     with: {
         terms: {
             orderBy: {
-                createdAt: "asc"
+                createdAt: "asc",
+                id: "asc"
             }
         },
         user: {
@@ -27,31 +27,30 @@ export const getSetQuery = cache(async (setid: string) => db.query.setsTable.fin
         },
     }
 })
-)
 
-export const getSetsQuery = cache(async (userid?: string) => db.query.setsTable.findMany({
-    ...userid && {
-        where: {
-            userid: userid
-        }
-    },
+
+
+
+export const getSetsQuery = async (query: Parameters<typeof db.query.setsTable.findMany>[0]) => db.query.setsTable.findMany({
+    ...query,
     with: {
         user: {
             columns: {
                 name: true,
                 image: true
-            }
-        }
+            },
+        },
     },
-    orderBy: {
-        createdAt: "desc"
+    orderBy: query?.orderBy || {
+        createdAt: "desc",
     },
     extras: {
-        termsCount: (table) => db.$count(termsTable, eq(table.id, termsTable.setid))
+        termsCount: (table) => db.$count(termsTable, eq(table.id, termsTable.setid)),
+        ...query?.extras
     }
-}))
+})
 
-export const getLikersQuery = cache(async (setid: string) => {
+export const getLikersQuery = async (setid: string) => {
     const res = await db.query.setsTable.findFirst({
         where: {
             id: setid
@@ -66,13 +65,10 @@ export const getLikersQuery = cache(async (setid: string) => {
             }
         }
     })
-
     return res?.likers
+}
 
-})
-
-export const getFavoritesQuery = cache(async (userid: string) => {
-
+export const getFavoritesQuery = async (userid: string, query: Parameters<typeof db.query.setsTable.findMany>[0]) => {
     const res = await db.query.usersTable.findFirst({
         where: {
             id: userid
@@ -80,26 +76,28 @@ export const getFavoritesQuery = cache(async (userid: string) => {
         columns: {},
         with: {
             favorites: {
-                orderBy: {
-                    createdAt: "desc"
-                },
-                extras: {
-                    termsCount: (table) => db.$count(termsTable, eq(table.id, termsTable.setid))
-                },
                 with: {
-                    user: {
+                    ...query?.with,
+                    user: query?.with?.user === true ? true : {
                         columns: {
                             name: true,
                             image: true
-                        }
-                    }
-                }
+                        },
+                        ...query?.with?.user,
+                    },
+                },
+                orderBy: query?.orderBy || {
+                    createdAt: "desc",
+                },
+                extras: {
+                    termsCount: (table) => db.$count(termsTable, eq(table.id, termsTable.setid)),
+                    ...query?.extras
+                },
             }
         }
     })
 
-
     return res?.favorites
-})
+}
 
 

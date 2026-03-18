@@ -1,19 +1,23 @@
 "use client"
 
-import useFlashCard from "@/features/practice/hooks/useFlashCard";
+import useExerciseController from "@/features/practice/hooks/useExerciseController";
 import { Box, BoxProps, Paper, Stack, Typography } from "@mui/material";
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import LangCodeLabel from "./components/LangCodeLabel";
 
-const FlashCardContent: FC<BoxProps> = (boxProps) => {
+interface props extends BoxProps {
+    isFlipped: boolean,
+    setIsFlipped: Dispatch<SetStateAction<boolean>>
+}
 
-    const { terms, index, isFlipped, setIsFlipped } = useFlashCard()
+const FlashCardContent: FC<props> = ({ isFlipped, setIsFlipped, ...boxProps }) => {
 
+    const { terms, index } = useExerciseController()
     const { term, definition } = terms[index]
 
     return (
 
-        <Box onClick={() => setIsFlipped(state => !state)} {...boxProps} sx={{
+        <Box onClick={() => setIsFlipped(!isFlipped)} {...boxProps} sx={{
             position: "absolute",
             cursor: "pointer",
             width: "100%",

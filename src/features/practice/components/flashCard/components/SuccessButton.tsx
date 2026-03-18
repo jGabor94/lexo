@@ -1,4 +1,4 @@
-import useFlashCard from "@/features/practice/hooks/useFlashCard";
+import useExerciseController from "@/features/practice/hooks/useExerciseController";
 import { IconButton, Tooltip } from "@mui/material";
 import { animate } from "framer-motion";
 import { CircleCheckBig, LucideProps } from "lucide-react";
@@ -8,7 +8,7 @@ import useKeyFrames from "../../../hooks/useKeyFrames";
 
 const SuccessButton: FC<LucideProps> = (props) => {
 
-    const { handleSuccess } = useFlashCard()
+    const { handleSuccess } = useExerciseController()
     const { successClick: keyFrames } = useKeyFrames()
 
     const handleSuccessClick = () => {

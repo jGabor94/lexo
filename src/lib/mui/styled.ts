@@ -31,7 +31,11 @@ export const LangCodeLabel = styled(Stack)(({ theme }) => ({
 export const IconButtonGrey = styled(IconButton)(({ theme, ...rest }) => {
     return ({
         borderRadius: "100%",
-        border: rest.disabled ? `2px solid ${theme.vars.palette.action.disabled}` : `2px solid ${theme.vars.palette.action.active}}`,
+        height: "fit-content",
+        border: `2px solid ${rest.disabled ? theme.vars.palette.action.disabled : theme.vars.palette.action.active}`,
+        [theme.breakpoints.down("sm")]: {
+            borderWidth: "1px",
+        },
     })
 }) as typeof IconButton
 

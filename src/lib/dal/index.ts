@@ -11,7 +11,15 @@ import z from "zod";
 import { AuthenticationError, AuthorizationError, createErrorReturn, createSuccessReturn, DalErrorReturn, DalSuccessReturn, InitReturns, ZodInputError, ZodOutputError } from "./types";
 
 
-
+/**
+ * Builder state after `Dal.create()`.
+ * Available methods: `schema`, `$Input`, `authenticate`, `operation`.
+ *
+ * @template Returns - Accumulated possible return types.
+ * @template Ctx - Context object passed to `operation`.
+ * @template I - Tuple of input argument types.
+ * @template O - Optional Zod output schema.
+ */
 interface CreateReturn<
     Returns extends any[] = InitReturns,
     Ctx extends AnyObject = AnyObject,
@@ -27,6 +35,15 @@ interface CreateReturn<
     $Input<TInput extends any[] = []>(): $InputReturn<Returns, DeepExpand<Ctx & { input: TInput }>, TInput, O>
 }
 
+/**
+ * Builder state after `$Input<TInput>()`.
+ * Adds `input: TInput` to `Ctx`. Available methods: `schema`, `authenticate`, `operation`.
+ *
+ * @template Returns - Accumulated possible return types.
+ * @template Ctx - Context object extended with `{ input: TInput }`.
+ * @template I - Tuple of input argument types.
+ * @template O - Optional Zod output schema.
+ */
 interface $InputReturn<
     Returns extends any[] = InitReturns,
     Ctx extends AnyObject = AnyObject,
@@ -41,6 +58,16 @@ interface $InputReturn<
     }): SchemaReturn<[...Returns, TInput extends z.ZodTuple ? DalErrorReturn<ZodInputError> : never, TOutput extends z.ZodType ? DalErrorReturn<ZodOutputError> : never], Ctx, I, TOutput>
 }
 
+
+/**
+ * Builder state after `schema()`.
+ * Adds `ZodInputError` / `ZodOutputError` to `Returns`. Available methods: `authenticate`, `operation`.
+ *
+ * @template Returns - Accumulated possible return types, extended with Zod error variants.
+ * @template Ctx - Context object passed to `operation`.
+ * @template I - Tuple of input argument types.
+ * @template O - Optional Zod output schema.
+ */
 interface SchemaReturn<
     Returns extends any[] = InitReturns,
     Ctx extends AnyObject = AnyObject,
@@ -51,6 +78,16 @@ interface SchemaReturn<
     authenticate(): AuthenticateReturn<[...Returns, DalErrorReturn<AuthenticationError>], DeepExpand<Ctx & { user: Session["user"] }>, I, O>,
 }
 
+
+/**
+ * Builder state after `authenticate()`.
+ * Adds `AuthenticationError` to `Returns` and `{ user }` to `Ctx`. Available methods: `authorize`, `operation`.
+ *
+ * @template Returns - Accumulated possible return types, extended with `AuthenticationError`.
+ * @template Ctx - Context object extended with `{ user: Session["user"] }`.
+ * @template I - Tuple of input argument types.
+ * @template O - Optional Zod output schema.
+ */
 interface AuthenticateReturn<
     Returns extends any[] = InitReturns,
     Ctx extends AnyObject = AnyObject,
@@ -65,6 +102,16 @@ interface AuthenticateReturn<
     }): AuthorizeReturn<[...Returns, DalErrorReturn<AuthorizationError>], Ctx, I, O>
 }
 
+
+/**
+ * Builder state after `authorize()`.
+ * Adds `AuthorizationError` to `Returns`. Only `operation` is available.
+ *
+ * @template Returns - Accumulated possible return types, extended with `AuthorizationError`.
+ * @template Ctx - Context object passed to `operation`.
+ * @template I - Tuple of input argument types.
+ * @template O - Optional Zod output schema.
+ */
 interface AuthorizeReturn<
     Returns extends any[] = InitReturns,
     Ctx extends AnyObject = AnyObject,
@@ -74,6 +121,28 @@ interface AuthorizeReturn<
     operation<const T extends DalErrorReturn | (O extends undefined ? DalSuccessReturn : DalSuccessReturn<z.output<O>>) | void>(fn: (ctx: Ctx) => Promise<T>): (...args: I extends undefined ? [] : I) => Promise<Returns[number] | T>
 }
 
+
+
+/**
+ * Fluent builder for type-safe server-side DAL operations.
+ *
+ * Chain order: `schema` → `$Input` → `authenticate` → `authorize` → `operation`.
+ * Each step narrows the return union and extends the context (`Ctx`) accordingly.
+ *
+ * @template Returns - Union of all possible return types accumulated by the chain.
+ * @template Ctx - Context object available inside `operation`.
+ * @template I - Tuple of input argument types.
+ * @template O - Optional Zod output schema; constrains the success return type.
+ *
+ * @example
+ * const getUser = Dal.create()
+ *   .authenticate()
+ *   .authorize({ resource: "user", action: "read" })
+ *   .operation(async ({ user }) => {
+ *     const data = await db.query.users.findFirst(...)
+ *     return createSuccessReturn(data)
+ *   })
+ */
 export class Dal<
     Returns extends any[] = InitReturns,
     Ctx extends AnyObject = {},
@@ -96,10 +165,23 @@ export class Dal<
         this.cfg = cfg
     }
 
+    /**
+   * Creates a new `Dal` builder instance.
+   *
+   * @param cfg.cache - Wrap the final operation with React `cache()`. Defaults to `true`.
+   */
     static create(cfg: { cache?: boolean } = { cache: true }): CreateReturn {
         return new Dal(cfg)
     }
 
+    /**
+   * Registers Zod schemas for input validation and/or output validation.
+   * - Input errors add `ZodInputError` to the return union.
+   * - Output errors add `ZodOutputError` to the return union.
+   *
+   * @param schema.input - Zod tuple matching the operation's argument list.
+   * @param schema.output - Zod type that the success data must satisfy.
+   */
     schema<TInput extends z.ZodTuple<{ [K in keyof I]: z.ZodType<I[K]> }, any> | undefined = undefined, TOutput extends z.ZodType | undefined = undefined>(schema?: {
         input?: TInput,
         output?: TOutput
@@ -115,6 +197,11 @@ export class Dal<
             TOutput>
     }
 
+    /**
+ * Declares the input tuple type `TInput` without a Zod schema.
+ * Adds `{ input: TInput }` to `Ctx` so the operation receives typed arguments.
+ * Use when runtime validation is not needed but type safety is still desired.
+ */
     $Input<TInput extends any[] = []>() {
         return this as unknown as $InputReturn<
             Returns,
@@ -124,11 +211,25 @@ export class Dal<
         >
     }
 
+    /**
+ * Enables session authentication via NextAuth.
+ * Adds `{ user: Session["user"] }` to `Ctx`.
+ * Returns `AuthenticationError` if no valid session exists.
+ */
     authenticate() {
         this.authentication = true
         return this as unknown as AuthenticateReturn<[...Returns, DalErrorReturn<AuthenticationError>], DeepExpand<Ctx & { user: Session["user"] }>, I, O>
     }
 
+    /**
+ * Enables RBAC authorization check after authentication.
+ * Returns `AuthorizationError` if the user lacks the required permission.
+ *
+ * @param cfg.resource - The resource key from `Permissions`.
+ * @param cfg.action - The action to check on the resource.
+ * @param cfg.data - Static permission data or an async resolver receiving the operation args.
+ *                   If the resolver returns `undefined`, access is denied immediately.
+ */
     authorize<Resource extends keyof Permissions>(cfg: {
         resource: Resource,
         action: Permissions[Resource]["action"],
@@ -138,13 +239,31 @@ export class Dal<
         return this as AuthorizeReturn<[...Returns, DalErrorReturn<AuthorizationError>], Ctx, I, O>
     }
 
+    /**
+ * Finalizes the builder and returns the callable server action.
+ *
+ * Execution order:
+ * 1. Input Zod validation (if `schema` was called).
+ * 2. Authentication check (if `authenticate` was called).
+ * 3. Authorization check (if `authorize` was called).
+ * 4. `fn(ctx)` — the actual business logic.
+ * 5. Output Zod validation (if output schema was provided).
+ *
+ * Errors are caught globally:
+ * - `NEXT_REDIRECT` — rethrown as-is (required for Next.js `redirect()`).
+ * - `DrizzleQueryError` — returns `drizzle-error`.
+ * - `ZodError` — returns `validation-error`.
+ * - Anything else — returns `unexpected-error`.
+ *
+ * @param fn - Async function receiving the fully typed `Ctx` and returning a `DalReturn`.
+ * @returns The operation wrapped in React `cache()` if `cfg.cache` is `true`.
+ */
     operation<const T extends DalErrorReturn | (O extends undefined ? DalSuccessReturn : DalSuccessReturn<z.output<O>>) | void>(
         fn: (ctx: Ctx) => Promise<T>
     ) {
 
 
         const final = async (...args: I extends undefined ? [] : I): Promise<Returns[number] | T> => {
-            console.log(args)
             try {
                 if (this.inputSchema) {
                     try {
@@ -228,160 +347,3 @@ export class Dal<
 
 
 
-
-/*
-
-export function dal<
-    E,
-    TArgs extends z.ZodTuple,
-    Resource extends keyof Permissions,
-    TRedirect extends Config.redirect,
-    O extends IsParameterProvided<TAuthentication> extends true
-    ? (data: { input: z.input<TArgs>, user: Session["user"] }) => Promise<IsParameterProvided<TReturn> extends true ? z.output<TReturn> | DalErrorReturn<any> : E>
-    : (data: { input: z.input<TArgs> }) => Promise<IsParameterProvided<TReturn> extends true ? z.output<TReturn> | DalErrorReturn<any> : E>,
-    TReturn extends z.ZodType | undefined = undefined,
-    TAuthentication extends true | undefined = undefined,
->(
-    config: {
-        schema?: {
-            input?: TArgs,
-            output?: TReturn
-        },
-        authentication?: TAuthentication,
-        authorization: {
-            resource: Resource,
-            action: Permissions[Resource]["action"],
-            data?: Permissions[Resource]["dataType"] | ((...args: z.input<TArgs>) => Promise<Permissions[Resource]["dataType"] | undefined>),
-        },
-        errorRedirect?: Exact<NonNullable<TRedirect>, Config.redirect>
-    },
-    operation: O
-): (...args: z.input<TArgs>) => Promise<ReturnType<O>
-    | (TRedirect extends { fallback: true | string } ? never : FallbackErrors)
-    | DalErrorReturn<{ type: "unauthorized" }>
-    | (IsParameterProvided<TAuthentication> extends true ? TRedirect extends { authentication: true | string } ? never : DalErrorReturn<{ type: "unauthenticated" }> : never)>
-
-export function dal<
-    E,
-    TArgs extends z.ZodTuple,
-    Resource extends keyof Permissions,
-    TRedirect extends Config.redirect,
-    O extends IsParameterProvided<TAuthentication> extends true
-    ? (data: { input: z.input<TArgs>, user: Session["user"] }) => Promise<IsParameterProvided<TReturn> extends true ? z.output<TReturn> | DalErrorReturn<any> : E>
-    : (data: { input: z.input<TArgs> }) => Promise<IsParameterProvided<TReturn> extends true ? z.output<TReturn> | DalErrorReturn<any> : E>,
-    TReturn extends z.ZodType | undefined = undefined,
-    TAuthentication extends true | undefined = undefined,
->(
-    config: {
-        schema?: {
-            input?: TArgs,
-            output?: TReturn
-        },
-        authentication?: TAuthentication,
-        errorRedirect?: Exact<NonNullable<TRedirect>, Config.redirect>
-    },
-    operation: O
-): (...args: z.input<TArgs>) => Promise<ReturnType<O>
-    | (TRedirect extends { fallback: true | string } ? never : FallbackErrors)
-    | (IsParameterProvided<TAuthentication> extends true ? TRedirect extends { authentication: true | string } ? never : DalErrorReturn<{ type: "unauthenticated" }> : never)>
-
-
-export function dal<
-    E,
-    TArgs extends z.ZodTuple,
-    Resource extends keyof Permissions,
-    TRedirect extends Config.redirect,
-    TReturn extends z.ZodType | undefined = undefined,
-    TAuthentication extends true | undefined = undefined,
-
->(
-    config: {
-        schema?: {
-            input?: TArgs,
-            output?: TReturn
-        },
-        authentication?: TAuthentication,
-        authorization?: {
-            resource: Resource,
-            action: Permissions[Resource]["action"],
-            data?: Permissions[Resource]["dataType"] | ((...args: z.input<TArgs>) => Promise<Permissions[Resource]["dataType"]>),
-        },
-        errorRedirect?: Exact<NonNullable<TRedirect>, Config.redirect>
-    },
-    operation: 
-) {
-
-    const { schema } = config
-    return {
-        create: (operation: IsParameterProvided<TAuthentication> extends true
-            ? (data: { input: z.input<TArgs>, user: Session["user"] }) => Promise<IsParameterProvided<TReturn> extends true ? z.output<TReturn> : E>
-            : (data: { input: z.input<TArgs> }) => Promise<IsParameterProvided<TReturn> extends true ? z.output<TReturn> : E>) => (cache(async (...args: z.input<TArgs>) => {
-                try {
-
-                    if (schema?.input) schema.input.parse(args)
-
-                    let session
-
-                    if (config.authentication) {
-                        session = await auth()
-                        if (!session) {
-                            if (config.errorRedirect?.authentication) {
-                                redirect(typeof config.errorRedirect.authentication === "boolean" ? defaultRedirectConfig.authentication : config.errorRedirect.authentication)
-                            } else {
-                                return createErrorReturn({ type: "unauthenticated" })
-                            }
-                        }
-
-                        if (config.authorization) {
-                            let dataResult
-                            if (typeof config.authorization.data === "function") {
-                                const res = await (config.authorization?.data as () => Promise<Permissions[Resource]["dataType"]>)()
-                                if (!res) createErrorReturn({ type: "not-found", error: "Authorization data not found" })
-                                dataResult = res
-                            } else {
-                                dataResult = config.authorization.data
-                            }
-                            if (!hasPermission(session.user, config.authorization.resource, config.authorization.action, dataResult)) {
-
-                                if (config.errorRedirect?.authorization) {
-                                    redirect(typeof config.errorRedirect.authorization === "boolean" ? defaultRedirectConfig.authorization : config.errorRedirect.authorization)
-                                } else {
-                                    return createErrorReturn({ type: "unauthorized" })
-                                }
-                            }
-                        }
-                    }
-
-                    const result = await operation({ input: [...args], ...config.authentication && { user: session?.user } as any })
-
-                    if (schema?.output) schema.output.parse(result)
-
-
-                    return result
-                } catch (e) {
-                    if ((e as any).message === "NEXT_REDIRECT") throw e;
-                    if (config.errorRedirect?.fallback) {
-                        redirect(typeof config.errorRedirect.fallback === "boolean" ? defaultRedirectConfig.fallback : config.errorRedirect.fallback)
-                    }
-                    if (e instanceof ThrowableDalError) {
-                        console.error("Custom dal error:", e)
-                        return createErrorReturn(e.error)
-                    }
-                    if (e instanceof DrizzleQueryError) {
-                        console.error("Drizzle Query Error:", e)
-                        return createErrorReturn({ type: "drizzle-error", error: e })
-                    }
-                    if (e instanceof z.ZodError) {
-                        console.error("Zod error:", e)
-                        return createErrorReturn({ type: "validation-error", error: e })
-                    }
-                    console.error("Unknown error:", e)
-                    return createErrorReturn({ type: "unexpected-error", error: e })
-                }
-            }) as any)
-    } 
-}
-
-
-
-*/

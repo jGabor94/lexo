@@ -8,6 +8,7 @@ import { and, eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import z from "zod"
 import { foldersTable } from "../drizzle/schema"
+import { FolderInput } from "../types"
 
 export const createFolder = Dal.create()
     .$Input<[name: string]>()
@@ -60,9 +61,9 @@ export const removeFromFolder = Dal.create()
     })
 
 export const updateFolder = Dal.create()
-    .$Input<[folderid: string, query: { name?: string }]>()
+    .$Input<[folderid: string, data: FolderInput]>()
     .schema({
-        input: z.tuple([z.string(), z.object({ name: z.string().optional() })]),
+        input: z.tuple([z.string(), z.object({ name: z.string() })]),
     })
     .authenticate()
     .authorize({
@@ -71,8 +72,6 @@ export const updateFolder = Dal.create()
         data: async (folderid) => db.query.foldersTable.findFirst({ where: { id: folderid } })
     })
     .operation(async ({ input }) => {
-        const [folderid, query] = input
-        await db.update(foldersTable).set(query).where(eq(foldersTable.id, folderid))
-        revalidatePath(`/folders/${folderid}`, "page")
-
+        const [folderid, data] = input
+        await db.update(foldersTable).set(data).where(eq(foldersTable.id, folderid))
     })

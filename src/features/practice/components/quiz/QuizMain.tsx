@@ -1,81 +1,118 @@
-"use client";
+"use client"
 
-import { PracticeMode } from "@/features/practice/types";
-import useSet from "@/features/set/hooks/useSet";
-import { updateProgress as updateProgressAction } from "@/features/term/dal/mutations";
 import { Term } from "@/features/term/types";
-import useDal from "@/lib/dal/useDal";
-import { Button, CircularProgress, Stack, Typography } from "@mui/material";
-import Link from "next/link";
-import { FC, useEffect, useState } from "react";
-import QuizProvider from "../../providers/QuizProvider";
+import { Button, Chip, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
+import { useParams } from "next/navigation";
+import { FC, useEffect, useRef, useState } from "react";
+import useExerciseController from "../../hooks/useExerciseController";
+import { modeMap } from "../../lib/contants";
+import { ExerciseMode } from "../../types";
 import { shuffle } from "../../utils";
-import Completed from "../complete";
-import QuizLayout from "./QuizLayout";
 
+const getOptions = (terms: Term[], currentIndex: number) => {
+    const arr = [...terms]
+    arr.splice(currentIndex, 1)
+    const wrongOptions = shuffle(arr).slice(0, 3)
+    return shuffle([...wrongOptions, terms[currentIndex]])
+}
 
-
-const QuizMain: FC<{ mode: PracticeMode }> = ({ mode }) => {
-
-    const prepareArray = (array: Term[]) =>
-        shuffle(mode === "progress" ? array.filter((term) => term.status < 5) : array);
-
-    const [loading, setLoading] = useState(false)
-    const { set, mutate } = useSet()
-    const [filteredTerms, setFilteredTerms] = useState<null | Term[]>(null);
-    const [completed, setCompleted] = useState<null | { successItems: string[], wrongItems: string[] }>(null)
-
-    const { action: updateProgress } = useDal(updateProgressAction)
-
-
-    const handleCompleted = async (successItems: string[], wrongItems: string[]) => {
-        setLoading(true)
-        if (mode === "progress") {
-            await updateProgress(set.id, successItems, wrongItems)
-            await mutate()
+const getMarking = (selected: null | string, option: Term, terms: Term[], currentIndex: number) => {
+    if (selected) {
+        if (selected === option.id) {
+            if (selected === terms[currentIndex].id) return {
+                border: "none",
+                backgroundColor: "#3adb27"
+            }
+            return {
+                border: "none",
+                backgroundColor: "#ed3939"
+            }
+        } else if (option.id === terms[currentIndex].id) {
+            return { border: "2px solid #3adb27" }
         }
-        setCompleted({ successItems, wrongItems })
-        setLoading(false)
-    };
+    }
+}
 
-    useEffect(() => {
-        if (completed) setFilteredTerms(prepareArray(set.terms))
-    }, [set.terms])
+const QuizMain: FC<{}> = () => {
 
-    useEffect(() => {
-        setFilteredTerms(prepareArray(set.terms))
-    }, [])
+    const { terms, index, successItems, wrongItems, handleSuccess, handleWrong } = useExerciseController()
+    const { mode } = useParams<{ mode: ExerciseMode }>()
 
-    if (loading) return (
-        <Stack alignItems="center">
-            <CircularProgress sx={{ margin: "0 auto" }} />
-        </Stack>
-    )
+    const nextButtonRef = useRef<HTMLButtonElement>(null);
 
-    if (completed) return (
-        <Completed {...{ ...completed, setCompleted }} />
-    )
 
-    if (filteredTerms?.length === 0) {
-        return (
-            <Stack gap={2} alignItems="center">
-                <Typography>You have learned all items</Typography>
-                <Button component={Link} href={`/sets/${set.id}`}>Vissza</Button>
-            </Stack>
-        );
+    const [currentIndex, setCurrentIndex] = useState(index)
+    const [options, setOptions] = useState(getOptions(terms, index))
+
+    const [selected, setSelected] = useState<null | string>(null)
+
+    if (currentIndex !== index) {
+        setOptions(getOptions(terms, index))
+        setCurrentIndex(index)
     }
 
+    const handleClick = (selectedOption: Term) => {
+        !selected && setSelected(selectedOption.id)
+    }
+
+    const handleNext = () => {
+        selected === terms[index].id ? handleSuccess() : handleWrong()
+        setSelected(null)
+    }
+
+    useEffect(() => {
+        if (selected && nextButtonRef.current) {
+            nextButtonRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+        }
+    }, [selected])
+
     return (
-        <Stack alignItems="center">
-            {filteredTerms ? (
-                <QuizProvider terms={filteredTerms} onCompleted={handleCompleted}>
-                    <QuizLayout />
-                </QuizProvider>
-            ) : (
-                <CircularProgress />
+        <Stack gap={2} sx={{
+            width: 700, maxWidth: "100%"
+        }} >
+            <Stack
+                direction="row"
+                justifyContent="space-between"
+                width="100%"
+                alignItems="center"
+            >
+                <Chip color="warning" label={`${wrongItems.length}`} sx={{ pr: 2, pl: 2, fontWeight: 700 }} />
+                <Stack gap={0.5} alignItems="center">
+                    <Typography>
+                        {index < terms.length ? index + 1 : terms.length}/{terms.length}
+                    </Typography>
+                    <Typography fontSize={12}>
+                        {modeMap[mode]}
+                    </Typography>
+                </Stack>
+
+                <Chip color="primary" label={successItems.length} sx={{ pr: 2, pl: 2, fontWeight: 700 }} />
+            </Stack>
+            <Stack gap={2}>
+                <Typography fontSize={20} sx={{ color: "grey" }}>
+                    Válaszd ki a megfelelő jelentést
+                </Typography>
+                <Divider flexItem />
+                <Typography fontSize={20} sx={{ alignSelf: "center" }}>
+                    {terms[index].term.content}
+                </Typography>
+            </Stack>
+
+            <Grid container spacing={2} width="100%">
+                {options.map((option, index) => (
+                    <Grid key={index} size={{ xs: 12, md: 6 }} onClick={() => handleClick(option)}>
+                        <Paper component={Stack} justifyContent="center" alignItems="center" sx={{ height: 70, width: "100%", cursor: "pointer", ...getMarking(selected, option, terms, currentIndex) }}>
+                            {option.definition.content.map((word, index) => word + (index < option.definition.content.length - 1 ? ", " : ""))}
+                        </Paper>
+                    </Grid>
+                ))}
+            </Grid>
+            {selected && (
+                <Button onClick={handleNext} variant="contained" sx={{ alignSelf: "flex-end" }} ref={nextButtonRef}
+                >Tovább</Button>
             )}
-        </Stack>
-    )
+        </Stack >
+    );
 };
 
 export default QuizMain;

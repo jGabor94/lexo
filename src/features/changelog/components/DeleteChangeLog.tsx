@@ -10,7 +10,9 @@ import { SelectChangeLog } from '../types'
 const DeleteChangeLog: FC<{ log: SelectChangeLog }> = ({ log }) => {
 
     const { action: deleteChangeLog, progress } = useDal(deleteChangeLogAction, {
-        success: ({ severity: "success", content: "Törlés sikeres 🙂" })
+        alerts: {
+            success: ({ severity: "success", content: "Törlés sikeres 🙂" })
+        }
     })
 
     const handleDelete = async (id: string) => {

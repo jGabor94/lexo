@@ -1,4 +1,4 @@
-import useFlashCard from '@/features/practice/hooks/useFlashCard';
+import useExerciseController from '@/features/practice/hooks/useExerciseController';
 import { IconButton, Tooltip } from '@mui/material';
 import { animate } from 'framer-motion';
 import { CircleX, LucideProps } from 'lucide-react';
@@ -7,7 +7,7 @@ import useKeyFrames from '../../../hooks/useKeyFrames';
 
 const WrongButton: FC<LucideProps> = (props) => {
 
-    const { handleWrong } = useFlashCard()
+    const { handleWrong } = useExerciseController()
     const { wrongClick: keyFrames } = useKeyFrames()
 
     const handleWrongClick = () => {

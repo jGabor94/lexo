@@ -1,19 +1,19 @@
 import ConfirmDialog from '@/components/ConfirmDialog';
-import useSet from '@/features/set/hooks/useSet';
 import useConfirmControll from '@/hooks/useConfirmControll';
 import useDal from '@/lib/dal/useDal';
 import { Delete, Edit, MoreVert } from '@mui/icons-material';
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
 import { deleteTerm as deleteTermAction } from '../../dal/mutations';
+import { useTerms } from '../../providers';
 import { Term } from '../../types';
 
 const TermCardMenu: FC<{
     term: Term,
     setMode: Dispatch<SetStateAction<"read" | "edit">>,
-}> = ({ term: { id: termid, ...term }, setMode }) => {
+}> = ({ term: { id: termid }, setMode }) => {
 
-    const { mutate } = useSet()
+    const { dispatchOptimisticTerms } = useTerms()
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(
         null,
@@ -35,16 +35,19 @@ const TermCardMenu: FC<{
     }
 
     const { action: deleteTerm, progress } = useDal(deleteTermAction, {
-        "success": { severity: "success", content: "Kifejezés sikeresen törölve 🙂" }
+        alerts: {
+            success: { severity: "success", content: "Kifejezés sikeresen törölve 🙂" }
+        }
     })
 
     const { controll, trigger: triggerDelete } = useConfirmControll(async () => {
+        dispatchOptimisticTerms({
+            type: "delete",
+            termid
+        })
         const error = await deleteTerm(termid)
+        if (!error) setMode("read")
 
-        if (!error) {
-            mutate()
-            setMode("read")
-        }
     })
 
     return (

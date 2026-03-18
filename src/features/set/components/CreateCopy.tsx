@@ -10,8 +10,9 @@ import { createCopy as createCopyAction } from '../dal/mutations'
 const CreateCopy: FC<{ setid: string }> = ({ setid }) => {
 
     const { action: createCopy } = useDal(createCopyAction, {
-        success: { severity: "success", content: "Másolat elkészült 🙂. Megtalálod a könyvtáradban." },
-        fallbackError: (e) => ({ severity: "error", content: e.error.type })
+        alerts: {
+            success: { severity: "success", content: "Másolat elkészült 🙂. Megtalálod a könyvtáradban." },
+        }
     })
 
     const handleCopy = async () => {

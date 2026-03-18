@@ -5,7 +5,7 @@ import { termsTable } from "@/drizzle/schema"
 import { Dal } from "@/lib/dal"
 import { createErrorReturn, createSuccessReturn, ParamsType } from "@/lib/dal/types"
 import { and, eq } from "drizzle-orm"
-import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidatePath } from "next/cache"
 import z from "zod"
 import { getSetQuery } from "../drizzle/operations"
 import { favoriteSetsTable, setsTable, setToFolderTable } from "../drizzle/schema"
@@ -22,14 +22,11 @@ export const switchLike = Dal.create()
     .authenticate()
     .operation(async ({ input, user }) => {
         const [setid, isLiked] = input
-        console.log({ isLiked })
         if (isLiked) {
             await db.insert(favoriteSetsTable).values({ userid: user.id, setid })
         } else {
             await db.delete(favoriteSetsTable).where(and(eq(favoriteSetsTable.userid, user.id), eq(favoriteSetsTable.setid, setid)))
         }
-
-        revalidateTag("sets")
     })
 
 
@@ -95,9 +92,9 @@ export const createCopy = Dal.create()
     })
 
 export const createSet = Dal.create()
-    .$Input<[data: SetInput, folderid: string]>()
+    .$Input<[data: SetInput, folderid?: string]>()
     .schema({
-        input: z.tuple([setFormSchema, z.string()]),
+        input: z.tuple([setFormSchema, z.string().optional()]),
         output: z.object({ id: z.string() })
     })
     .authenticate()

@@ -4,26 +4,18 @@ import useSet from '@/features/set/hooks/useSet'
 import { Box, Paper, Stack, Typography } from '@mui/material'
 import { ChevronLeft, RotateCcw } from 'lucide-react'
 import Link from 'next/link'
-import { Dispatch, FC, Fragment, SetStateAction } from 'react'
+import { FC, Fragment } from 'react'
+import useExerciseController from '../../hooks/useExerciseController'
 import ProgressGauge from './components/ProgressGauge'
 
-interface props {
-    successItems: string[],
-    wrongItems: string[],
-    setCompleted: Dispatch<SetStateAction<{
-        successItems: string[];
-        wrongItems: string[];
-    } | null>>
-}
 
-const Completed: FC<props> = ({ successItems, wrongItems, setCompleted }) => {
+const Completed: FC = () => {
 
     const { set, isOwner } = useSet()
-
+    const { reset, successItems, wrongItems } = useExerciseController()
     const learnedNum = set.terms.reduce((acc, curr) => {
         return curr.status === 5 ? acc + 1 : acc
     }, 0)
-
 
     const sum = set.terms.reduce((acc, curr) => {
         return acc + (curr.status || 0)
@@ -81,7 +73,7 @@ const Completed: FC<props> = ({ successItems, wrongItems, setCompleted }) => {
                     <ChevronLeft />
                     <Typography>Vissza a szógyűjteményhez</Typography>
                 </Stack>
-                <Stack direction="row" alignItems="center" gap={0.5} onClick={() => setCompleted(null)} sx={{ cursor: "pointer" }}>
+                <Stack direction="row" alignItems="center" gap={0.5} onClick={() => reset(set.terms)} sx={{ cursor: "pointer" }}>
                     <RotateCcw />
                     <Typography>Újra próbálom</Typography>
                 </Stack>

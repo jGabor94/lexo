@@ -3,7 +3,7 @@ import { Term } from "../types";
 
 export const termStatusCondition = {
     "learning": (term: Term) => term.status < 5,
-    "review": (term: Term) => term.status === 5 && term.lastReviewedAt && (term.lastReviewedAt.getTime() - Date.now()) > 1209600000,
+    "review": (term: Term) => term.status === 5 && term.lastReviewedAt && (new Date(term.lastReviewedAt).getTime() - Date.now()) > 1209600000,
     "learned": (term: Term) => term.status === 5,
 }
 
@@ -29,6 +29,8 @@ export const getTermUiData = (term: Term) => {
         color: termColor["new"]
     };
 };
+
+
 
 export const getTermStats = (terms: Term[]) => ({
     all: terms.length,

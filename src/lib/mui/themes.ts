@@ -1,13 +1,13 @@
 'use client'
 
-import { createTheme } from "@mui/material/styles";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import 'non.geist';
 import { NotoSans } from "./fonts";
 import tailwindColors from "./tailwindColors";
 
 
 
-export const RootTheme = createTheme({
+export const RootTheme = responsiveFontSizes(createTheme({
     cssVariables: {
         colorSchemeSelector: 'class',
     },
@@ -189,6 +189,5 @@ export const RootTheme = createTheme({
 
     },
 
-});
-
-
+})
+)

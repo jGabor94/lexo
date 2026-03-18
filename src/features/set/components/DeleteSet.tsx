@@ -16,8 +16,9 @@ const DeleteSet: FC<{}> = () => {
     const { set } = useSet()
 
     const { action: deleteSet } = useDal(deleteSetAction, {
-        "success": { severity: "success", content: "Szógyűjtemény sikeresen törölve 🙂" },
-        fallbackError: (e) => ({ severity: "error", content: e.error.type })
+        alerts: {
+            success: { severity: "success", content: "Szógyűjtemény sikeresen törölve 🙂" },
+        }
     })
 
     const { controll, trigger: triggerDelete } = useConfirmControll(async () => {

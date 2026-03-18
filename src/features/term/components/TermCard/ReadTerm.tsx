@@ -2,7 +2,7 @@
 
 import ProgressStatus from '@/components/ui/ProgressStatus';
 import useSet from '@/features/set/hooks/useSet';
-import { Box, Collapse, IconButton, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Collapse, IconButton, Stack, Typography } from "@mui/material";
 import { Quote, Volume2 } from 'lucide-react';
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { HiddenMode, Term } from '../../types';
@@ -16,15 +16,12 @@ const ReadTerm: FC<{
     setMode: Dispatch<SetStateAction<"edit" | "read">>,
     term: Term,
     hiddenMode: HiddenMode,
-    statusColor: string
+    statusColor: string,
 }> = ({ setMode, term, hiddenMode, statusColor }) => {
 
     const [hideOverride, setHideOverride] = useState<HiddenMode>(null)
-
-    const theme = useTheme()
-    const { isOwner } = useSet()
     const [showExample, setShowExample] = useState(false);
-
+    const { isOwner } = useSet()
 
     const getHiddenData = (mode: HiddenMode) => {
 
@@ -145,7 +142,7 @@ const ReadTerm: FC<{
                                     fontSize: 13,
                                     ...getHiddenData("terms").sx
                                 }} >
-                                    "<Highlighter text={term.exampleSentence} stemsInput={term.term.content} />"
+                                    &quot;<Highlighter text={term.exampleSentence} stemsInput={term.term.content} />&quot;
                                 </Typography>
                             </Box>
                         </Collapse>
@@ -158,26 +155,9 @@ const ReadTerm: FC<{
             <Stack direction="row" gap={1} alignItems="center" sx={{ flexDirection: { xs: "column", sm: "row" } }}>
                 {isOwner && (
                     <TermCardMenu term={term} setMode={setMode} />
-
                 )}
-                {/*
-      {isOwner && (
-                    <ProgressStatus score={term.status} />
-                )}
-*/}
-
-
-
-
-
-
-
-
             </Stack>
-
-
         </Stack >
-
     )
 }
 

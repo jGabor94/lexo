@@ -25,7 +25,7 @@ const SnackbarAlert: FC<{ autoHideDuration?: number }> = ({ autoHideDuration }) 
         <Snackbar
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             open={alert ? true : false}
-            autoHideDuration={autoHideDuration || 40000}
+            autoHideDuration={autoHideDuration || 6000}
             onClose={handleClose}
 
         >

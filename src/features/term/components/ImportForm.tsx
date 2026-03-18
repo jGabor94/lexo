@@ -1,8 +1,7 @@
 "use client"
 
-import { Inputs } from '@/app/(main)/sets/[setid]/terms/create/page';
 import ModalOverlay from '@/components/ui/ModalOverlay';
-import useSet from '@/features/set/hooks/useSet';
+import { Set } from '@/features/set/types';
 import useModalControl from '@/hooks/useModalControl';
 import { IconButtonGrey } from '@/lib/mui/styled';
 import { Button, Divider, Modal, Paper, Radio, Stack, TextField, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
@@ -10,15 +9,18 @@ import { ImportIcon, Info } from 'lucide-react';
 import { FC, Fragment, KeyboardEventHandler, useEffect, useState } from 'react';
 import { UseFieldArrayAppend } from 'react-hook-form';
 import { TermInput } from '../types';
+import { Inputs } from './CreateTerms';
 
-const ImportForm: FC<{ append: UseFieldArrayAppend<Inputs, "terms"> }> = ({ append }) => {
+const ImportForm: FC<{
+    append: UseFieldArrayAppend<Inputs, "terms">,
+    set: Set
+}> = ({ append, set }) => {
 
     const [customSeparator, setCustomSeparator] = useState<string>("");
     const [separator, setSeparator] = useState<"ws" | "tab">("tab");
     const [terms, setTerms] = useState<TermInput[]>([]);
     const [importedText, setImportedText] = useState<string>("");
 
-    const { set } = useSet()
     const modalControl = useModalControl()
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -43,12 +45,13 @@ const ImportForm: FC<{ append: UseFieldArrayAppend<Inputs, "terms"> }> = ({ appe
                 return {
                     term: {
                         content: term,
-                        lang: set.preferredTermLang
+                        lang: set.preferredTermLang,
                     },
                     definition: {
                         content: [...definition?.split(',') || []],
                         lang: set.preferredDefinitionLang
-                    }
+                    },
+                    exampleSentence: null
                 }
             }))
 

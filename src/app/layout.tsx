@@ -21,12 +21,12 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.png',
   },
-  viewport: "viewport-fit=cover"
 };
 
 export const viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover"
 }
 
 const NAVIGATION: Navigation = [

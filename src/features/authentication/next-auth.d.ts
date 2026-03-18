@@ -8,6 +8,8 @@ import { SelectUser } from "../user/types";
 interface TokenUserData {
     id: string,
     username: string,
+    name: string,
+    image: string,
     roles: Role[],
     email: string,
 }

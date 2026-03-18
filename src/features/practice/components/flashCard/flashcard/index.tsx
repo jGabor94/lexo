@@ -1,13 +1,18 @@
-import useFlashCard from '@/features/practice/hooks/useFlashCard'
+import useExerciseController from '@/features/practice/hooks/useExerciseController'
 import { Box } from '@mui/material'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import AnimatedFlashCards from './components/AnimatedFlashCards'
 import FlashCardContent from './FlashCardContent'
 import FlashCardDrag from './FlashCardDrag'
 
 const FlashCard: FC<{}> = () => {
 
-    const { setIsFlipped } = useFlashCard()
+    const [isFlipped, setIsFlipped] = useState(false)
+    const { index } = useExerciseController()
+
+    useEffect(() => {
+        setIsFlipped(false)
+    }, [index])
 
     return (
         <Box sx={{
@@ -16,9 +21,9 @@ const FlashCard: FC<{}> = () => {
             aspectRatio: "1 / 0.7",
             position: "relative",
             cursor: "pointer",
-        }} onClick={() => setIsFlipped(state => !state)}
+        }} onClick={() => setIsFlipped(!isFlipped)}
         >
-            <FlashCardContent />
+            <FlashCardContent {...{ isFlipped, setIsFlipped }} />
             <AnimatedFlashCards />
             <FlashCardDrag />
         </Box>

@@ -21,7 +21,7 @@ const TermCard: FC<{ term: TermType, hiddenMode: HiddenMode, ref?: RefObject<HTM
             ref={ref}
             transition={{
                 layout: {
-                    type: "tween", // Ez a kulcs!
+                    type: "tween",
                     ease: "linear",
                     duration: 0.2,
                 }

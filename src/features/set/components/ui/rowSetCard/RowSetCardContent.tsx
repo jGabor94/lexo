@@ -1,7 +1,7 @@
 "use client"
 
 import { SetListItem } from '@/features/set/types'
-import { getDate } from '@/utils'
+import { formatSmartDate } from '@/utils'
 import { Avatar, Chip, Divider, Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { FC } from 'react'
@@ -33,7 +33,7 @@ const RowSetCardContent: FC<{ set: SetListItem, href: string }> = ({ set, href }
                     whiteSpace: "nowrap"
                 }}>{set.name}</Typography>
 
-                <Typography fontSize={12} sx={{ textWrap: "nowrap" }}>Created: {getDate(set.createdAt, false)}</Typography>
+                <Typography fontSize={12} sx={{ textWrap: "nowrap" }}>Created: {formatSmartDate(set.createdAt)}</Typography>
             </Stack>
             <Stack
                 direction="row"

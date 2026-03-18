@@ -2,8 +2,8 @@
 
 import useMenuControl from "@/hooks/useMenuControl"
 import { IconButtonGrey } from "@/lib/mui/styled"
-import { Menu, Tooltip } from "@mui/material"
-import { EllipsisVertical } from "lucide-react"
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import { Menu, Tooltip, useTheme } from "@mui/material"
 import { FC, Fragment } from "react"
 import DeleteSet from "./DeleteSet"
 import EditSet from "./EditSet"
@@ -13,12 +13,13 @@ import MoveToFolder from "./MoveToFolder"
 const SetMenu: FC<{}> = () => {
 
     const menuControl = useMenuControl()
+    const theme = useTheme()
 
     return (
         <Fragment>
             <Tooltip title="Menü">
-                <IconButtonGrey onClick={menuControl.handleOpen}>
-                    <EllipsisVertical />
+                <IconButtonGrey onClick={menuControl.handleOpen} >
+                    <MoreVertIcon />
                 </IconButtonGrey>
             </Tooltip>
             <Menu
@@ -28,10 +29,12 @@ const SetMenu: FC<{}> = () => {
                 onClose={menuControl.handleClose}
                 disableScrollLock
             >
+
+                <ExportTerms {...{ menuControl }} />
                 <MoveToFolder  {...{ menuControl }} />
                 <EditSet {...{ menuControl }} />
-                <ExportTerms {...{ menuControl }} />
                 <DeleteSet />
+
             </Menu>
         </Fragment>
 

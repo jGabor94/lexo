@@ -43,7 +43,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                         border: "none",
                         boxShadow: "none",
                         "& .MuiBox-root": {
-                            overflow: "hidden",
                             "& .MuiList-root": {
                                 "& .MuiListItem-root": {
                                     "& .MuiButtonBase-root": {

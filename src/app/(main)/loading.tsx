@@ -3,22 +3,15 @@ import LoadingLogo from '@/components/ui/LoadingLogo'
 import { Stack } from '@mui/material'
 import { FC } from 'react'
 
-const loading: FC<{}> = () => {
+const Loading: FC<{}> = () => (
+    <Stack alignItems="center" sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: " translate(-50%, -50%)",
+    }}>
+        <LoadingLogo />
+    </Stack>
+)
 
-
-
-    return (
-        <Stack alignItems="center" sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: " translate(-50%, -50%)",
-        }}>
-            <LoadingLogo />
-        </Stack>
-
-
-    )
-}
-
-export default loading
+export default Loading

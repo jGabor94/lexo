@@ -1,4 +1,4 @@
-import useFlashCard from '@/features/practice/hooks/useFlashCard';
+import useExerciseController from '@/features/practice/hooks/useExerciseController';
 import { Stack, Typography } from '@mui/material';
 import { animate } from 'framer-motion';
 import { RotateCcw } from 'lucide-react';
@@ -7,7 +7,7 @@ import useKeyFrames from '../../../hooks/useKeyFrames';
 
 const UndoButton: FC<{}> = () => {
 
-    const { index, handleUndo } = useFlashCard()
+    const { index, handleUndo } = useExerciseController()
     const { undoClick: keyFrames } = useKeyFrames()
 
     const handleUndoClick = () => {

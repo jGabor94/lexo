@@ -3,11 +3,15 @@
 import { db } from "@/drizzle/db";
 import { setsTable } from "@/drizzle/schema";
 import { Dal } from "@/lib/dal";
+import { createErrorReturn, createSuccessReturn } from "@/lib/dal/types";
+import TextTranslationClient, { isUnexpected } from "@azure-rest/ai-translation-text";
+import { AzureKeyCredential, TextAnalyticsClient } from "@azure/ai-text-analytics";
 import { eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import z from "zod";
 import { termsTable } from "../drizzle/schema";
 import { LanguageCode, TermInput } from "../types";
+import { hasMultipleWords } from "../utils";
 import { languageCodesSchema, termFormSchema } from "../zod/schema";
 
 export const createTerms = Dal.create()
@@ -46,7 +50,8 @@ export const deleteTerm = Dal.create()
     })
     .operation(async ({ input }) => {
         const [termid] = input;
-        await db.delete(termsTable).where(eq(termsTable.id, termid))
+        const [term] = await db.delete(termsTable).where(eq(termsTable.id, termid)).returning()
+        revalidatePath(`/sets/${term.setid}`)
     })
 
 
@@ -63,7 +68,9 @@ export const updateTerm = Dal.create()
     })
     .operation(async ({ input }) => {
         const [termid, newTerm] = input
-        await db.update(termsTable).set(newTerm).where(eq(termsTable.id, termid))
+        const [term] = await db.update(termsTable).set(newTerm).where(eq(termsTable.id, termid)).returning()
+        revalidatePath(`/sets/${term.setid}`)
+
     })
 
 
@@ -125,6 +132,94 @@ export const updateProgress = Dal.create()
             await tx.update(setsTable).set({ updatedAt: new Date() }).where(eq(setsTable.id, setid))
 
         })
+
+        revalidatePath(`/sets/${setid}`)
+
+
+    })
+
+export const langDetection = Dal.create()
+    .$Input<[text: string]>()
+    .schema({
+        input: z.tuple([z.string()]),
+        output: z.object({ lang: z.string() }),
+    })
+    .authenticate()
+
+    .operation(async ({ input }) => {
+        const key = process.env.AZURE_LANGUAGE_API_KEY as string;
+        const endpoint = "https://langdetection2.cognitiveservices.azure.com";
+
+        const [text] = input
+
+        const client = new TextAnalyticsClient(endpoint, new AzureKeyCredential(key));
+
+        const [result] = await client.detectLanguage([text]);
+        if (result.error) {
+            return createErrorReturn({ type: "lang-detection-error", error: result.error.message })
+        }
+
+
+        return createSuccessReturn({ lang: result.primaryLanguage.iso6391Name })
+    })
+
+export const translate = Dal.create()
+    .$Input<[from: string, to: string, text: string]>()
+    .schema({
+        input: z.tuple([z.string(), z.string(), z.string()]),
+        output: z.object({
+            from: z.string(),
+            to: z.string(),
+            translations: z.array(z.string())
+        }),
+    })
+    .authenticate()
+    .operation(async ({ input }) => {
+        const apiKey = process.env.AZURE_TRANSLATATOR_API_KEY as string;
+        const endpoint = "https://api.cognitive.microsofttranslator.com";
+        const region = process.env.AZURE_REGION as string;
+
+        const [from, to, text] = input
+
+        if (from === to) return createErrorReturn({ type: 'identical-lang-inputs' })
+
+        const translationClient = TextTranslationClient(endpoint, {
+            key: apiKey,
+            region,
+        });
+
+        const inputText = [{ text }];
+
+        if (hasMultipleWords(text)) {
+
+            const translateResponse = await translationClient.path("/translate").post({
+                body: inputText,
+                queryParameters: { to, from }
+            });
+
+            if (isUnexpected(translateResponse)) return createErrorReturn({ type: "translation-error", error: "Error during translation" })
+
+            const { translations } = translateResponse.body[0];
+
+            return createSuccessReturn({
+                from, to,
+                translations: translations.map(translation => translation.text)
+            });
+        }
+
+        const translateResponse = await translationClient.path("/dictionary/lookup").post({
+            body: inputText,
+            queryParameters: { to, from }
+        });
+
+        if (isUnexpected(translateResponse)) return createErrorReturn({ type: "translation-error", error: "Error during translation" })
+
+        const { translations } = translateResponse.body[0];
+
+        return createSuccessReturn({
+            from, to,
+            translations: translations.map(translation => translation.normalizedTarget)
+        });
 
 
 

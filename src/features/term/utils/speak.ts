@@ -1,5 +1,4 @@
 import * as SpeechSDK from "microsoft-cognitiveservices-speech-sdk";
-import { getSpeakIssueToken } from "../dal/queries";
 import { langToLocaleMap } from "../lib/constants";
 import { LanguageCode } from "../types";
 
@@ -13,21 +12,21 @@ let region: string | null = null
 
 const speak = async (text: string, lang?: LanguageCode) => {
 
-
     try {
-
         if (!region || !token || token.exp < new Date()) {
             console.log("Token expired or region not set, fetching new token...")
-            const res = await getSpeakIssueToken()
-            if (!res.success) throw new Error("Nem sikerült a token lekérése")
+            const res = await fetch(`/api/term/speak/issuetoken`)
+            if (!res.ok) {
+                throw new Error("Nem sikerült a token lekérése")
+            }
+            const data: { token: string, region: string } = await res.json()
             token = {
-                data: res.data.token,
+                data: data.token,
                 exp: new Date(Date.now() + 9 * 60 * 1000) // 9 min
 
             }
-            region = res.data.region
+            region = data.region
         }
-
 
         const speechConfig = SpeechSDK.SpeechConfig.fromAuthorizationToken(token.data, region);
 
@@ -42,7 +41,6 @@ const speak = async (text: string, lang?: LanguageCode) => {
             text,
             result => {
                 if (result.reason === SpeechSDK.ResultReason.SynthesizingAudioCompleted) {
-                    console.log({ result })
                 } else {
                     console.error("Hiba: ", result.errorDetails);
                 }

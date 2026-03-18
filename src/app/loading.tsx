@@ -4,7 +4,7 @@ import LoadingLogo from '@/components/ui/LoadingLogo'
 import { Stack } from '@mui/material'
 import { FC, useEffect, useState } from 'react'
 
-const loading: FC<{}> = () => {
+const Loading: FC<{}> = () => {
 
     const [show, setShow] = useState(false)
 
@@ -29,4 +29,4 @@ const loading: FC<{}> = () => {
     )
 }
 
-export default loading
+export default Loading

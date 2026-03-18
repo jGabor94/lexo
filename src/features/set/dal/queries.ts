@@ -1,4 +1,4 @@
-"use server"
+"server only"
 
 import { db } from "@/drizzle/db"
 import { Dal } from "@/lib/dal"
@@ -34,10 +34,18 @@ export const getSet = Dal.create()
         return createSuccessReturn(res)
     })
 
-
 export const getOwnSets = Dal.create()
+    .$Input<[query?: Parameters<typeof db.query.setsTable.findMany>[0]]>()
     .authenticate()
-    .operation(async ({ user }) => createSuccessReturn(await getSetsQuery(user.id)))
+    .operation(async ({ user, input }) => {
+        const [query] = input
+        return createSuccessReturn(await getSetsQuery({ ...query, where: { ...query?.where, userid: user.id } }))
+    })
+
+export const getSets = Dal.create()
+    .$Input<[query?: Parameters<typeof db.query.setsTable.findMany>[0]]>()
+    .authenticate()
+    .operation(async ({ input }) => createSuccessReturn(await getSetsQuery(input[0])))
 
 
 export const getLikers = Dal.create()
@@ -72,9 +80,11 @@ export const getLikers = Dal.create()
 
 
 export const getFavorites = Dal.create()
+    .$Input<[query?: Parameters<typeof db.query.setsTable.findMany>[0]]>()
     .authenticate()
-    .operation(async ({ user }) => {
-        const res = await getFavoritesQuery(user.id)
+    .operation(async ({ user, input }) => {
+        const [query] = input
+        const res = await getFavoritesQuery(user.id, { ...query, where: { ...query?.where, userid: user.id } })
         if (!res) return createErrorReturn({ type: "not-found" })
         return createSuccessReturn(res)
     })

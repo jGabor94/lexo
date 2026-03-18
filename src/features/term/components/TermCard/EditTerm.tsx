@@ -1,7 +1,7 @@
 'use client'
 
 import useSet from "@/features/set/hooks/useSet";
-import useAction from "@/lib/dal/useDal";
+import useDal from "@/lib/dal/useDal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Close } from "@mui/icons-material";
 import EditIcon from '@mui/icons-material/Edit';
@@ -17,30 +17,28 @@ import TermForm from "./TermForm";
 const EditTerm: FC<{
     term: Term,
     setMode: Dispatch<SetStateAction<"read" | "edit">>,
-    statusColor: string
+    statusColor: string,
 }
 > = ({ term: { id: termid, ...term }, setMode, statusColor }) => {
 
-    console.log({ term })
 
-    const { mutate } = useSet()
+    const { set, mutate } = useSet()
 
     const form = useForm<TermInput>({
         defaultValues: term,
         resolver: zodResolver(termFormSchema)
     });
 
-    const { action: updateTerm } = useAction(updateTermAction, {
-        success: { severity: "success", content: "Kifejezés sikeresen szerkesztve 🙂" }
+    const { action: updateTerm } = useDal(updateTermAction, {
+        alerts: {
+            success: { severity: "success", content: "Kifejezés sikeresen szerkesztve 🙂" }
+        }
     })
 
     const submit: SubmitHandler<TermInput> = async (data) => {
-
         const error = await updateTerm(termid, data)
-
-
         if (!error) {
-            mutate()
+            mutate({ ...set, terms: set.terms.map(term => term.id !== termid ? term : { ...term, ...data }) })
             setMode("read")
         }
 
@@ -92,7 +90,7 @@ const EditTerm: FC<{
                         size="small"
                         startIcon={<SaveIcon />}
                         type="submit"
-                        disabled={form.formState.isLoading || !form.formState.isValid}
+                        disabled={form.formState.isSubmitting || !form.formState.isValid}
                         sx={{
                             textTransform: "none",
                             borderRadius: 2,

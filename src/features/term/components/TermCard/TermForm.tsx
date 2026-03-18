@@ -4,9 +4,9 @@ import { Autocomplete, AutocompleteChangeReason, Box, FormControl, MenuItem, Sel
 import { ChevronDown, ChevronUp, CircleAlert } from 'lucide-react';
 import { ChangeEvent, FC, useCallback, useState } from "react";
 import { Controller, UseFieldArrayRemove, UseFormReturn } from "react-hook-form";
-import { langDetection, translate } from "../../dal/queries";
 import { languages } from '../../lib/constants';
 import { TermInput } from "../../types";
+import { translate, langDetection } from "../../dal/mutations";
 
 
 const TermForm: FC<{ form: UseFormReturn<any, any, any>, remove?: UseFieldArrayRemove, prefix: string }> = ({ form: { control, getValues, setValue, }, prefix }) => {

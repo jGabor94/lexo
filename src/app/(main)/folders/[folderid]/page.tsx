@@ -1,57 +1,20 @@
-import DeleteFolder from "@/features/folder/components/DeleteFolder";
-import EditFolder from "@/features/folder/components/EditFolder";
-import RemoveFromFolder from "@/features/folder/components/RemoveFromFolder";
+import FolderResult from "@/features/folder/components/FolderResult";
 import { getFolder } from "@/features/folder/dal/queries";
-import CreateSet from "@/features/set/components/CreateSet";
-import { RowSetCardLayout } from "@/features/set/components/ui/rowSetCard";
-import { Paper, Stack, Typography } from "@mui/material";
-import { Folder } from "lucide-react";
+import FolderProvider from "@/features/folder/providers";
 import { FC } from "react";
-
-export const revalidate = 0
 
 const Page: FC<{ params: Promise<{ folderid: string }> }> = async props => {
     const params = await props.params;
 
     const res = await getFolder(params.folderid)
-    //if (!res.success && res.error.type === "not-found") notFound()
     if (!res.success) return <>{res.error.type}</>
-    const folder = res.data
+    const { data: folder } = res
 
     return (
-        <Stack gap={1}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" gap={2} >
-                <Stack direction="row" gap={1} sx={{ alignItems: "center" }}>
-                    <Folder size={30} />
-                    <Typography sx={{ overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", maxWidth: "100%", fontWeight: 600, fontSize: 20 }}>/{folder.name}</Typography>
-                </Stack>
-                <Stack direction="row" gap={1}>
-                    <EditFolder folder={folder} />
-                    <DeleteFolder folder={folder} />
-
-                    <CreateSet variant="toolbar" />
-
-
-                </Stack>
-            </Stack>
-            <Stack mt={4} gap={3}>
-                {folder.sets.length > 0 ? folder.sets.map((set) => (
-                    <RowSetCardLayout key={set.id} {...{ set, href: `/sets/${set.id}` }} >
-                        <RemoveFromFolder setid={set.id} />
-                    </RowSetCardLayout>
-
-
-
-                )) : (
-                    <Paper component={Stack} sx={{ p: 3, width: "100%", alignItems: "center" }}>
-                        <Typography>Üres mappa</Typography>
-                    </Paper>
-                )}
-            </Stack>
-        </Stack >
-
+        <FolderProvider folder={folder}>
+            <FolderResult />
+        </FolderProvider>
     );
 }
-
 
 export default Page

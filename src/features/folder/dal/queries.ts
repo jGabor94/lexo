@@ -1,4 +1,4 @@
-"use server"
+"server only"
 
 import { db } from "@/drizzle/db"
 import { Dal } from "@/lib/dal"

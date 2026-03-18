@@ -37,7 +37,9 @@
     "src/app/not-foundstsx",
     "src/app/(main)/teach/index.tsxű",
     "src/middleware.tsfsdf",
-    "src/app/not-found.tsxsdfds"
+    "src/app/not-found.tsxsdfds",
+    "src/app/(main)/sets/[setid]/layout.tsxds",
+    "src/features/set/components/SetHeader.tsx"
   ],
   "exclude": [
     "node_modules"

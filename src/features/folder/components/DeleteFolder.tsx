@@ -2,7 +2,7 @@
 
 import LinearLoading from '@/components/LinearLoading'
 import useConfirmControll from '@/hooks/useConfirmControll'
-import useAction from '@/lib/dal/useDal'
+import useDal from '@/lib/dal/useDal'
 import { IconButtonGrey } from '@/lib/mui/styled'
 import { Button, Dialog, DialogActions, DialogTitle, Tooltip, Typography } from '@mui/material'
 import { TrashIcon } from 'lucide-react'
@@ -15,8 +15,10 @@ const DeleteFolder: FC<{ folder: Folder }> = ({ folder }) => {
 
     const router = useRouter()
 
-    const { action: deleteFolder } = useAction(deleteFolderAction, {
-        success: { severity: "success", content: "Mappa sikeresen törölve 🙂" },
+    const { action: deleteFolder } = useDal(deleteFolderAction, {
+        alerts: {
+            success: { severity: "success", content: "Mappa sikeresen törölve 🙂" },
+        }
     })
 
     const { controll: { open, promise, loading }, trigger: triggerDelete } = useConfirmControll(async () => {

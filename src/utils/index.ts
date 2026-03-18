@@ -28,37 +28,34 @@ export const getUnixTimestamp = (date: Date) => {
 
 }
 
-export const getDate = (ISO8601Time: number | string | Date, time: boolean = true) => {
-    const dateObj = new Date(ISO8601Time);
-    const currentDate = new Date()
-    if (dateObj.toISOString().slice(0, 10) === currentDate.toISOString().slice(0, 10)) {
-        return dateObj.toLocaleTimeString('hu-HU', {
-            hour: 'numeric',
-            minute: 'numeric'
-        })
+export const formatSmartDate = (date: Date) => {
+    const now = new Date();
+    // Segédváltozók az összehasonlításhoz
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const yesterday = today - 86400000; // 24 óra milliszekundumban
+    const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+
+    // Idő formázása (HH:mm)
+    const timeStr = date.toLocaleTimeString('hu-HU', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    if (checkDate === today) {
+        return `Ma, ${timeStr}`;
     }
-    else if (getUnixTimestamp(currentDate) - getUnixTimestamp(dateObj) < (60 * 60 * 24 * 6)) {
-        return dateObj.toLocaleDateString('hu-HU', {
-            weekday: 'short',
-            hour: 'numeric',
-            minute: 'numeric'
-        })
-    } else if (time) {
-        return dateObj.toLocaleDateString('hu-HU', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric'
-        })
-    } else {
-        return dateObj.toLocaleDateString('hu-HU', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        })
+
+    if (checkDate === yesterday) {
+        return `Tegnap, ${timeStr}`;
     }
+
+    // Ha régebbi, csak a dátum (pl. febr. 19.)
+    return date.toLocaleDateString('hu-HU', {
+        month: 'short',
+        day: 'numeric'
+    });
 }
+
 
 export const formatCount = (count: number): string => {
     if (count < 100) return count.toString();

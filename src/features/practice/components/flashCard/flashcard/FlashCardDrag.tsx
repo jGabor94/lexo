@@ -1,6 +1,6 @@
 "use client"
 
-import useFlashCard from '@/features/practice/hooks/useFlashCard';
+import useExerciseController from '@/features/practice/hooks/useExerciseController';
 import { Typography, useTheme } from '@mui/material';
 import { animate, motion, PanInfo, useAnimationControls, useMotionValue, useTransform } from 'framer-motion';
 import { FC, useState } from 'react';
@@ -16,7 +16,7 @@ const FlashCardDrag: FC<{}> = () => {
     const { wrongSlide: wrongKeyframes, successSlide: successKeyframes } = useKeyFrames()
 
     const { palette: { primary, warning, background } } = useTheme()
-    const { handleSuccess, handleWrong } = useFlashCard()
+    const { handleSuccess, handleWrong } = useExerciseController()
     const [label, setLabel] = useState("")
 
     const x = useMotionValue(0)

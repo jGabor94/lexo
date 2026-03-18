@@ -12,10 +12,11 @@ const protectedRoutes = [
 
 export const authConfig = {
     providers: [],
+    trustHost: true,
     callbacks: {
         authorized({ auth, request }) {
 
-            if (!auth && protectedRoutes.some(path => request.nextUrl.pathname === path)) {
+            if (!auth && protectedRoutes.some(path => request.nextUrl.pathname.startsWith(path))) {
                 return NextResponse.redirect(new URL('/login', request.url))
             }
 

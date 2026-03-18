@@ -1,10 +1,10 @@
 "use client"
 
 import useSet from '@/features/set/hooks/useSet'
-import useAction from '@/lib/dal/useDal'
+import useDal from '@/lib/dal/useDal'
 import { IconButtonGrey } from '@/lib/mui/styled'
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz'
 import { Tooltip } from '@mui/material'
-import { ArrowLeftRight } from 'lucide-react'
 import { FC } from 'react'
 import { swapTerms as swapTermsAction } from '../dal/mutations'
 
@@ -12,8 +12,10 @@ const SwapTerms: FC<{}> = () => {
 
     const { set, mutate } = useSet()
 
-    const { action: swapTerms } = useAction(swapTermsAction, {
-        success: { severity: "success", content: "Szópárok sikeresen felcserélve 🙂" }
+    const { action: swapTerms } = useDal(swapTermsAction, {
+        alerts: {
+            success: { severity: "success", content: "Szópárok sikeresen felcserélve 🙂" }
+        }
     })
 
     const handleClick = async () => {
@@ -24,7 +26,7 @@ const SwapTerms: FC<{}> = () => {
     return (
         <Tooltip title="Szópárok felcserélése">
             <IconButtonGrey onClick={handleClick}>
-                <ArrowLeftRight />
+                <SwapHorizIcon />
             </IconButtonGrey>
         </Tooltip>
     )

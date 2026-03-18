@@ -1,7 +1,7 @@
 "use client"
 
 import { SetListItem } from '@/features/set/types'
-import { getDate } from '@/utils'
+import { formatSmartDate } from '@/utils'
 import { Avatar, Chip, Divider, Paper, Stack, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { FC, ReactNode } from 'react'
@@ -72,7 +72,7 @@ const RowSetCardLayout: FC<{ href: string, set: SetListItem, children?: ReactNod
                         size="small"
                     />
                     <Divider flexItem orientation="vertical" />
-                    <Typography fontSize={12} sx={{ textWrap: "nowrap", fontWeight: 500 }}>Létrehozva: {getDate(set.createdAt, false)}</Typography>
+                    <Typography fontSize={12} sx={{ textWrap: "nowrap", fontWeight: 500 }}>Létrehozva: {formatSmartDate(set.createdAt)}</Typography>
                     {children}
                 </Stack>
             </Stack>
