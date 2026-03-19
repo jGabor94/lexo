@@ -77,13 +77,11 @@ export const getFavoritesQuery = async (userid: string, query: Parameters<typeof
         with: {
             favorites: {
                 with: {
-                    ...query?.with,
-                    user: query?.with?.user === true ? true : {
+                    user: {
                         columns: {
                             name: true,
                             image: true
                         },
-                        ...query?.with?.user,
                     },
                 },
                 orderBy: query?.orderBy || {
