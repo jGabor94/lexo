@@ -10,14 +10,14 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { FC, ReactNode } from 'react';
 
-const layout: FC<{ children: ReactNode, params: Promise<{ setid: string, exercise: Exercise }> }> = async ({ children, params }) => {
-    const { setid, exercise } = await params;
+const layout: FC<{ children: ReactNode, params: Promise<{ setid: string, exercise: string }> }> = async ({ children, params }) => {
+    const { setid, exercise: exerciseParam } = await params;
+    const exercise = exerciseParam as Exercise;
 
     const res = await getSet(setid)
     if (!res.success) return <>Hiba {res.error.type}</>
     const { data: set } = res
     const isOwner = await getIsOwner(set.user.id)
-
     if (!isOwner) redirect(`/sets/${set.id}/${exercise}/free`)
     if (!exerciseTheme[exercise]) return notFound()
 
