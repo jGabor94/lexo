@@ -56,7 +56,7 @@ const flashCardReducer = (state: ExerciseState, action: ExerciseAction): Exercis
 const ExerciseController: FC<{ children: ReactNode }> = ({ children }) => {
 
     const { mode } = useParams<{ mode: ExerciseMode }>()
-    const { set, mutate, isLoading } = useSet()
+    const { set, mutate, isValidating } = useSet()
     const [state, dispatch] = useReducer(flashCardReducer, { ...initialState, terms: prepareArray(set.terms, mode) })
     const { action: updateProgress, progress } = useDal(updateProgressAction)
 
@@ -77,7 +77,7 @@ const ExerciseController: FC<{ children: ReactNode }> = ({ children }) => {
     return (
         <ExerciseControllerContext.Provider value={{
             ...state,
-            loading: isLoading || progress,
+            loading: isValidating || progress,
             handleSuccess: () => {
                 dispatch({ type: "SUCCESS" })
             },
