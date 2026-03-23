@@ -84,7 +84,7 @@ export const getFavorites = Dal.create()
     .authenticate()
     .operation(async ({ user, input }) => {
         const [query] = input
-        const res = await getFavoritesQuery(user.id, { ...query, where: { ...query?.where, userid: user.id } })
+        const res = await getFavoritesQuery(user.id)
         if (!res) return createErrorReturn({ type: "not-found" })
         return createSuccessReturn(res)
     })

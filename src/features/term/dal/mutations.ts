@@ -133,8 +133,6 @@ export const updateProgress = Dal.create()
 
         })
 
-        revalidatePath(`/sets/${setid}`)
-
 
     })
 

@@ -25,7 +25,7 @@ const Page: FC<{}> = async () => {
                     Bejelentkezés
                 </Typography>
                 <Stack sx={{ width: 300, maxWidth: "100%", gap: 3 }}>
-                    {(env.VERCEL_ENV !== "preview" && env.NODE_ENV !== "development") && (
+                    {env.VERCEL_ENV !== "preview" && (
                         <Fragment>
                             <GoogleSignInButton />
                             <Divider flexItem>vagy</Divider>

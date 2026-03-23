@@ -1,34 +1,69 @@
-'use client'
+"use client"
 
-import useModalControl from '@/hooks/useModalControl'
-import { Button } from '@mui/material'
-import { FC, Fragment } from 'react'
-import { SubmitHandler } from 'react-hook-form'
+import LinearLoading from '@/components/LinearLoading';
+import ModalOverlay from '@/components/ui/ModalOverlay';
+import useModalControl from '@/hooks/useModalControl';
+import useDal from '@/lib/dal/useDal';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Modal, Stack } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { FC, Fragment } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { createClass as createClassAction } from '../dal/mutations';
+import { ClassInputs } from '../types';
+import { classFormSchema } from '../zod/schema';
+import ClassForm from './ClassForm';
 
-const CreateClass: FC<{}> = () => {
+const CreateClass: FC = () => {
 
+    const router = useRouter()
     const modalControl = useModalControl()
 
+    const form = useForm<ClassInputs>({
+        mode: "all",
+        resolver: zodResolver(classFormSchema)
+    });
 
-    const submit: SubmitHandler<any> = async (data) => {
+    const { action: createClass } = useDal(createClassAction, {
+        alerts: {
+            success: { severity: "success", content: "Osztály sikeresen létrehozva 🙂" },
+        },
+    })
 
-
-        return
-
+    const submit: SubmitHandler<ClassInputs> = async (data) => {
+        const res = await createClass(data)
+        if (res.success) router.push(`/teach/class/${res.data.id}`)
     }
 
+    const closeModal = () => {
+        modalControl.handleClose()
+        form.reset()
+    };
 
     return (
         <Fragment>
             <Button variant="contained" color="button" sx={{ width: "fit-content", fontSize: 20, fontWeight: 400 }} size="large" onClick={modalControl.handleOpen}>Osztály létrehozása</Button>
-
-            {/*<ClassForm modalControl={modalControl} onSubmit={submit} label="Osztály létrehozása" submitLabel='Létrehozás' /> */}
-
+            <Modal
+                open={modalControl.open}
+                onClose={closeModal}
+                keepMounted={true}
+            >
+                <form onSubmit={form.handleSubmit(submit)}>
+                    <ModalOverlay width={500} onClose={closeModal}>
+                        <LinearLoading {...{ loading: form.formState.isSubmitting }} />
+                        <Stack gap={2}>
+                            <ClassForm
+                                form={form}
+                                label="Osztály létrehozása" />
+                            <Button type="submit" variant="contained" disabled={!form.formState.isValid || form.formState.isSubmitting}>
+                                Létrehozás
+                            </Button>
+                        </Stack>
+                    </ModalOverlay>
+                </form >
+            </Modal >
         </Fragment>
-
     )
 }
 
 export default CreateClass
-
-

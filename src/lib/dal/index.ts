@@ -6,9 +6,9 @@ import { hasPermission } from "@/features/authorization/utils";
 import { AnyObject, DeepExpand } from "@/types";
 import { DrizzleQueryError } from "drizzle-orm";
 import { Session } from "next-auth";
-import { cache } from "react";
 import z from "zod";
 import { AuthenticationError, AuthorizationError, createErrorReturn, createSuccessReturn, DalErrorReturn, DalSuccessReturn, InitReturns, ZodInputError, ZodOutputError } from "./types";
+import { cache } from "react";
 
 
 /**
@@ -295,29 +295,30 @@ export class Dal<
                             return createErrorReturn({ type: "unauthorized" })
                         }
                     }
+                }
 
-                    const res = await fn({ user: session.user, input: args } as unknown as Ctx)
+                const res = await fn({
+                    ...(session ? { user: session.user } : {}),
+                    input: args
+                } as unknown as Ctx)
 
-                    if (res) {
-                        if (!res.success) return res
+                if (res) {
+                    if (!res.success) return res
 
-                        if (this.outputSchema) {
-                            try {
-                                this.outputSchema.parse(res.data)
-                            } catch (error) {
-                                if (error instanceof z.ZodError) {
-                                    return createErrorReturn({ type: "zod-output-error", error })
-                                }
+                    if (this.outputSchema) {
+                        try {
+                            this.outputSchema.parse(res.data)
+                        } catch (error) {
+                            if (error instanceof z.ZodError) {
+                                return createErrorReturn({ type: "zod-output-error", error })
                             }
                         }
-
-                        return createSuccessReturn(res.data)
                     }
 
-
-
-
+                    return createSuccessReturn(res.data)
                 }
+
+
 
             } catch (error) {
                 if ((error as any).message === "NEXT_REDIRECT") throw error;

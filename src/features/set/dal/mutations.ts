@@ -50,7 +50,7 @@ export const addToFolder = Dal.create()
 
 
 
-export const createCopy = Dal.create()
+export const createCopy = Dal.create({ cache: false })
     .$Input<[setid: string]>()
     .schema({
         input: z.tuple([z.string()]),
@@ -68,7 +68,6 @@ export const createCopy = Dal.create()
         const [setid] = input
 
         const set = await getSetQuery(setid)
-
         if (!set) return createErrorReturn({ type: "not-found" })
 
         return db.transaction(async (tx) => {
@@ -79,16 +78,20 @@ export const createCopy = Dal.create()
                 userid: user.id,
             }).returning({ id: setsTable.id })
 
-
-            await tx.insert(termsTable).values(set.terms.map((term) => ({
-                term: term.term,
-                definition: term.definition,
-                setid: insertedSetId,
-                status: 0,
-            })))
+            if (set.terms.length > 0) {
+                await tx.insert(termsTable).values(set.terms.map((term) => ({
+                    term: term.term,
+                    definition: term.definition,
+                    setid: insertedSetId,
+                    status: 0,
+                })))
+            }
 
             return createSuccessReturn({ newSetId: insertedSetId })
         })
+
+
+
     })
 
 export const createSet = Dal.create()

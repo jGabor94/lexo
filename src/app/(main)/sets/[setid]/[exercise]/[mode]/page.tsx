@@ -14,7 +14,9 @@ const Page: FC = () => {
     const { terms, completed, loading } = useExerciseController()
     const { setid, exercise } = useParams<{ setid: string, exercise: Exercise }>()
 
-    if (loading) return <CircularProgress sx={{ margin: "0 auto" }} />
+    if (loading) return <Stack sx={{ alignItems: "center", justifyContent: "center", height: 500 }}>
+        <CircularProgress />
+    </Stack>
     if (completed) return <Completed />
 
     if (terms?.length === 0) return (

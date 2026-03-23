@@ -68,7 +68,7 @@ export const getLikersQuery = async (setid: string) => {
     return res?.likers
 }
 
-export const getFavoritesQuery = async (userid: string, query: Parameters<typeof db.query.setsTable.findMany>[0]) => {
+export const getFavoritesQuery = async (userid: string, query?: Parameters<typeof db.query.setsTable.findMany>[0]) => {
     const res = await db.query.usersTable.findFirst({
         where: {
             id: userid
