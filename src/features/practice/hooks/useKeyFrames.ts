@@ -1,16 +1,19 @@
 "use client"
 
-import { useTheme } from "@mui/material"
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const useKeyFrames = () => {
 
-    const { palette: { primary, warning, background }, vars } = useTheme()
+    const { palette: { primary, warning }, vars } = useTheme()
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const scale = isMobile ? [1, 1, 1, 1] : [1, 1.1, 1.1, 1.1]
 
     return {
         successClick: {
             display: "flex",
             x: [0, 0, 0, "50%"],
-            scale: [1, 1.1, 1.1, 1.1],
+            scale,
             rotate: [0, 0, 0, "0.01turn"],
             opacity: [1, 1, 1, 0],
             backgroundColor: [primary.main, primary.main, primary.main, null],
@@ -19,7 +22,7 @@ const useKeyFrames = () => {
         undoClick: {
             display: "flex",
             x: [0, 0, 0, "-50%"],
-            scale: [1, 1.1, 1.1, 1.1],
+            scale,
             rotate: [0, 0, 0, "-0.01turn"],
             opacity: [1, 1, 1, 0],
             backgroundColor: [vars.palette.background.default, vars.palette.background.default, vars.palette.background.default, null],
@@ -28,7 +31,7 @@ const useKeyFrames = () => {
         wrongClick: {
             display: "flex",
             x: [0, 0, 0, "-50%"],
-            scale: [1, 1.1, 1.1, 1.1],
+            scale,
             rotate: [0, 0, 0, "-0.01turn"],
             opacity: [1, 1, 1, 0],
             backgroundColor: [warning.main, warning.main, warning.main, null],

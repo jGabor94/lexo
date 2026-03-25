@@ -59,10 +59,13 @@ const ReadTerm: FC<{
             <Box sx={{
                 flex: '1 1 0%',
             }}>
-                <Stack direction="row" gap={1} alignItems="center" mb={1}>
-                    <TermStatusLabel term={term} color={statusColor} />
-                    <ProgressStatus score={term.status} color={statusColor} />
-                </Stack>
+                {isOwner && (
+                    <Stack direction="row" gap={1} alignItems="center" mb={1}>
+                        <TermStatusLabel term={term} color={statusColor} />
+                        <ProgressStatus score={term.status} color={statusColor} />
+                    </Stack>
+                )}
+
 
                 <Stack direction="row" gap={1.5} alignItems="center">
                     <Typography sx={{

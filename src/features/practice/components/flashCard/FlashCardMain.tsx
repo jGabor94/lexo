@@ -1,6 +1,7 @@
 "use client"
 
-import { Chip, Stack, Typography, useTheme } from "@mui/material";
+import { Chip, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { SquareArrowDown, SquareArrowLeft, SquareArrowRight, SquareArrowUp } from "lucide-react";
 import { useParams } from "next/navigation";
 import { FC } from "react";
 import useExerciseController from "../../hooks/useExerciseController";
@@ -15,8 +16,10 @@ const FlashCardMain: FC<{}> = () => {
 
     const { terms, index, successItems, wrongItems } = useExerciseController()
     const { mode } = useParams<{ mode: ExerciseMode }>()
-
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+
 
     return (
         <Stack gap={2} sx={{ width: 700, maxWidth: "100%" }} alignItems="center" >
@@ -44,6 +47,35 @@ const FlashCardMain: FC<{}> = () => {
                 <UndoButton />
                 <SuccessButton style={{ color: theme.vars.palette.primary.main }} />
             </Stack>
+            {!isMobile && (
+                <Stack alignItems="center">
+                    <Stack direction="row" alignItems="center" gap={1}>
+
+                        {/* Bal oldal: szöveg + nyíl */}
+                        <Stack direction="row" alignItems="center" gap={0.5}>
+                            <Typography fontSize={13}>Nem tudom</Typography>
+                            <SquareArrowLeft />
+                        </Stack>
+
+                        {/* Közép: Mutat (fent), nyilak, Visszavonás (lent) */}
+                        <Stack alignItems="center">
+                            <Typography fontSize={13}>Mutat</Typography>
+                            <SquareArrowUp />
+                            <SquareArrowDown />
+                            <Typography fontSize={13}>Visszavonás</Typography>
+                        </Stack>
+
+                        {/* Jobb oldal: nyíl + szöveg */}
+                        <Stack direction="row" alignItems="center" gap={0.5}>
+                            <SquareArrowRight />
+                            <Typography fontSize={13}>Tudom</Typography>
+                        </Stack>
+
+                    </Stack>
+                </Stack>
+            )}
+
+
         </Stack >
     );
 };

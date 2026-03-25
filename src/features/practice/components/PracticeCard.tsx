@@ -1,6 +1,7 @@
 "use client"
 
 import ModalOverlay from '@/components/ui/ModalOverlay';
+import useSet from '@/features/set/hooks/useSet';
 import useModalControl from '@/hooks/useModalControl';
 import { SvgIconComponent } from '@mui/icons-material';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
@@ -13,19 +14,28 @@ const PracticeCard: FC<{
     Icon: SvgIconComponent,
     name: string,
     color: string,
-    link: string
-}> = ({ Icon, name, color, link }) => {
-
+    link: string,
+    overallProgress: number
+}> = ({ Icon, name, color, link, overallProgress }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const { open, handleOpen, handleClose } = useModalControl()
     const router = useRouter()
+    const { isOwner } = useSet()
+
+    const onOpen = () => {
+        if (overallProgress === 100 || !isOwner) {
+            router.push(`${link}/free`)
+        } else {
+            handleOpen()
+        }
+    }
 
     return (
         <Fragment>
             <Card
                 elevation={0}
-                onClick={handleOpen}
+                onClick={onOpen}
                 sx={{
                     background: `linear-gradient(135deg, ${alpha(color, 0.5)} 0%, ${color} 100%)`,
                     cursor: 'pointer',
@@ -131,38 +141,41 @@ const PracticeCard: FC<{
                                 </CardContent>
 
                             </Card>
-                            <Card
-                                elevation={0}
-                                onClick={() => router.push(`${link}/progress`)}
-                                sx={{
-                                    background: `linear-gradient(135deg, ${color} 0%, ${alpha(color, 0.5)} 100%)`,
-                                    cursor: 'pointer',
-                                    transition: 'all 0.3s ease',
-                                    overflow: 'hidden',
-                                    border: "none",
-                                    position: 'relative',
-                                    width: "100%",
-                                    '&:hover': {
-                                        boxShadow: "0 12px 28px rgba(0,0,0,0.12)",
-                                    },
-                                }}
-                            >
-                                <CardContent sx={{ p: 3, justifyContent: "center" }}>
-                                    <Stack direction="row" gap={3} alignItems="center">
-                                        <SchoolIcon sx={{ color: "white", fontSize: 44 }} />
-                                        <Stack gap={1}>
-                                            <Typography variant='h6' fontWeight={600} sx={{ color: "white" }}>
-                                                Vizsga
-                                            </Typography>
-                                            <Divider flexItem sx={{ color: "white" }} />
-                                            <Typography sx={{ color: "white", fontSize: 13 }}>
-                                                Csak a gyakorlásra váró kifejezések elérhetők és az eredmény beleszámít a haladásba.
-                                            </Typography>
+                            {overallProgress !== 100 && (
+                                <Card
+                                    elevation={0}
+                                    onClick={() => router.push(`${link}/progress`)}
+                                    sx={{
+                                        background: `linear-gradient(135deg, ${color} 0%, ${alpha(color, 0.5)} 100%)`,
+                                        cursor: 'pointer',
+                                        transition: 'all 0.3s ease',
+                                        overflow: 'hidden',
+                                        border: "none",
+                                        position: 'relative',
+                                        width: "100%",
+                                        '&:hover': {
+                                            boxShadow: "0 12px 28px rgba(0,0,0,0.12)",
+                                        },
+                                    }}
+                                >
+                                    <CardContent sx={{ p: 3, justifyContent: "center" }}>
+                                        <Stack direction="row" gap={3} alignItems="center">
+                                            <SchoolIcon sx={{ color: "white", fontSize: 44 }} />
+                                            <Stack gap={1}>
+                                                <Typography variant='h6' fontWeight={600} sx={{ color: "white" }}>
+                                                    Vizsga
+                                                </Typography>
+                                                <Divider flexItem sx={{ color: "white" }} />
+                                                <Typography sx={{ color: "white", fontSize: 13 }}>
+                                                    Csak a gyakorlásra váró kifejezések elérhetők és az eredmény beleszámít a haladásba.
+                                                </Typography>
+                                            </Stack>
                                         </Stack>
-                                    </Stack>
-                                </CardContent>
+                                    </CardContent>
 
-                            </Card>
+                                </Card>
+                            )}
+
                         </Stack>
 
                     </Stack>

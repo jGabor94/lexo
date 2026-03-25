@@ -2,7 +2,7 @@ import useExerciseController from '@/features/practice/hooks/useExerciseControll
 import { IconButton, Tooltip } from '@mui/material';
 import { animate } from 'framer-motion';
 import { CircleX, LucideProps } from 'lucide-react';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import useKeyFrames from '../../../hooks/useKeyFrames';
 
 const WrongButton: FC<LucideProps> = (props) => {
@@ -10,7 +10,7 @@ const WrongButton: FC<LucideProps> = (props) => {
     const { handleWrong } = useExerciseController()
     const { wrongClick: keyFrames } = useKeyFrames()
 
-    const handleWrongClick = () => {
+    const onWrong = () => {
         handleWrong()
         animate("#wrongCard", keyFrames, {
             duration: 1,
@@ -19,9 +19,20 @@ const WrongButton: FC<LucideProps> = (props) => {
         })
     };
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "ArrowLeft") {
+                onWrong();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, []);
+
     return (
         <Tooltip title="Nem tudom">
-            <IconButton onClick={handleWrongClick}>
+            <IconButton onClick={onWrong}>
                 <CircleX {...props} size={40} style={{ zIndex: -10000, ...props.style }} />
             </IconButton>
         </Tooltip>

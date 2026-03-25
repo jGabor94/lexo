@@ -22,7 +22,7 @@ const Completed: FC = () => {
     }, 0)
 
     const percentage = Math.round(sum / (set.terms.length * 5 * 0.01))
-
+    console.log({ percentage })
     return (
         <Stack gap={2} sx={{ width: 600, maxWidth: "100%", margin: "0 auto" }} >
             <Stack direction="row" gap={3} alignItems="center" >
@@ -73,10 +73,12 @@ const Completed: FC = () => {
                     <ChevronLeft />
                     <Typography>Vissza a szógyűjteményhez</Typography>
                 </Stack>
-                <Stack direction="row" alignItems="center" gap={0.5} onClick={() => reset(set.terms)} sx={{ cursor: "pointer" }}>
-                    <RotateCcw />
-                    <Typography>Újra próbálom</Typography>
-                </Stack>
+                {percentage !== 100 && (
+                    <Stack direction="row" alignItems="center" gap={0.5} onClick={() => reset(set.terms)} sx={{ cursor: "pointer" }}>
+                        <RotateCcw />
+                        <Typography>Újra próbálom</Typography>
+                    </Stack>
+                )}
 
 
             </Stack>

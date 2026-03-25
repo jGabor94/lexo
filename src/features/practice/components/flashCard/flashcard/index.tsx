@@ -14,6 +14,19 @@ const FlashCard: FC<{}> = () => {
         setIsFlipped(false)
     }, [index])
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setIsFlipped((state) => !state);
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, []);
+
+
     return (
         <Box sx={{
             width: 700,

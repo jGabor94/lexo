@@ -12,7 +12,7 @@ import TermCard from "./TermCard";
 
 const TermList: FC<{}> = () => {
 
-    const { set } = useSet()
+    const { set, isOwner } = useSet()
     const [showFab, setShowFab] = useState(false);
     const [selectedTerms, setSelectedTerms] = useState<"all" | "learning" | "learned" | "review">("all");
     const firstItemRef = useRef<HTMLDivElement | null>(null);
@@ -43,55 +43,58 @@ const TermList: FC<{}> = () => {
 
     return (
         <>
-            <Stack direction="row" gap={2} sx={{
-                maxWidth: "100%",
-                overflowX: "scroll",
-                "::-webkit-scrollbar": {
-                    display: "none"
-                },
-            }}>
-                <Chip
-                    label={`Összes (${getTermStats(set.terms).all})`}
-                    variant={selectedTerms === "all" ? "filled" : "outlined"}
-                    clickable
-                    onClick={() => setSelectedTerms("all")} />
-                <Chip
-                    label={`Tanulás alatt (${getTermStats(set.terms).learning})`}
-                    variant={selectedTerms === "learning" ? "filled" : "outlined"}
-                    clickable
-                    onClick={() => setSelectedTerms("learning")}
-                    sx={{
-                        ...selectedTerms === "learning" && {
-                            backgroundColor: termColor["learning"],
-                            color: "#fff",
-                        }
-                    }}
-                />
-                <Chip
-                    label={`Megtanulva (${getTermStats(set.terms).learned})`}
-                    variant={selectedTerms === "learned" ? "filled" : "outlined"}
-                    clickable
-                    onClick={() => setSelectedTerms("learned")}
-                    sx={{
-                        ...selectedTerms === "learned" && {
-                            backgroundColor: termColor["learned"],
-                            color: "#fff",
-                        }
-                    }}
-                />
-                <Chip
-                    label={`Ismétlés (${getTermStats(set.terms).review})`}
-                    variant={selectedTerms === "review" ? "filled" : "outlined"}
-                    clickable
-                    onClick={() => setSelectedTerms("review")}
-                    sx={{
-                        ...selectedTerms === "review" && {
-                            backgroundColor: termColor["review"],
-                            color: "#fff",
-                        }
-                    }}
-                />
-            </Stack>
+            {isOwner && (
+                <Stack direction="row" gap={2} sx={{
+                    maxWidth: "100%",
+                    overflowX: "scroll",
+                    "::-webkit-scrollbar": {
+                        display: "none"
+                    },
+                }}>
+                    <Chip
+                        label={`Összes (${getTermStats(set.terms).all})`}
+                        variant={selectedTerms === "all" ? "filled" : "outlined"}
+                        clickable
+                        onClick={() => setSelectedTerms("all")} />
+                    <Chip
+                        label={`Tanulás alatt (${getTermStats(set.terms).learning})`}
+                        variant={selectedTerms === "learning" ? "filled" : "outlined"}
+                        clickable
+                        onClick={() => setSelectedTerms("learning")}
+                        sx={{
+                            ...selectedTerms === "learning" && {
+                                backgroundColor: termColor["learning"],
+                                color: "#fff",
+                            }
+                        }}
+                    />
+                    <Chip
+                        label={`Megtanulva (${getTermStats(set.terms).learned})`}
+                        variant={selectedTerms === "learned" ? "filled" : "outlined"}
+                        clickable
+                        onClick={() => setSelectedTerms("learned")}
+                        sx={{
+                            ...selectedTerms === "learned" && {
+                                backgroundColor: termColor["learned"],
+                                color: "#fff",
+                            }
+                        }}
+                    />
+                    <Chip
+                        label={`Ismétlés (${getTermStats(set.terms).review})`}
+                        variant={selectedTerms === "review" ? "filled" : "outlined"}
+                        clickable
+                        onClick={() => setSelectedTerms("review")}
+                        sx={{
+                            ...selectedTerms === "review" && {
+                                backgroundColor: termColor["review"],
+                                color: "#fff",
+                            }
+                        }}
+                    />
+                </Stack>
+            )}
+
 
             <LayoutGroup>
                 <Box component={motion.div} sx={{

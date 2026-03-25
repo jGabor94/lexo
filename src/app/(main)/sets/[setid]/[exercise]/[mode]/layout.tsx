@@ -1,6 +1,6 @@
 import { exerciseTheme } from '@/features/practice/lib/contants';
 import ExerciseController from '@/features/practice/providers/ExerciseController';
-import { Exercise } from '@/features/practice/types';
+import { Exercise, ExerciseMode } from '@/features/practice/types';
 import { getSet } from '@/features/set/dal/queries';
 import SetProvider from '@/features/set/providers';
 import { getIsOwner } from '@/features/set/utils';
@@ -10,15 +10,16 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { FC, ReactNode } from 'react';
 
-const layout: FC<{ children: ReactNode, params: Promise<{ setid: string, exercise: string }> }> = async ({ children, params }) => {
-    const { setid, exercise: exerciseParam } = await params;
+const layout: FC<{ children: ReactNode, params: Promise<{ setid: string, exercise: string, mode: string }> }> = async ({ children, params }) => {
+    const { setid, exercise: exerciseParam, mode: modeParam } = await params;
     const exercise = exerciseParam as Exercise;
+    const mode = modeParam as ExerciseMode;
 
     const res = await getSet(setid)
     if (!res.success) return <>Hiba {res.error.type}</>
     const { data: set } = res
     const isOwner = await getIsOwner(set.user.id)
-    if (!isOwner) redirect(`/sets/${set.id}/${exercise}/free`)
+    if (!isOwner && mode !== "free") redirect(`/sets/${set.id}/${exercise}/free`)
     if (!exerciseTheme[exercise]) return notFound()
 
     const Icon = exerciseTheme[exercise].icon

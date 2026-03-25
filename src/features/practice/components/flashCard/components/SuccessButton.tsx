@@ -2,7 +2,7 @@ import useExerciseController from "@/features/practice/hooks/useExerciseControll
 import { IconButton, Tooltip } from "@mui/material";
 import { animate } from "framer-motion";
 import { CircleCheckBig, LucideProps } from "lucide-react";
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import useKeyFrames from "../../../hooks/useKeyFrames";
 
 
@@ -11,7 +11,7 @@ const SuccessButton: FC<LucideProps> = (props) => {
     const { handleSuccess } = useExerciseController()
     const { successClick: keyFrames } = useKeyFrames()
 
-    const handleSuccessClick = () => {
+    const onSuccess = () => {
         handleSuccess()
         animate("#successCard", keyFrames, {
             duration: 1,
@@ -19,9 +19,20 @@ const SuccessButton: FC<LucideProps> = (props) => {
         })
     };
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "ArrowRight") {
+                onSuccess();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, []);
+
     return (
         <Tooltip title="Tudom">
-            <IconButton onClick={handleSuccessClick} >
+            <IconButton onClick={onSuccess} >
                 <CircleCheckBig {...props} size={40} style={{ zIndex: -10000, ...props.style }} />
             </IconButton>
         </Tooltip>

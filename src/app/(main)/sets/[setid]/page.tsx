@@ -3,14 +3,13 @@ import { exerciseTheme } from '@/features/practice/lib/contants'
 import LikeButton from '@/features/set/components/LikeButton'
 import SaveButton from '@/features/set/components/SaveButton'
 import SetHeader from '@/features/set/components/SetHeader'
+import SetProgress from '@/features/set/components/SetProgress'
 import { getLikers, getSet } from '@/features/set/dal/queries'
 import SetProvider from '@/features/set/providers'
 import TermList from '@/features/term/components/TermList'
-import { termColor } from '@/features/term/lib/constants'
-import { getTermStats } from '@/features/term/utils'
 import { formatSmartDate } from '@/utils'
 import { Edit as EditIcon, FlashOn, Headphones, SmartToy } from '@mui/icons-material'
-import { Avatar, Box, Paper, Skeleton, Stack, Typography } from '@mui/material'
+import { Avatar, Box, Skeleton, Stack, Typography } from '@mui/material'
 import { FC, Suspense } from 'react'
 
 const Page: FC<{ params: Promise<{ setid: string }> }> = async ({ params }) => {
@@ -58,62 +57,7 @@ const Page: FC<{ params: Promise<{ setid: string }> }> = async ({ params }) => {
                     </Stack>
                 </Stack>
 
-                <Paper
-                    sx={{
-                        p: 2,
-                        bgcolor: 'card.main',
-                        border: "1px solid transparent",
-                        "&:hover": {
-                            boxShadow: "0 12px 28px rgba(0,0,0,0.12)",
-                        },
-                    }}>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1" fontWeight={700}>
-                            Haladás
-                        </Typography>
-                        <Typography variant="h5" fontWeight={700} sx={{ color: "primary.main" }}>
-                            {Math.round(overallProgress)}%
-                        </Typography>
-                    </Stack>
-                    <Box
-                        sx={{
-                            height: 12,
-                            borderRadius: 10,
-                            background: '#f3f4f6',
-                            overflow: 'hidden',
-                            width: '100%',
-                            mb: 2.5,
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                height: '100%',
-                                width: `${overallProgress}%`,
-                                bgcolor: "primary.main",
-                                borderRadius: 10,
-                                transition: 'width 0.3s ease',
-                            }}
-                        />
-                    </Box>
-                    <Stack direction="row" justifyContent="space-between">
-                        <Stack alignItems="center" >
-                            <Typography > {getTermStats(set.terms).all}</Typography>
-                            <Typography fontSize="0.8rem" >Összes</Typography>
-                        </Stack>
-                        <Stack alignItems="center" color={termColor["learning"]}>
-                            <Typography > {getTermStats(set.terms).learning}</Typography>
-                            <Typography fontSize="0.8rem" >Tanulás alatt</Typography>
-                        </Stack>
-                        <Stack alignItems="center" color={termColor["review"]}>
-                            <Typography >{getTermStats(set.terms).review}</Typography>
-                            <Typography fontSize="0.8rem" >Ismétlés</Typography>
-                        </Stack>
-                        <Stack alignItems="center" color={termColor["learned"]}>
-                            <Typography >{getTermStats(set.terms).learned}</Typography>
-                            <Typography fontSize="0.8rem" >Megtanulva</Typography>
-                        </Stack>
-                    </Stack>
-                </Paper >
+                <SetProgress overallProgress={overallProgress} />
 
                 <Typography variant='h5' mt={5}>Gyakorlás</Typography>
                 <Box sx={{
@@ -125,12 +69,12 @@ const Page: FC<{ params: Promise<{ setid: string }> }> = async ({ params }) => {
                         xl: 'repeat(6, 1fr)'
                     },
                 }}>
-                    <PracticeCard link={`/sets/${set.id}/flashcard`} Icon={exerciseTheme.flashcard.icon} name="Flashcard" color={exerciseTheme.flashcard.color} />
-                    <PracticeCard link={`/sets/${set.id}/quiz`} Icon={exerciseTheme.quiz.icon} name="Kvíz" color={exerciseTheme.quiz.color} />
-                    <PracticeCard link={""} Icon={EditIcon} name="Gépelés" color="#ec4899" />
-                    <PracticeCard link={""} Icon={Headphones} name="Hallgatás" color="#eab308" />
-                    <PracticeCard link={""} Icon={FlashOn} name="Sprint" color="#84cc16" />
-                    <PracticeCard link={""} Icon={SmartToy} name="AI" color="#64748b" />
+                    <PracticeCard link={`/sets/${set.id}/flashcard`} overallProgress={overallProgress} Icon={exerciseTheme.flashcard.icon} name="Flashcard" color={exerciseTheme.flashcard.color} />
+                    <PracticeCard link={`/sets/${set.id}/quiz`} overallProgress={overallProgress} Icon={exerciseTheme.quiz.icon} name="Kvíz" color={exerciseTheme.quiz.color} />
+                    <PracticeCard link={""} Icon={EditIcon} overallProgress={overallProgress} name="Gépelés" color="#ec4899" />
+                    <PracticeCard link={""} Icon={Headphones} overallProgress={overallProgress} name="Hallgatás" color="#eab308" />
+                    <PracticeCard link={""} Icon={FlashOn} overallProgress={overallProgress} name="Sprint" color="#84cc16" />
+                    <PracticeCard link={""} Icon={SmartToy} overallProgress={overallProgress} name="AI" color="#64748b" />
 
 
                 </Box>
