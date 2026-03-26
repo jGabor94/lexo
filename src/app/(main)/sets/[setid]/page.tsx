@@ -45,7 +45,7 @@ const Page: FC<{ params: Promise<{ setid: string }> }> = async ({ params }) => {
 
                             <Typography variant="h6" color="text.secondary" >•</Typography>
                             <Typography variant="body2" color="text.secondary" sx={{ textWrap: "nowrap" }}>{formatSmartDate(set.createdAt)}</Typography>
-                            <Typography variant="body2" color="text.secondary" display={{ xs: "none", sm: "block" }}>•</Typography>
+                            <Typography variant="h6" color="text.secondary" display={{ xs: "none", sm: "block" }}>•</Typography>
                         </Stack>
 
                         <Stack direction="row" gap={1} alignItems="center">
