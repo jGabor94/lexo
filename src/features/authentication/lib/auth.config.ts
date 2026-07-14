@@ -7,7 +7,8 @@ const protectedRoutes = [
     "/folders",
     "/sets",
     "/profile",
-    "/teach"
+    "/teach",
+    "/class"
 ]
 
 export const authConfig = {

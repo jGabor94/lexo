@@ -37,9 +37,7 @@ const CreateSet: FC<{ variant?: "CTA" | "toolbar" }> = ({ variant = "CTA" }) => 
     })
 
     const submit: SubmitHandler<SetInput> = async (data) => {
-        console.log({ data })
         const res = await createSet(data, folderid)
-        console.log(res)
 
         if (res.success) router.push(`/sets/${res.data.id}`)
     }

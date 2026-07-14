@@ -5,7 +5,6 @@ import { Delete, Edit, MoreVert } from '@mui/icons-material';
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { Dispatch, FC, Fragment, SetStateAction, useState } from 'react';
 import { deleteTerm as deleteTermAction } from '../../dal/mutations';
-import { useTerms } from '../../providers';
 import { Term } from '../../types';
 
 const TermCardMenu: FC<{
@@ -13,7 +12,6 @@ const TermCardMenu: FC<{
     setMode: Dispatch<SetStateAction<"read" | "edit">>,
 }> = ({ term: { id: termid }, setMode }) => {
 
-    const { dispatchOptimisticTerms } = useTerms()
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(
         null,
@@ -41,12 +39,11 @@ const TermCardMenu: FC<{
     })
 
     const { controll, trigger: triggerDelete } = useConfirmControll(async () => {
-        dispatchOptimisticTerms({
-            type: "delete",
-            termid
-        })
+
         const error = await deleteTerm(termid)
         if (!error) setMode("read")
+
+
 
     })
 

@@ -8,6 +8,8 @@ import { FC, Suspense } from "react";
 
 const Page: FC<{}> = async () => {
 
+
+
     const session = await auth()
 
     const promises = {

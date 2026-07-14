@@ -1,0 +1,1 @@
+minden UI react komponens külön fájlban legyen

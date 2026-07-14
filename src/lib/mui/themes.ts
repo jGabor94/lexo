@@ -29,6 +29,7 @@ export const RootTheme = responsiveFontSizes(createTheme({
                 },
                 secondary: {
                     main: "#3CC8F4",
+                    dark: "#22aad3",
                     contrastText: "#fff",
                 },
                 button: {
@@ -64,6 +65,7 @@ export const RootTheme = responsiveFontSizes(createTheme({
                 },
                 secondary: {
                     main: "#3CC8F4",
+                    dark: "#22aad3",
                 },
                 button: {
                     main: "#fff",

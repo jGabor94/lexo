@@ -10,7 +10,7 @@ const SetProgress: FC<{ overallProgress: number }> = ({ overallProgress }) => {
 
     const { set, isOwner } = useSet()
 
-    return isOwner && (
+    return (isOwner || set.task) && (
         <Paper
             sx={{
                 p: 2,

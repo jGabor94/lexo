@@ -31,7 +31,10 @@ const TermCard: FC<{ term: TermType, hiddenMode: HiddenMode, ref?: RefObject<HTM
                 overflow: "hidden",
                 p: 2,
                 bgcolor: 'card.main',
-
+                height: "100%",
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
                 border: mode === "edit"
                     ? `1px solid ${getTermUiData(term).color}`
                     : "1px solid transparent",

@@ -15,3 +15,9 @@ export const termFormSchema = z.object({
     exampleSentence: z.string().nullable()
 
 })
+
+export const generateTermsSchema = z.object({
+    prompt: z.string().min(1, { message: "AI prompt megadása kötelező!" }),
+    termNumber: z.number().min(1, { message: "Legalább 1 kifejezést kell generálni!" }).max(100, { message: "Maximum 100 kifejezést lehet generálni!" }),
+    isExampleSentenceIncluded: z.boolean(),
+})

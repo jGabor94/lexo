@@ -10,6 +10,8 @@ import { Term } from '../../types';
 
 const TermStatusLabel: FC<{ term: Term, color: string }> = ({ term, color }) => {
 
+    const progressStatus = term.progress?.status || 0;
+
     return (
         <Stack
             alignItems="center"
@@ -23,7 +25,7 @@ const TermStatusLabel: FC<{ term: Term, color: string }> = ({ term, color }) => 
                 height: 20,
             }}
         >
-            {term.status === 0 && (
+            {progressStatus === 0 && (
                 <AutoAwesome
                     sx={{
                         fontSize: 16,
@@ -33,7 +35,7 @@ const TermStatusLabel: FC<{ term: Term, color: string }> = ({ term, color }) => 
                 />
             )}
 
-            {(term.status > 0 && term.status < 5) && (
+            {(progressStatus > 0 && progressStatus < 5) && (
                 <SchoolIcon
                     sx={{
                         fontSize: 16,
@@ -43,7 +45,7 @@ const TermStatusLabel: FC<{ term: Term, color: string }> = ({ term, color }) => 
                 />
             )}
 
-            {((term.status === 5) && term.lastReviewedAt && ((new Date(term.lastReviewedAt).getTime() - Date.now()) > 1209600000)) && (
+            {(term.progress && (term.progress.status === 5) && term.progress.updatedAt && ((new Date(term.progress.updatedAt).getTime() - Date.now()) > 1209600000)) && (
                 <AccessTimeFilledIcon
                     sx={{
                         fontSize: 16,
@@ -53,7 +55,7 @@ const TermStatusLabel: FC<{ term: Term, color: string }> = ({ term, color }) => 
                 />
             )}
 
-            {((term.status === 5) && (
+            {((progressStatus === 5) && (
                 <CheckCircleIcon
                     sx={{
                         fontSize: 16,

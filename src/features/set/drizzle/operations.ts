@@ -4,29 +4,61 @@ import { db } from "@/drizzle/db"
 import { termsTable } from "@/drizzle/schema"
 import { eq } from "drizzle-orm"
 
-export const getSetQuery = async (setid: string) => db.query.setsTable.findFirst({
-    where: {
-        id: setid
-    },
-    columns: {
-        userid: false,
-    },
-    with: {
-        terms: {
-            orderBy: {
-                createdAt: "asc",
-                id: "asc"
-            }
+export const getSetQuery = async (setid: string, userId: string, taskid?: string) => {
+    const res = await db.query.setsTable.findFirst({
+        where: {
+            id: setid
         },
-        user: {
-            columns: {
-                id: true,
-                image: true,
-                name: true
+        columns: {
+            userid: false,
+        },
+        with: {
+            ...taskid && {
+                tasks: {
+                    where: {
+                        id: taskid
+                    }
+                }
             },
-        },
+            terms: {
+                orderBy: {
+                    createdAt: "asc",
+                    id: "asc"
+                },
+                with: {
+                    progresses: {
+                        where: {
+                            userId,
+                            taskId: taskid
+                        },
+                    }
+                }
+            },
+            user: {
+                columns: {
+                    id: true,
+                    image: true,
+                    name: true
+                },
+            },
+        }
+    })
+
+
+    if (res) {
+        const { tasks, ...set } = res
+        return {
+            ...set,
+            task: tasks?.length > 0 ? tasks[0] : null,
+            terms: set?.terms.map(({ progresses, ...term }) => ({
+                ...term,
+                progress: progresses[0] ? progresses[0] : null
+            }))
+        }
     }
-})
+    return res
+
+}
 
 
 

@@ -37,7 +37,6 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
                     }
                 },
                 "& .MuiDrawer-root": {
-
                     "& .MuiPaper-root": {
                         elevation: 0,
                         border: "none",

@@ -11,15 +11,17 @@ import useAlert from '@/hooks/useAlert'
 import useDal from '@/lib/dal/useDal'
 import { IconButtonGrey } from '@/lib/mui/styled'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Box, Divider, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material'
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
+import { Box, Chip, Divider, IconButton, Paper, Stack, Tooltip, Typography } from '@mui/material'
 import { ArrowLeft, CircleMinus, Plus, PlusIcon, Save } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { FC, Fragment, useEffect, useRef } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import z from 'zod'
+import GenerateTerms from './GenerateTerms'
 
 export type Inputs = {
-    terms: Array<TermInput>
+    terms: Array<TermInput & { generatedByAi?: boolean }>
 }
 
 const CreateTerms: FC<{ set: Set }> = ({ set }) => {
@@ -43,7 +45,7 @@ const CreateTerms: FC<{ set: Set }> = ({ set }) => {
     }
 
     const form = useForm<Inputs>({
-        defaultValues: { terms: [initRow] },
+        defaultValues: { terms: [] },
         resolver: zodResolver(z.object({ terms: z.array(termFormSchema).min(1) })),
         mode: "all"
     });
@@ -62,7 +64,8 @@ const CreateTerms: FC<{ set: Set }> = ({ set }) => {
 
     const submit: SubmitHandler<Inputs> = async ({ terms }) => {
 
-        const error = await createTerms(terms, set?.id)
+        const cleanTerms = terms.map(({ generatedByAi, ...term }) => term)
+        const error = await createTerms(cleanTerms, set?.id)
         if (!error) router.push(`/sets/${set.id}`)
 
     }
@@ -89,9 +92,7 @@ const CreateTerms: FC<{ set: Set }> = ({ set }) => {
         }
     }, [form.formState.submitCount])
 
-    useEffect(() => {
-        console.log(form.formState.errors)
-    }, [form.formState.errors])
+
     return (
         <Fragment>
             <LinearLoading loading={form.formState.isSubmitting} />
@@ -113,11 +114,13 @@ const CreateTerms: FC<{ set: Set }> = ({ set }) => {
 
 
                             <Stack direction="row" gap={1} >
+                                <GenerateTerms set={set} append={append} />
                                 <Tooltip title="Hozzáadás">
                                     <IconButtonGrey onClick={() => append(initRow)}>
                                         <PlusIcon />
                                     </IconButtonGrey>
                                 </Tooltip>
+
                                 <ImportForm {...{ append, set }} />
 
                                 <Tooltip title="Mentés">
@@ -137,10 +140,46 @@ const CreateTerms: FC<{ set: Set }> = ({ set }) => {
                     <Stack p={1}>
                         <Stack gap={2} alignItems="center" mt={1} >
                             {fields.map((field, index) => (
-                                <Box key={field.id} sx={{ p: 2, pt: 4, position: "relative", width: "100%", border: "none" }}>
-                                    <Stack direction="row" gap={2} alignItems="center" >
+                                <Box
+                                    key={field.id}
+                                    sx={{
+                                        p: 2,
+                                        pt: 4,
+                                        position: "relative",
+                                        width: "100%",
+                                        border: "1px solid transparent",
+                                        borderRadius: 4,
+                                        ...(field.generatedByAi && {
+                                            borderColor: "rgba(60, 200, 244, 0.38)",
+                                            background: "linear-gradient(135deg, rgba(60,200,175,0.08) 0%, rgba(60,200,244,0.10) 58%, rgba(139,92,246,0.08) 100%)",
+                                            boxShadow: "0 14px 36px rgba(60, 200, 244, 0.14)",
+                                        })
+                                    }}
+                                >
+                                    {field.generatedByAi && (
+                                        <Chip
+                                            icon={<AutoAwesomeIcon sx={{ fontSize: 15 }} />}
+                                            label="AI generated"
+                                            size="small"
+                                            sx={{
+                                                position: "absolute",
+                                                top: 4,
+                                                left: 16,
+                                                height: 24,
+                                                fontWeight: 800,
+                                                m: 1,
+                                                color: "#fff",
+                                                background: "linear-gradient(135deg, #3CC8AF 0%, #3CC8F4 58%, #8b5cf6 100%)",
+                                                boxShadow: "0 8px 20px rgba(60, 200, 244, 0.22)",
+                                                "& .MuiChip-icon": {
+                                                    color: "#fff",
+                                                }
+                                            }}
+                                        />
+                                    )}
+                                    <Stack direction="row" gap={2} mt={4} alignItems="center" >
                                         <TermForm key={index} {...{ form, prefix: `terms.${index}.` }} />
-                                        <Tooltip title="Törlés" sx={{ height: "fit-content", position: "absolute", top: -6, right: -6 }}>
+                                        <Tooltip title="Törlés" sx={{ height: "fit-content", position: "absolute", top: -6, right: -6, p: 2 }}>
                                             <IconButton onClick={() => remove(index)}>
                                                 <CircleMinus />
 

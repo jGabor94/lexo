@@ -5,7 +5,7 @@ import SetMenu from '@/features/set/components/SetMenu'
 import SwapTerms from '@/features/term/components/SwapTerms'
 import { IconButtonGrey } from '@/lib/mui/styled'
 import AddIcon from '@mui/icons-material/Add'
-import { Stack, Tooltip, Typography, useTheme } from '@mui/material'
+import { Stack, Tooltip, Typography } from '@mui/material'
 import Link from 'next/link'
 import { FC, Fragment } from 'react'
 import useSet from '../hooks/useSet'
@@ -13,7 +13,6 @@ import useSet from '../hooks/useSet'
 const SetHeader: FC<{}> = () => {
 
     const { set, isOwner } = useSet()
-    const theme = useTheme()
 
     return (
 

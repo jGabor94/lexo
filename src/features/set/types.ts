@@ -1,9 +1,9 @@
 import { setsTable } from "@/drizzle/schema";
+import { SWRResponse } from "swr";
 import * as z from 'zod';
 import { getLikers } from "./dal/queries";
 import { getSetQuery, getSetsQuery } from "./drizzle/operations";
 import { setFormSchema } from "./zod/schema";
-import { SWRResponse } from "swr";
 
 export type SetListItem = Awaited<ReturnType<typeof getSetsQuery>>[number]
 export type Set = NonNullable<Awaited<ReturnType<typeof getSetQuery>>>
@@ -16,5 +16,4 @@ export type SetContextType = Omit<SWRResponse<Set, any>, 'data'> & {
     set: Set,
     isOwner: boolean
 };
-
 

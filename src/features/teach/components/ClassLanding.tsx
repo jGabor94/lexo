@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from '@mui/material'
-import { FC } from 'react'
-import CreateClass from './CreateClass'
 import { CircleCheck } from 'lucide-react'
+import { FC } from 'react'
+import CreateClass from './teacher/CreateClass'
 
 const ClassLanding: FC<{}> = () => {
 

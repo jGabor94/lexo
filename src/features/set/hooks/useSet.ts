@@ -7,11 +7,13 @@ import { Set } from "../types"
 
 const useSet = () => {
 
-    const { setid } = useParams()
+    const { setid, rest } = useParams()
+    const taskid = rest ? rest[1] : undefined
     const session = useSession()
 
-    const { data: setData, ...rest } = useSWR(["set", setid as string], async ([key, setid]) => {
-        const res = await fetch(`/api/set/${setid}`)
+
+    const { data: setData, ...restData } = useSWR(["set", setid as string, taskid as (string | undefined)], async ([key, setid, taskid]) => {
+        const res = await fetch(`/api/set/${setid}${taskid ? `?taskid=${taskid}` : ""}`)
         if (!res.ok) {
             const text = await res.text()
             let errorData;
@@ -31,7 +33,7 @@ const useSet = () => {
         throw new Error("useSet must be used within a page where set data is pre-fetched");
     }
 
-    return { set: setData, isOwner, ...rest }
+    return { set: setData, isOwner, ...restData }
 }
 
 export default useSet

@@ -35,6 +35,7 @@ const EditTerm: FC<{
         }
     })
 
+
     const submit: SubmitHandler<TermInput> = async (data) => {
         const error = await updateTerm(termid, data)
         if (!error) {

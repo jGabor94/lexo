@@ -1,0 +1,1 @@
+ALTER TABLE "progresses" ADD CONSTRAINT "progresses_userid_termid_taskid_unique" UNIQUE NULLS NOT DISTINCT("userid","termid","taskid");

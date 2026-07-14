@@ -1,0 +1,2 @@
+ALTER TABLE "invites_table" ADD COLUMN "teacherid" text NOT NULL;--> statement-breakpoint
+ALTER TABLE "invites_table" ADD CONSTRAINT "invites_table_teacherid_users_id_fkey" FOREIGN KEY ("teacherid") REFERENCES "users"("id") ON DELETE CASCADE;

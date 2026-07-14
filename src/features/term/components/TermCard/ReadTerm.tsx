@@ -21,7 +21,7 @@ const ReadTerm: FC<{
 
     const [hideOverride, setHideOverride] = useState<HiddenMode>(null)
     const [showExample, setShowExample] = useState(false);
-    const { isOwner } = useSet()
+    const { isOwner, set } = useSet()
 
     const getHiddenData = (mode: HiddenMode) => {
 
@@ -59,10 +59,10 @@ const ReadTerm: FC<{
             <Box sx={{
                 flex: '1 1 0%',
             }}>
-                {isOwner && (
+                {(isOwner || set.task) && (
                     <Stack direction="row" gap={1} alignItems="center" mb={1}>
                         <TermStatusLabel term={term} color={statusColor} />
-                        <ProgressStatus score={term.status} color={statusColor} />
+                        <ProgressStatus score={term.progress?.status || 0} color={statusColor} />
                     </Stack>
                 )}
 

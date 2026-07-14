@@ -7,7 +7,6 @@ import { FC } from 'react'
 const page: FC<{}> = async () => {
 
     const session = await auth()
-    console.log({ session })
 
     return (
         <Box >

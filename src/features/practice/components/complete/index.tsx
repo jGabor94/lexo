@@ -14,15 +14,15 @@ const Completed: FC = () => {
     const { set, isOwner } = useSet()
     const { reset, successItems, wrongItems } = useExerciseController()
     const learnedNum = set.terms.reduce((acc, curr) => {
-        return curr.status === 5 ? acc + 1 : acc
+        return curr.progress?.status === 5 ? acc + 1 : acc
     }, 0)
 
     const sum = set.terms.reduce((acc, curr) => {
-        return acc + (curr.status || 0)
+        return acc + (curr.progress?.status || 0)
     }, 0)
 
+
     const percentage = Math.round(sum / (set.terms.length * 5 * 0.01))
-    console.log({ percentage })
     return (
         <Stack gap={2} sx={{ width: 600, maxWidth: "100%", margin: "0 auto" }} >
             <Stack direction="row" gap={3} alignItems="center" >
@@ -50,7 +50,7 @@ const Completed: FC = () => {
                     <Typography>{successItems.length}</Typography>
                 </Paper>
             </Stack>
-            {isOwner && (
+            {(isOwner || set.task) && (
                 <Fragment>
                     <Stack gap={1}>
                         <Stack direction="row" justifyContent="space-between">
@@ -69,7 +69,7 @@ const Completed: FC = () => {
 
 
             <Stack direction="row" justifyContent="space-between" gap={2} alignItems="flex-end">
-                <Stack direction="row" gap={0.5} component={Link} href={`/sets/${set.id}`} sx={{ textWrap: "nowrap", color: "text.primary", textDecoration: "none" }}>
+                <Stack direction="row" gap={0.5} component={Link} href={`/sets/${set.id}${set.task ? `/task/${set.task.id}` : ''}`} sx={{ textWrap: "nowrap", color: "text.primary", textDecoration: "none" }}>
                     <ChevronLeft />
                     <Typography>Vissza a szógyűjteményhez</Typography>
                 </Stack>

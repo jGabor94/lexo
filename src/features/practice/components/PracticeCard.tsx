@@ -15,17 +15,19 @@ const PracticeCard: FC<{
     name: string,
     color: string,
     link: string,
+    taskid?: string | undefined,
     overallProgress: number
-}> = ({ Icon, name, color, link, overallProgress }) => {
+}> = ({ Icon, name, color, link, overallProgress, taskid }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const { open, handleOpen, handleClose } = useModalControl()
     const router = useRouter()
-    const { isOwner } = useSet()
+    const { isOwner, set } = useSet()
+
 
     const onOpen = () => {
-        if (overallProgress === 100 || !isOwner) {
-            router.push(`${link}/free`)
+        if (overallProgress === 100 || (!isOwner && !set.task)) {
+            router.push(`${link}/free${taskid ? "/task/" + taskid : ""}`)
         } else {
             handleOpen()
         }
@@ -111,7 +113,7 @@ const PracticeCard: FC<{
                             <Typography color="textSecondary">Válassz tanulási típust</Typography>
                             <Card
                                 elevation={0}
-                                onClick={() => router.push(`${link}/free`)}
+                                onClick={() => router.push(`${link}/free${taskid ? "/task/" + taskid : ""}`)}
                                 sx={{
                                     background: `linear-gradient(135deg, ${color} 0%, ${alpha(color, 0.5)} 100%)`,
                                     cursor: 'pointer',
@@ -144,7 +146,7 @@ const PracticeCard: FC<{
                             {overallProgress !== 100 && (
                                 <Card
                                     elevation={0}
-                                    onClick={() => router.push(`${link}/progress`)}
+                                    onClick={() => router.push(`${link}/progress${taskid ? "/task/" + taskid : ""}`)}
                                     sx={{
                                         background: `linear-gradient(135deg, ${color} 0%, ${alpha(color, 0.5)} 100%)`,
                                         cursor: 'pointer',

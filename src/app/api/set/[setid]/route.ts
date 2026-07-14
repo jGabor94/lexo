@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ setid?: string }> }) {
     const { setid } = await params;
+    const searchParams = request.nextUrl.searchParams
+    const taskid = searchParams.get('taskid')
 
     if (!setid || typeof setid !== 'string') {
         return NextResponse.json(
@@ -12,7 +14,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         );
     }
 
-    const setResult = await getSet(setid);
+    const setResult = await getSet(setid, taskid || undefined);
 
     if (setResult.success) {
         return NextResponse.json(setResult.data, { status: 200 });

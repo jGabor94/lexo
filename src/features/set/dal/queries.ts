@@ -8,27 +8,40 @@ import { getFavoritesQuery, getLikersQuery, getSetQuery, getSetsQuery } from "..
 
 
 export const getSet = Dal.create()
-    .$Input<[setid: string]>()
+    .$Input<[setid: string, taskid?: string | undefined]>()
     .schema({
-        input: z.tuple([z.string()]),
+        input: z.tuple([z.uuidv4(), z.uuidv4().optional()]),
     })
     .authenticate()
     .authorize({
         resource: "set",
         action: "read",
-        data: async (setid) => db.query.setsTable.findFirst({ where: { id: setid } })
+        data: async (setid, taskid) => db.query.setsTable.findFirst({
+            where: { id: setid }, ...taskid && {
+                with: {
+                    tasks: {
+                        where: { id: taskid },
+                        with: {
+                            class: {
+                                with: {
+                                    students: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
     })
-    .operation(async ({ input }) => {
-        const [setid] = input
+    .operation(async ({ input, user }) => {
+        const [setid, taskid] = input
 
         const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
         if (!UUID_REGEX.test(setid)) {
             return createErrorReturn({ type: "invalid-uuid" })
         }
-
-        const res = await getSetQuery(setid)
-
+        const res = await getSetQuery(setid, user.id, taskid)
         if (!res) return createErrorReturn({ type: "not-found" })
 
         return createSuccessReturn(res)
@@ -49,9 +62,9 @@ export const getSets = Dal.create()
 
 
 export const getLikers = Dal.create()
-    .$Input<[setid: string]>()
+    .$Input<[setid: string, taskid?: string | undefined]>()
     .schema({
-        input: z.tuple([z.string()]),
+        input: z.tuple([z.uuidv4(), z.uuidv4().optional()]),
         output: z.object({
             count: z.number(),
             isLiked: z.boolean()
@@ -61,7 +74,20 @@ export const getLikers = Dal.create()
     .authorize({
         resource: "set",
         action: "read",
-        data: async (setid) => db.query.setsTable.findFirst({ where: { id: setid } })
+        data: async (setid, taskid) => db.query.setsTable.findFirst({
+            where: { id: setid }, with: {
+                tasks: {
+                    where: { id: taskid },
+                    with: {
+                        class: {
+                            with: {
+                                students: true
+                            }
+                        }
+                    }
+                }
+            }
+        })
     })
     .operation(async ({ input, user }) => {
 

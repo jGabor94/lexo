@@ -1,10 +1,10 @@
 import { Session } from "next-auth"
 import { SelectFolder } from "../folder/types"
 import { SelectSet } from "../set/types"
-import { SelectClass } from "../teach/types"
+import { SelectClass, SelectTask } from "../teach/types"
 import { SelectUser } from "../user/types"
 
-export type Role = "admin" | "user" | "teacher"
+export type Role = "admin" | "user"
 
 export type PermissionCheck<Key extends keyof Permissions> =
     | boolean
@@ -24,8 +24,8 @@ export type Permissions = {
         action: "create" | "delete"
     },
     set: {
-        dataType: SelectSet
-        action: "create" | "read" | "update" | "delete"
+        dataType: SelectSet & { tasks?: (SelectTask & { class: SelectClass & { students: SelectUser[] } })[] }
+        action: "create" | "read" | "update" | "delete" | "updateProgress"
     }
     term: {
         dataType: SelectSet
@@ -36,7 +36,7 @@ export type Permissions = {
         action: "create" | "read" | "update" | "delete"
     },
     class: {
-        dataType: SelectClass & { teachers: SelectUser[] }
-        action: "create" | "read" | "update" | "delete"
+        dataType: SelectClass & { teachers: SelectUser[], students: SelectUser[] }
+        action: "create" | "read" | "update" | "delete" | "invite" | "assign"
     }
 }

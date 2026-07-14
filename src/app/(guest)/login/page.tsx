@@ -1,9 +1,7 @@
-import CredentialsSingIn from "@/components/CredentialsSingIn";
-import GoogleSignInButton from "@/components/ui/GoogleSignInButton";
 import { LogoWhite } from "@/components/ui/logo/Logo";
-import { Box, Divider, Stack, Typography } from "@mui/material";
-import { env } from "process";
-import { FC, Fragment } from "react";
+import LoginForm from "@/features/authentication/components/LoginForm";
+import { Box, Stack, Typography } from "@mui/material";
+import { FC } from "react";
 
 export const dynamic = "force-static"
 
@@ -24,16 +22,7 @@ const Page: FC<{}> = async () => {
                 <Typography sx={{ textAlign: "center", fontSize: 40, fontWeight: 600 }}>
                     Bejelentkezés
                 </Typography>
-                <Stack sx={{ width: 300, maxWidth: "100%", gap: 3 }}>
-                    {env.VERCEL_ENV !== "preview" && (
-                        <Fragment>
-                            <GoogleSignInButton />
-                            <Divider flexItem>vagy</Divider>
-                        </Fragment>
-
-                    )}
-                    <CredentialsSingIn />
-                </Stack>
+                <LoginForm />
             </Stack>
         </Stack>
 

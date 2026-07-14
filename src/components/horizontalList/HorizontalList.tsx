@@ -8,7 +8,6 @@ export const revalidate = 0
 const HorizontalList: FC<{ promise: Promise<DalSuccessReturn<any[]> | DalErrorReturn>, label: string, icon: JSX.Element }> = async ({ promise, label, icon }) => {
 
     const res = await promise
-    console.log(res)
 
     return res.success && (res.data.length > 0) && (
         <Stack gap={3}>

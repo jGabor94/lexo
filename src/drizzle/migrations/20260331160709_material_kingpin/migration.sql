@@ -1,0 +1,1 @@
+ALTER TABLE "class_to_users" RENAME TO "class_to_teachers";

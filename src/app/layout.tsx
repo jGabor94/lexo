@@ -55,9 +55,18 @@ const NAVIGATION: Navigation = [
     icon: <Box component="img" src="/folder.png" width={25} />,
   },
   {
-    segment: 'teach',
     title: 'Oktatás',
     icon: <Box component="img" src="/education.png" width={25} />,
+    children: [
+      {
+        segment: 'teacher',
+        title: 'Tanár',
+      },
+      {
+        segment: 'student',
+        title: 'Diák',
+      },
+    ]
   },
 
 

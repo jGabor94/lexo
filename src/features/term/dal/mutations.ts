@@ -4,15 +4,18 @@ import { db } from "@/drizzle/db";
 import { setsTable } from "@/drizzle/schema";
 import { Dal } from "@/lib/dal";
 import { createErrorReturn, createSuccessReturn } from "@/lib/dal/types";
+import { openai } from '@ai-sdk/openai';
 import TextTranslationClient, { isUnexpected } from "@azure-rest/ai-translation-text";
 import { AzureKeyCredential, TextAnalyticsClient } from "@azure/ai-text-analytics";
+import { generateText, Output } from 'ai';
 import { eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import z from "zod";
-import { termsTable } from "../drizzle/schema";
-import { LanguageCode, TermInput } from "../types";
+import { progressesTable, termsTable } from "../drizzle/schema";
+import { generateTermsAssistant } from "../lib/aiAssistants";
+import { GenerateTermsInput, LanguageCode, TermInput } from "../types";
 import { hasMultipleWords } from "../utils";
-import { languageCodesSchema, termFormSchema } from "../zod/schema";
+import { generateTermsSchema, languageCodesSchema, termFormSchema } from "../zod/schema";
 
 export const createTerms = Dal.create()
     .$Input<[terms: Array<TermInput>, setid: string]>()
@@ -24,14 +27,20 @@ export const createTerms = Dal.create()
         resource: "term",
         action: "create",
     })
-    .operation(async ({ input }) => {
+    .operation(async ({ input, user }) => {
         const [terms, setid] = input;
 
-        await db.insert(termsTable).values(terms.map((term) => ({
-            ...term,
-            setid: setid,
-            status: 0,
-        })))
+        await db.transaction(async (tx) => {
+            const insertedTerms = await tx.insert(termsTable).values(terms.map((term) => ({
+                ...term,
+                setid: setid,
+            }))).returning({ id: termsTable.id })
+            await tx.update(setsTable).set({ updatedAt: new Date() }).where(eq(setsTable.id, setid))
+            await tx.insert(progressesTable).values(insertedTerms.map(({ id: termId }) => ({
+                termId,
+                userId: user.id,
+            })))
+        })
 
         revalidatePath(`sets/${setid}`, "page");
     })
@@ -68,8 +77,13 @@ export const updateTerm = Dal.create()
     })
     .operation(async ({ input }) => {
         const [termid, newTerm] = input
-        const [term] = await db.update(termsTable).set(newTerm).where(eq(termsTable.id, termid)).returning()
-        revalidatePath(`/sets/${term.setid}`)
+        const setid = await db.transaction(async (tx) => {
+            const [term] = await tx.update(termsTable).set(newTerm).where(eq(termsTable.id, termid)).returning()
+            await tx.update(progressesTable).set({ status: 0, attempts: 0 }).where(eq(progressesTable.termId, term.id))
+            return term.setid
+        })
+
+        revalidatePath(`/sets/${setid}`)
 
     })
 
@@ -92,13 +106,15 @@ export const swapTerms = Dal.create()
 
         await db.transaction(async (tx) => {
 
-            await Promise.all(terms.map(({ term, definition, id }) => {
+            await Promise.all(terms.map(({ term, definition, id }) => (async () => {
 
                 const newDefinition = { ...term, content: term.content.split(", ") }
                 const newTerm = { ...definition, content: definition.content.join(", ") }
 
-                return tx.update(termsTable).set({ status: 0, term: newTerm, definition: newDefinition }).where(eq(termsTable.id, id))
-            }))
+                await tx.update(termsTable).set({ term: newTerm, definition: newDefinition }).where(eq(termsTable.id, id))
+                await tx.update(progressesTable).set({ status: 0, attempts: 0 }).where(eq(progressesTable.termId, id))
+
+            })()))
 
             await tx.update(setsTable).set({ preferredTermLang: preferredDefinitionLang, preferredDefinitionLang: preferredTermLang }).where(eq(setsTable.id, setid))
         })
@@ -107,28 +123,76 @@ export const swapTerms = Dal.create()
     })
 
 export const updateProgress = Dal.create()
-    .$Input<[setid: string, successTermsId: string[], wrongTermsId: string[]]>()
+    .$Input<[setid: string, successTermsId: string[], wrongTermsId: string[], taskid?: string]>()
     .schema({
-        input: z.tuple([z.string(), z.array(z.string()), z.array(z.string())]),
+        input: z.tuple([z.uuidv4(), z.array(z.string()), z.array(z.string()), z.uuidv4().optional()]),
     })
     .authenticate()
-    .operation(async ({ input }) => {
+    .authorize({
+        resource: "set",
+        action: "updateProgress",
+        data: async (setid, successTermsId, wrongTermsId, taskid) => db.query.setsTable.findFirst({
+            where: { id: setid }, ...taskid && {
+                with: {
+                    tasks: {
+                        where: { id: taskid },
+                        with: {
+                            class: {
+                                with: {
+                                    students: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    })
+    .operation(async ({ input, user }) => {
 
-        const [setid, successTermsId, wrongTermsId] = input
-
+        const [setid, successTermsId, wrongTermsId, taskid] = input
         await db.transaction(async (tx) => {
 
-            const promises1 = wrongTermsId.map(termid => tx.update(termsTable)
-                .set({ status: sql`GREATEST(${termsTable}.status - 1, 0)`, lastReviewedAt: new Date() })
-                .where(eq(termsTable.id, termid))
-            )
+            if (wrongTermsId.length > 0) await tx.insert(progressesTable).values(wrongTermsId.map((termid) => ({
+                termId: termid,
+                userId: user.id,
+                taskId: taskid ?? null,
+                status: 0,
+                attempts: 1,
+            }))).onConflictDoUpdate({
+                target: [
+                    progressesTable.userId,
+                    progressesTable.termId,
+                    progressesTable.taskId,
+                ],
+                set: {
+                    status: sql`GREATEST(${progressesTable.status} - 1, 0)`,
+                    attempts: sql`${progressesTable.attempts} + 1`,
+                    updatedAt: new Date(),
+                },
+            })
 
-            const promises2 = successTermsId.map(termid => tx.update(termsTable)
-                .set({ status: sql`LEAST(${termsTable}.status + 1, 5)`, lastReviewedAt: new Date() })
-                .where(eq(termsTable.id, termid))
-            )
 
-            await Promise.all([...promises1, ...promises2])
+            if (successTermsId.length > 0) await tx.insert(progressesTable).values(successTermsId.map((termid) => ({
+                termId: termid,
+                userId: user.id,
+                taskId: taskid ?? null,
+                status: 1,
+                attempts: 1,
+            })))
+                .onConflictDoUpdate({
+                    target: [
+                        progressesTable.userId,
+                        progressesTable.termId,
+                        progressesTable.taskId,
+                    ],
+                    set: {
+                        status: sql`LEAST(${progressesTable.status} + 1, 5)`,
+                        attempts: sql`${progressesTable.attempts} + 1`,
+                        updatedAt: new Date(),
+                    },
+                })
+
             await tx.update(setsTable).set({ updatedAt: new Date() }).where(eq(setsTable.id, setid))
 
         })
@@ -222,3 +286,41 @@ export const translate = Dal.create()
 
 
     })
+
+
+export const generateTerms = Dal.create()
+    .$Input<[data: GenerateTermsInput & { preferredTermLang: LanguageCode, preferredDefinitionLang: LanguageCode }]>()
+    .schema({
+        input: z.tuple([generateTermsSchema.extend({
+            preferredTermLang: languageCodesSchema,
+            preferredDefinitionLang: languageCodesSchema
+        })]),
+    })
+    .authenticate()
+    .authorize({
+        resource: "term",
+        action: "create",
+    })
+    .operation(async ({ input }) => {
+        const [data] = input;
+
+        const res = await generateText({
+            model: openai('gpt-5.4-mini-2026-03-17'),
+            output: Output.array({
+                element: termFormSchema,
+            }),
+            system: generateTermsAssistant.system,
+            prompt: generateTermsAssistant.prompt({
+                termNumber: data.termNumber,
+                prompt: data.prompt,
+                isExampleSentenceIncluded: data.isExampleSentenceIncluded,
+                preferredTermLang: data.preferredTermLang,
+                preferredDefinitionLang: data.preferredDefinitionLang
+            }),
+        });
+
+        return createSuccessReturn({ output: res.output })
+    })
+
+
+

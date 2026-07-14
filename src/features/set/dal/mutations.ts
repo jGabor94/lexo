@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/drizzle/db"
-import { termsTable } from "@/drizzle/schema"
+import { progressesTable, termsTable } from "@/drizzle/schema"
 import { Dal } from "@/lib/dal"
 import { createErrorReturn, createSuccessReturn, ParamsType } from "@/lib/dal/types"
 import { and, eq } from "drizzle-orm"
@@ -67,9 +67,8 @@ export const createCopy = Dal.create({ cache: false })
     .operation(async ({ input, user }) => {
         const [setid] = input
 
-        const set = await getSetQuery(setid)
+        const set = await getSetQuery(setid, user.id)
         if (!set) return createErrorReturn({ type: "not-found" })
-
         return db.transaction(async (tx) => {
             const [{ id: insertedSetId }] = await tx.insert(setsTable).values({
                 name: `${set.name} - Másolat`,
@@ -79,11 +78,14 @@ export const createCopy = Dal.create({ cache: false })
             }).returning({ id: setsTable.id })
 
             if (set.terms.length > 0) {
-                await tx.insert(termsTable).values(set.terms.map((term) => ({
+                const res = await tx.insert(termsTable).values(set.terms.map((term) => ({
                     term: term.term,
                     definition: term.definition,
                     setid: insertedSetId,
-                    status: 0,
+                }))).returning({ termId: termsTable.id })
+                await tx.insert(progressesTable).values(res.map(({ termId }) => ({
+                    termId,
+                    userId: user.id,
                 })))
             }
 
@@ -114,9 +116,7 @@ export const createSet = Dal.create()
             userid: user.id,
         }
 
-        const res = (await db.insert(setsTable).values(insertData).returning({ id: setsTable.id }))[0]
-        revalidatePath(`/folders/${folderid}`, "page")
-
+        const [res] = await db.insert(setsTable).values(insertData).returning({ id: setsTable.id })
         return createSuccessReturn(res)
     })
 

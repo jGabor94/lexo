@@ -2,10 +2,11 @@ import { termsTable } from "@/drizzle/schema";
 import z from "zod";
 import { Set } from "../set/types";
 import { languageCodes } from "./lib/constants";
-import { termFormSchema } from "./zod/schema";
+import { generateTermsSchema, termFormSchema } from "./zod/schema";
 
 export type LanguageCode = typeof languageCodes[number]
 export type TermInput = z.infer<typeof termFormSchema>
+export type GenerateTermsInput = z.infer<typeof generateTermsSchema>
 export type HiddenMode = "terms" | "definitions" | null
 export type Term = NonNullable<Set>["terms"][number];
 export type InsertTerm = typeof termsTable.$inferInsert;

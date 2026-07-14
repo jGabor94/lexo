@@ -2,9 +2,9 @@ import { termColor } from "../lib/constants";
 import { Term } from "../types";
 
 export const termStatusCondition = {
-    "learning": (term: Term) => term.status < 5,
-    "review": (term: Term) => term.status === 5 && term.lastReviewedAt && (new Date(term.lastReviewedAt).getTime() - Date.now()) > 1209600000,
-    "learned": (term: Term) => term.status === 5,
+    "learning": (term: Term) => term.progress ? term.progress.status < 5 && term.progress.status > 0 : true,
+    "review": (term: Term) => term.progress && term.progress.status === 5 && term.progress.updatedAt && (new Date(term.progress.updatedAt).getTime() - Date.now()) > 1209600000,
+    "learned": (term: Term) => term.progress && term.progress.status === 5,
 }
 
 

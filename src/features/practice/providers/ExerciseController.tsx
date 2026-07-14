@@ -20,7 +20,7 @@ const initialState = {
 };
 
 const prepareArray = (array: Term[], mode: ExerciseMode) =>
-    shuffle(mode === "progress" ? array.filter((term) => term.status < 5) : array);
+    shuffle(mode === "progress" ? array.filter(({ progress }) => !progress || progress.status < 5) : array);
 
 const flashCardReducer = (state: ExerciseState, action: ExerciseAction): ExerciseState => {
     switch (action.type) {
@@ -64,7 +64,7 @@ const ExerciseController: FC<{ children: ReactNode }> = ({ children }) => {
         if (state.wrongItems.length + state.successItems.length === state.terms.length) {
             (async () => {
                 if (mode === "progress") {
-                    await updateProgress(set.id, state.successItems, state.wrongItems)
+                    await updateProgress(set.id, state.successItems, state.wrongItems, set.task?.id)
                     await mutate()
                 }
                 dispatch({ type: "SET_COMPLETED" })
