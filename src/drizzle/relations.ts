@@ -35,18 +35,10 @@ const relations = defineRelations(schema, (r) => ({
             optional: false
         }),
     },
-    classesTable: {
-        teachers: r.many.usersTable({
-            to: r.usersTable.id.through(r.classToUsersTable.teacherId),
-            from: r.classesTable.id.through(r.classToUsersTable.classId),
-            alias: "teachersClasses"
-        })
-    },
     usersTable: {
         sets: r.many.setsTable({ alias: "ownedSets" }),
         folders: r.many.foldersTable(),
         favorites: r.many.setsTable({ alias: "favoriteSets" }),
-        classes: r.many.classesTable({ alias: "teachersClasses" }),
     },
 }))
 

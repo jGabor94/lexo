@@ -26,12 +26,6 @@ export const ROLES = {
             update: true,
             delete: true,
         },
-        class: {
-            read: true,
-            create: true,
-            update: true,
-            delete: true,
-        },
     },
     user: {
         set: {
@@ -53,13 +47,7 @@ export const ROLES = {
             update: (user, set) => set.userid === user.id,
             delete: (user, set) => set.userid === user.id
         },
+
     },
-    teacher: {
-        class: {
-            read: (user, data) => data.teachers.some(t => t.id === user.id),
-            create: true,
-            update: true,
-            delete: true,
-        },
-    }
+
 } as const satisfies RolesWithPermissions
